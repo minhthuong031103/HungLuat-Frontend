@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import React from 'react';
-import { alreadyLoggedIn } from '@/lib/auth';
 import Login from './Login';
 export const metadata: Metadata = {
   title: 'Authentication',
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 const LoginPage = async () => {
-  await alreadyLoggedIn();
+  // await alreadyLoggedIn();
   return (
     <>
       <div className="p-12 relative h-screen w-full ">

@@ -102,4 +102,32 @@ export const CommonSvg = {
       <path d="M12 5v14"></path>
     </svg>
   ),
+  threedot: () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="12" fill="white" />
+      <circle cx="6" cy="12" r="2" fill="#515151" />
+      <circle cx="12" cy="12" r="2" fill="#515151" />
+      <circle cx="18" cy="12" r="2" fill="#515151" />
+    </svg>
+  ),
+  plus: () => (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 12.998H13V18.998H11V12.998H5V10.998H11V4.99805H13V10.998H19V12.998Z"
+        fill="white"
+      />
+    </svg>
+  ),
 };

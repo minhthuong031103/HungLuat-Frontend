@@ -17,6 +17,7 @@ const config: Config = {
         border: '#e4e4e7',
         input: '#e4e4e7',
         ring: '#18181b',
+        blueButton: '#2458C6',
         background: '#ffffff',
         foreground: '#0a0a0a',
         primary: {
@@ -56,12 +57,12 @@ const config: Config = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: "0" },
+          from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
         },
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: "0" },
+          to: { height: '0' },
         },
       },
       animation: {

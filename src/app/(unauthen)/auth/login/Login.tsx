@@ -141,7 +141,7 @@ const Login = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-
+        {/* 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -195,7 +195,7 @@ const Login = ({ className }: { className?: string }) => {
             </div>{' '}
             Google
           </Button>
-        </div>
+        </div> */}
       </div>
 
       <p className="mt-10 px-8 text-center text-sm text-muted-foreground">
