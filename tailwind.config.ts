@@ -20,6 +20,7 @@ const config: Config = {
         blueButton: '#2458C6',
         background: '#ffffff',
         foreground: '#0a0a0a',
+        navbar: '#00405C',
         primary: {
           DEFAULT: '#18181b',
           foreground: '#fafafa',

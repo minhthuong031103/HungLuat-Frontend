@@ -7,9 +7,6 @@ import RoomDropdown from './components/home/room-dropdown';
 const page = () => {
   return (     
     <div>
-      <RoomDropdown />
-
-      <AddApartmentModal />
     </div>
   );
 };

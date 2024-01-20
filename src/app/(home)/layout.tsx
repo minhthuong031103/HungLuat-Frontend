@@ -1,13 +1,14 @@
+import { NavbarWrapper } from '@/components/navbar/navbar';
 import { SidebarWrapper } from '@/components/sidebar/sidebar';
 import React from 'react';
 
 const layout = ({ children }) => {
   return (
-    <section className="flex ">
+    <section className="flex">
       <SidebarWrapper />
-
-      {children}
+      <NavbarWrapper>{children}</NavbarWrapper>
     </section>
+    
   );
 };
 
