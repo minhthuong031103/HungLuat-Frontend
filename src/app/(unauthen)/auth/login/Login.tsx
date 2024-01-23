@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '@/hooks/useAuth';
 
 const formSchema = z.object({
   email: z.string().min(1, {
@@ -33,7 +34,7 @@ const formSchema = z.object({
 });
 const Login = ({ className }: { className?: string }) => {
   const router = useRouter();
-
+  const { onLogin } = useAuth();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [show, setShow] = React.useState({
     showPass: false,
@@ -48,20 +49,7 @@ const Login = ({ className }: { className?: string }) => {
   });
   async function onSubmit(data) {
     setIsLoading(true);
-    // const res = await signIn('credentials', {
-    //   email: data.email,
-    //   password: data.password,
-    //   redirect: false,
-    // });
-    setIsLoading(false);
-
-    if (res?.error) {
-      toast.error(res?.error);
-
-      return;
-    }
-
-    if (!res?.error) router.push('/');
+    const res = await onLogin(data);
     setIsLoading(false);
   }
   if (isLoading)
