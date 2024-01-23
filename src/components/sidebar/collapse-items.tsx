@@ -1,46 +1,61 @@
-import React, { useState } from "react";
-import { ChevronUpIcon } from "../icons/sidebar/chevron-up-icon";
-import { Accordion, AccordionItem } from "@nextui-org/react";
-import clsx from "clsx";
-
+'use client'
+import React, { useState } from 'react'
+import { ChevronUpIcon } from '../icons/sidebar/chevron-up-icon'
+import { Accordion, AccordionItem } from '@nextui-org/react'
+import { CommonSvg } from '@/assets/CommonSvg'
+import { usePathname, useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
 interface Props {
-  icon: React.ReactNode;
-  title: string;
-  items: string[];
+  icon: React.ReactNode
+  title: string
+  items: { name: string; link?: string }[]
 }
 
 export const CollapseItems = ({ icon, items, title }: Props) => {
-  const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
+  const pathName = usePathname().split('/')[-1]
   return (
     <div className="flex gap-4 h-full items-center cursor-pointer">
       <Accordion className="px-0">
         <AccordionItem
-          indicator={<ChevronUpIcon />}
+          indicator={<ChevronUpIcon className="text-black" />}
           classNames={{
-            indicator: "data-[open=true]:-rotate-180",
+            indicator: 'data-[open=true]:-rotate-180',
             trigger:
-              "py-0 min-h-[44px] hover:bg-default-100 rounded-xl active:scale-[0.98] transition-transform px-3.5",
-
+              'py-0 min-h-[44px] hover:bg-default-100 rounded-xl active:scale-[0.98] transition-transform pl-2',
             title:
-              "px-0 flex text-base gap-2 h-full items-center cursor-pointer",
+              'px-0 flex text-base gap-2 h-full items-center cursor-pointer'
           }}
           aria-label="Accordion 1"
           title={
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-5 items-center">
               <span>{icon}</span>
-              <span>{title}</span>
+              <span className="font-semibold">{title}</span>
             </div>
           }
         >
-          <div className="pl-12">
+          <div className="pl-4 space-y-4">
             {items.map((item, index) => (
-              <span
+              <div
                 key={index}
-                className="w-full flex  text-default-500 hover:text-default-900 transition-colors"
+                className={cn(
+                  'flex gap-4 items-center px-4 py-2 rounded-sm scale-95 hover:scale-100 transition-all duration-150 ease-in-out cursor-pointer hover:bg-default-100 active:bg-default-200',
+                  pathName === item.link &&
+                    'bg-backgroundChosen pointer-events-none'
+                )}
+                onClick={() => console.log(item.link)}
               >
-                {item}
-              </span>
+                {CommonSvg.circle()}
+                <span
+                  className={cn(
+                    'w-full flex text-description text-base font-medium hover:font-semibold',
+                    pathName === item.link && 'text-textChosen font-semibold'
+                  )}
+                >
+                  {item.name}
+                </span>
+              </div>
             ))}
           </div>
         </AccordionItem>
@@ -134,5 +149,5 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
         ))}
       </Accordion> */}
     </div>
-  );
-};
+  )
+}
