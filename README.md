@@ -19,41 +19,52 @@
 ![alt text](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white)
 
 ##
+
 UITEstate is a website which plays an important role in transactions between Real Estate seller and customer, managed by a real estate broker.
+
 ## 📚 Introduction
+
 ![alt text](https://github.com/minhthuong031103/SE100_RealEstate/blob/dev_Son/public/ReadmeImage/intro.png)
 
 UITEstate - Real Estate Brokerage Market is a web application that helps an individual manage his brokerage office, instead of doing thing in person with a lot of paper works, this web app helps office manager colect information about real estate from the sellers and provide it for the customers. This project has 2 repositories, this introduces you about the customer side wed, you can visit the admin side web repository in this link: https://github.com/minhthuong031103/SE100-admin-estate
 
 Below is the general information about this project.
+
 ## 🏡 Home
+
 Customer can search any properties that match to their wishes within their wallet. In addition, they can find some real estate agency or company that you want and contact with them for more information about their properties.
 
 ![alt text](https://github.com/minhthuong031103/SE100_RealEstate/blob/dev_Son/public/ReadmeImage/home.png)
 
 ![alt text](https://github.com/minhthuong031103/SE100_RealEstate/blob/dev_Son/public/ReadmeImage/detail.png)
 
-## 📋 Agency 
+## 📋 Agency
+
 This area is designed for agency or company who want to sell their properties. Make a transaction to take turns and post some news.
 
 ![alt text](https://github.com/minhthuong031103/SE100_RealEstate/blob/dev_Son/public/ReadmeImage/agency.png)
 
 ## 🕵️ Admin
+
 Designed for admin, real estate broker and office manager too. Admin reviews every post and account information, after pass his review, the post will immediately post into the market.
 ![alt text](https://github.com/minhthuong031103/SE100_RealEstate/blob/dev_Son/public/ReadmeImage/admin.png)
+
 ## 💕 Thanks
+
 This project almost completed like a real estate brokerage market. However developed by developer team who is still university students and have not enough experiences, this project maybe has some problem. You can visit our deploy website for more experience. Thank you for visiting our project.
 
 I deeply appreciate every member of this team for showing relentless effort for this project.
 
-|  Leader  |  Member | Member | Supporter 
-| ------------- | ------------- | --------------------------|------------------------|
-|[![](https://avatars.githubusercontent.com/u/116157535?size=160)](https://github.com/SonDangUIT1111)|[![](https://avatars.githubusercontent.com/u/101078033?size=160)](https://github.com/minhthuong031103)|[![](https://avatars.githubusercontent.com/u/30335268?size=160)](https://github.com/anhkhoatqt11)|[![]()](https://github.com/huutaiii)
-[Đặng Thái Sơn](https://github.com/SonDangUIT1111)|[Nguyễn Minh Thường](https://github.com/minhthuong031103)|[Trương Anh Khoa](https://github.com/anhkhoatqt11)|[Trương Quốc Tài](https://github.com/huutaiii)
+| Leader                                                                                               | Member                                                                                                 | Member                                                                                            | Supporter                                      |
+| ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
+| [![](https://avatars.githubusercontent.com/u/116157535?size=160)](https://github.com/SonDangUIT1111) | [![](https://avatars.githubusercontent.com/u/101078033?size=160)](https://github.com/minhthuong031103) | [![](https://avatars.githubusercontent.com/u/30335268?size=160)](https://github.com/anhkhoatqt11) | [![]()](https://github.com/huutaiii)           |
+| [Đặng Thái Sơn](https://github.com/SonDangUIT1111)                                                   | [Nguyễn Minh Thường](https://github.com/minhthuong031103)                                              | [Trương Anh Khoa](https://github.com/anhkhoatqt11)                                                | [Trương Quốc Tài](https://github.com/huutaiii) |
 
 ## ⚙ Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-![Alt](https://repobeats.axiom.co/api/embed/09728e67fa78c31f2735eebf8f3feb7075695039.svg "Repobeats analytics image")
+![Alt](https://repobeats.axiom.co/api/embed/09728e67fa78c31f2735eebf8f3feb7075695039.svg 'Repobeats analytics image')
+
+###
