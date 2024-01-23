@@ -1,27 +1,27 @@
-import { Metadata } from 'next';
-import React from 'react';
-import Register from './Register';
-import jwt from 'jsonwebtoken';
+import { Metadata } from 'next'
+import React from 'react'
+import Register from './Register'
+import jwt from 'jsonwebtoken'
 
 export const metadata: Metadata = {
   title: 'Authentication',
-  description: 'Authentication forms built using the components.',
-};
+  description: 'Authentication forms built using the components.'
+}
 const LoginPage = async ({ searchParams }: { searchParams: any }) => {
-  let email = null;
-  let name = null;
+  let email = null
+  let name = null
   if (searchParams.payload) {
     jwt.verify(
       searchParams.payload,
       process.env.NEXT_PUBLIC_JWT_SECRET,
       (err, decoded) => {
         if (err) {
-          return;
+          return
         }
-        email = decoded?.email;
-        name = decoded?.name;
+        email = decoded?.email
+        name = decoded?.name
       }
-    );
+    )
   }
 
   return (
@@ -35,7 +35,7 @@ const LoginPage = async ({ searchParams }: { searchParams: any }) => {
               </h1>
               <p className="text-sm text-muted-foreground">
                 Hãy đăng ký tài khoản của bạn dể có thể sử dụng các dịch vụ của
-                UIT Estate
+                Hùng Luật Group.
               </p>
             </div>
             <Register payload={{ email, name }} />
@@ -43,7 +43,7 @@ const LoginPage = async ({ searchParams }: { searchParams: any }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage
