@@ -1,9 +1,9 @@
-'use client';
-import React from 'react';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
-import Image from 'next/image';
-import { Button } from './ui/button';
+'use client'
+import React from 'react'
+import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import { Carousel } from 'react-responsive-carousel'
+import Image from 'next/image'
+import { Button } from './ui/button'
 function HomeBanner() {
   return (
     <div
@@ -34,7 +34,7 @@ function HomeBanner() {
                 Khám phá bất động sản của riêng bạn
               </p>
               <footer className="text-lg">
-                Với thế giới bất động sản UIT Estate
+                Với thế giới bất động sản Hùng Luật Group.
               </footer>
               <Button
                 variant={'outline'}
@@ -61,7 +61,7 @@ function HomeBanner() {
           <div className="absolute top-20 lg:top-[50%] px-5 font-bold z-20 ">
             <blockquote className="space-y-2">
               <p className="text-2xl lg:text-5xl capitalize ">
-                Trở thành đối tác của UIT Estate
+                Trở thành đối tác của Hùng Luật Group.
               </p>
               <footer className="text-lg">
                 Đăng tin bất động sản của chính bạn
@@ -89,7 +89,9 @@ function HomeBanner() {
           <div className="absolute inset-0 bg-black opacity-10" />
           <div className="absolute top-20 lg:top-[50%] px-5 font-bold z-20 ">
             <blockquote className="space-y-2">
-              <p className="text-2xl lg:text-5xl capitalize ">UIT Estate</p>
+              <p className="text-2xl lg:text-5xl capitalize ">
+                Hùng Luật Group.
+              </p>
               <footer className="text-lg">
                 Điều hướng thị trường bất động sản chưa bao giờ dễ dàng đến thế
               </footer>
@@ -98,7 +100,7 @@ function HomeBanner() {
         </div>
       </Carousel>
     </div>
-  );
+  )
 }
 
-export default HomeBanner;
+export default HomeBanner

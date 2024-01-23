@@ -1,46 +1,27 @@
-'use client';
+'use client'
 
-import React from 'react';
-import { Sidebar } from './sidebar.styles';
-import { Avatar, Tooltip } from '@nextui-org/react';
-import { CompaniesDropdown } from './companies-dropdown';
-import { HomeIcon } from '../icons/sidebar/home-icon';
-import { PaymentsIcon } from '../icons/sidebar/payments-icon';
-import { BalanceIcon } from '../icons/sidebar/balance-icon';
-import { AccountsIcon } from '../icons/sidebar/accounts-icon';
-import { CustomersIcon } from '../icons/sidebar/customers-icon';
-import { ProductsIcon } from '../icons/sidebar/products-icon';
-import { ReportsIcon } from '../icons/sidebar/reports-icon';
-import { DevIcon } from '../icons/sidebar/dev-icon';
-import { ViewIcon } from '../icons/sidebar/view-icon';
-import { SettingsIcon } from '../icons/sidebar/settings-icon';
-import { CollapseItems } from './collapse-items';
-import { SidebarItem } from './sidebar-item';
-import { SidebarMenu } from './sidebar-menu';
-import { FilterIcon } from '../icons/sidebar/filter-icon';
-import { useSidebarContext } from '../layout/layout-context';
-import { ChangeLogIcon } from '../icons/sidebar/changelog-icon';
-import { useRouter } from 'next/navigation';
-import { ScrollArea } from '../ui/scroll-area';
+import React from 'react'
+import { Sidebar } from './sidebar.styles'
+import { CollapseItems } from './collapse-items'
+import { useSidebarContext } from '../layout/layout-context'
+import { ScrollArea } from '../ui/scroll-area'
+import { CommonSvg } from '@/assets/CommonSvg'
 export const SidebarWrapper = () => {
-  const router = useRouter();
-  const { collapsed, setCollapsed } = useSidebarContext();
+  const { collapsed, setCollapsed } = useSidebarContext()
 
   return (
-    <div className="h-screen z-[10] sticky top-0">
+    <div className="h-full z-[10] sticky top-0">
       {collapsed ? (
         <div className={Sidebar.Overlay()} onClick={setCollapsed} />
       ) : null}
       <ScrollArea
         className={Sidebar({
-          collapsed: collapsed,
+          collapsed: collapsed
         })}
       >
-        <div className={Sidebar.Header()}>
-          <CompaniesDropdown />
-        </div>
+        <div className={Sidebar.Header()}>{CommonSvg.dashicon()}</div>
         <div className="flex flex-col justify-between h-full">
-          <div className={Sidebar.Body()}>
+          {/* <div className={Sidebar.Body()}>
             <SidebarItem
               title="Home"
               icon={<HomeIcon />}
@@ -106,27 +87,34 @@ export const SidebarWrapper = () => {
                 icon={<ChangeLogIcon />}
               />
             </SidebarMenu>
-          </div>
-          <div className={Sidebar.Footer()}>
-            <Tooltip content={'Settings'} color="primary">
-              <div className="max-w-fit">
-                <SettingsIcon />
-              </div>
-            </Tooltip>
-            <Tooltip content={'Adjustments'} color="primary">
-              <div className="max-w-fit">
-                <FilterIcon />
-              </div>
-            </Tooltip>
-            <Tooltip content={'Profile'} color="primary">
-              <Avatar
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-                size="sm"
-              />
-            </Tooltip>
+          </div> */}
+          <div className={Sidebar.Body()}>
+            <CollapseItems
+              icon={CommonSvg.manage()}
+              items={[
+                { name: 'Quản lý căn hộ' },
+                { name: 'Quản lý phòng', link: '/1' },
+                { name: 'Danh sách khách trọ', link: '/2' },
+                { name: 'Quản lý biểu mẫu', link: '/3' }
+              ]}
+              title="Quản lý phòng"
+            />
+            <CollapseItems
+              icon={CommonSvg.dashboard()}
+              items={[
+                { name: 'Quản lý chi', link: '/4' },
+                { name: 'Thống kê', link: '/5' }
+              ]}
+              title="Thống kê"
+            />
+            <CollapseItems
+              icon={CommonSvg.stack()}
+              items={[]}
+              title="Quản lý hệ thống"
+            />
           </div>
         </div>
       </ScrollArea>
     </div>
-  );
-};
+  )
+}

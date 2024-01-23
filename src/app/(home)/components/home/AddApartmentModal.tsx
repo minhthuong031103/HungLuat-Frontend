@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Modal,
@@ -7,105 +7,99 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
-  Input,
-} from '@nextui-org/react';
-import { CommonSvg } from '@/assets/CommonSvg';
-import { useState } from 'react';
-
-interface CustomInputProps {
-  label: string;
-  placeholder: string;
-  value: string;
-  setValue: (e: string) => void;
-  type?: string;
-}
-
-const CustomInput = ({
-  label,
-  placeholder,
-  value,
-  setValue,
-  type,
-}: CustomInputProps) => {
-  return (
-    <Input
-      type={type}
-      label={label}
-      isClearable
-      variant="bordered"
-      isRequired
-      value={value}
-      onValueChange={(e) => {
-        setValue(e);
-      }}
-      placeholder={placeholder}
-      labelPlacement="outside"
-      classNames={{
-        label: 'text-black ',
-        input: [],
-        innerWrapper: 'bg-transparent',
-        inputWrapper: ['border-1 px-[10px] py-[8px]'],
-      }}
-      // startContent={
-      //   <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-      // }
-    />
-  );
-};
+  useDisclosure
+} from '@nextui-org/react'
+import { CommonSvg } from '@/assets/CommonSvg'
+import { useState } from 'react'
+import { CustomInput } from './custom-input'
+import { CustomSelect } from './custom-select'
 
 const AddApartmentModal = () => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const [apartmentName, setApartmentName] = useState('');
-  const [apartmentFloor, setApartmentFloor] = useState('');
+  const [apartmentName, setApartmentName] = useState('')
+  const [apartmentFloor, setApartmentFloor] = useState('')
+  const [address, setAddress] = useState('')
+  const [province, setProvince] = useState('')
+  const [district, setDistrict] = useState('')
+  const [ward, setWard] = useState('')
+  const handleAddApartment = () => {
+    onClose()
+  }
   return (
     <div className="">
       <Button
         onPress={onOpen}
-        className="rounded-[8px] px-[16px] py-[8px] bg-blueButton"
+        className="rounded-[8px] px-4 py-2 bg-blueButton"
       >
         <div className="flex flex-row items-center gap-x-[8px] ">
           <div>{CommonSvg.plus()}</div>
-          <div className="text-white mt-[1px]">Them moi</div>
+          <div className="text-white mt-[1px] font-medium">Thêm mới</div>
         </div>
       </Button>
-      <Modal className="" isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal size="2xl" isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
-              <div className="flex flex-col gap-1  items-center ">
-                Tao moi Can Ho{' '}
-              </div>
-              <ModalBody className="">
-                <div>
-                  <div className="flex flex-row gap-x-[20px]">
-                    <div className="w-[65%]">
-                      <CustomInput
-                        label="Ten Can Ho"
-                        placeholder="Nhap ten can ho"
-                        value={apartmentName}
-                        setValue={setApartmentName}
-                      />
-                    </div>
-
-                    <div className="w-[35%]">
-                      <CustomInput
-                        label="So Tang"
-                        placeholder="Nhap so tang"
-                        value={apartmentFloor}
-                        setValue={setApartmentFloor}
-                      />
-                    </div>
+              <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
+                Tạo mới căn hộ
+              </ModalHeader>
+              <ModalBody className="space-y-4">
+                <div className="flex gap-[20px]">
+                  <div className="w-[60%]">
+                    <CustomInput
+                      label="Tên căn hộ"
+                      placeholder="Nhập tên căn hộ"
+                      value={apartmentName}
+                      setValue={setApartmentName}
+                    />
+                  </div>
+                  <div className="w-[40%]">
+                    <CustomInput
+                      label="Số tầng"
+                      placeholder="Nhập số tầng"
+                      value={apartmentFloor}
+                      setValue={setApartmentFloor}
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-[20px]">
+                  <CustomSelect
+                    label="Tỉnh/Thành phố"
+                    placeholder="Chọn tỉnh/thành phố"
+                    value={province}
+                    setValue={setProvince}
+                  />
+                  <CustomSelect
+                    label="Quận/Huyện"
+                    placeholder="Chọn quận/huyện"
+                    value={district}
+                    setValue={setDistrict}
+                  />
+                  <CustomSelect
+                    label="Phường/Xã"
+                    placeholder="Chọn phường/xã"
+                    value={ward}
+                    setValue={setWard}
+                  />
+                </div>
+                <div className="">
+                  <div className="w-full">
+                    <CustomInput
+                      label="Địa chỉ"
+                      placeholder="Nhập địa chỉ"
+                      value={address}
+                      setValue={setAddress}
+                    />
                   </div>
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
+                <Button
+                  className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
+                  onPress={handleAddApartment}
+                >
+                  Lưu
                 </Button>
               </ModalFooter>
             </>
@@ -113,7 +107,7 @@ const AddApartmentModal = () => {
         </ModalContent>
       </Modal>
     </div>
-  );
-};
+  )
+}
 
-export default AddApartmentModal;
+export default AddApartmentModal
