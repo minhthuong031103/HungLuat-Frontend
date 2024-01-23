@@ -51,7 +51,10 @@ const config: Config = {
         borderColor: '#E3E3E3',
         gray: '#00405C',
         darkGray: '#00202E',
-        cardDetail: '#999999'
+        cardDetail: '#999999',
+        description: '#4A4A68',
+        textChosen: '#2458C6',
+        backgroundChosen: '#ECF5FF'
       },
       borderRadius: {
         xl: `12px`,

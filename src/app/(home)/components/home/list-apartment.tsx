@@ -43,7 +43,7 @@ const ListApartment = () => {
         <p className="font-semibold font-lg text-gray">Danh sách căn hộ</p>
         <AddApartmentModal />
       </div>
-      <div className="w-full h-full mt-4 flex justify-start gap-5">
+      <div className="w-full h-full mt-4 flex justify-start gap-5 flex-wrap">
         {apartments.map((apartment, index) => (
           <ApartmentCard key={index} apartment={apartment} />
         ))}

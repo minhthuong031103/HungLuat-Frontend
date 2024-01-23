@@ -17,7 +17,7 @@ const layout = ({ children }) => {
       <SidebarWrapper />
       <div className="w-full">
         <NavbarComponent />
-        <div className="w-full h-full px-3 py-4">{children}</div>
+        <div className="w-full px-3 py-4">{children}</div>
       </div>
     </section>
   )

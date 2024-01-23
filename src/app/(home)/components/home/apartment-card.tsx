@@ -10,8 +10,11 @@ import {
 } from '@nextui-org/react'
 import RoomDropdown from './room-dropdown'
 import { CommonSvg } from '@/assets/CommonSvg'
-
-const ApartmentCard = ({ apartment }) => {
+import { Apartment } from '@/types'
+interface ApartmentCardProps {
+  apartment: Apartment
+}
+const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
   return (
     <Card
       className="max-w-[359px] max-h-[533px]"
