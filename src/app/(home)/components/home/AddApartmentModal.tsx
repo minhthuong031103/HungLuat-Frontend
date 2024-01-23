@@ -12,7 +12,7 @@ import {
 import { CommonSvg } from '@/assets/CommonSvg'
 import { useState } from 'react'
 import { CustomInput } from './custom-input'
-import { CustomSelect } from './custom-select'
+import { SelectAddress } from './select-address'
 
 const AddApartmentModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -20,9 +20,7 @@ const AddApartmentModal = () => {
   const [apartmentName, setApartmentName] = useState('')
   const [apartmentFloor, setApartmentFloor] = useState('')
   const [address, setAddress] = useState('')
-  const [province, setProvince] = useState('')
-  const [district, setDistrict] = useState('')
-  const [ward, setWard] = useState('')
+
   const handleAddApartment = () => {
     onClose()
   }
@@ -64,24 +62,7 @@ const AddApartmentModal = () => {
                   </div>
                 </div>
                 <div className="flex gap-[20px]">
-                  <CustomSelect
-                    label="Tỉnh/Thành phố"
-                    placeholder="Chọn tỉnh/thành phố"
-                    value={province}
-                    setValue={setProvince}
-                  />
-                  <CustomSelect
-                    label="Quận/Huyện"
-                    placeholder="Chọn quận/huyện"
-                    value={district}
-                    setValue={setDistrict}
-                  />
-                  <CustomSelect
-                    label="Phường/Xã"
-                    placeholder="Chọn phường/xã"
-                    value={ward}
-                    setValue={setWard}
-                  />
+                  <SelectAddress />
                 </div>
                 <div className="">
                   <div className="w-full">

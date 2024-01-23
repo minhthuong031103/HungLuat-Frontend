@@ -15,19 +15,19 @@ export function SearchBar() {
         classNames={{
           input: [
             'bg-transparent',
-            'text-black/90 dark:text-white/90',
-            'placeholder:text-default-700/80 dark:placeholder:text-white/60 placeholder:text-sm'
+            'text-black/90',
+            'placeholder:text-default-700/80 placeholder:text-sm'
           ],
           innerWrapper: 'bg-transparent',
           inputWrapper: [
             'bg-white',
-            'dark:bg-default/60',
+
             'backdrop-blur-xl',
             'backdrop-saturate-200',
             'hover:bg-default-200/70',
-            'dark:hover:bg-default/70',
+
             'group-data-[focused=true]:bg-default-200/50',
-            'dark:group-data-[focused=true]:bg-default/60',
+
             '!cursor-text',
             'w-[535px]',
             'border-1',
@@ -37,8 +37,7 @@ export function SearchBar() {
         }}
         placeholder="Nhập thông tin tìm kiếm"
         startContent={CommonSvg.searchIcon({
-          className:
-            'text-black/50 mb-0.5 dark:text-white/90 pointer-events-none flex-shrink-0'
+          className: 'text-black/50 mb-0.5 pointer-events-none flex-shrink-0'
         })}
       />
       <Button
