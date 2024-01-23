@@ -1,17 +1,26 @@
-'use client';
+'use client'
 
-import { SidebarWrapper } from '@/components/sidebar/sidebar';
-import { useUserState } from '@/context/UserProvider';
-import { useAuth } from '@/hooks/useAuth';
-import React from 'react';
+import { NavbarComponent } from '@/components/navbar/navbar'
+import { SidebarWrapper } from '@/components/sidebar/sidebar'
+import { useUserState } from '@/context/UserProvider'
+import { useAuth } from '@/hooks/useAuth'
+import React from 'react'
 
 const layout = ({ children }) => {
-  const { useCheckNotLoggedIn, loading } = useAuth();
-  useCheckNotLoggedIn();
-  console.log('🚀 ~ layout ~ loading:', loading);
-  if (loading) return null;
+  const { useCheckNotLoggedIn, loading } = useAuth()
+  // useCheckNotLoggedIn();
+  console.log('🚀 ~ layout ~ loading:', loading)
+  // if (loading) return null
 
-  return <section className="flex ">{children}</section>;
-};
+  return (
+    <section className="flex w-full">
+      <SidebarWrapper />
+      <div className="w-full">
+        <NavbarComponent />
+        <div className="w-full h-full px-3 py-4">{children}</div>
+      </div>
+    </section>
+  )
+}
 
-export default layout;
+export default layout

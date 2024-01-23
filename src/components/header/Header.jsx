@@ -1,63 +1,63 @@
 /* eslint-disable no-undef */
-'use client';
+'use client'
 
-import React, { useEffect, useState } from 'react';
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import './styles.css';
-import { FiMessageSquare } from 'react-icons/fi';
-import { Button } from '@nextui-org/react';
-import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { signOut } from 'next-auth/react';
+import React, { useEffect, useState } from 'react'
+import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+import './styles.css'
+import { FiMessageSquare } from 'react-icons/fi'
+import { Button } from '@nextui-org/react'
+import Link from 'next/link'
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar'
+// import { signOut } from 'next-auth/react'
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  DropdownSection,
-} from '@nextui-org/react';
-import AuthSvg from '@/assets/AuthSvg';
-import { MobileNav } from './MobileNavBar';
-import { AiOutlineHeart } from 'react-icons/ai';
-import Logo from '../logo';
-import BackDropCus from '../backdropCus/backdropCus';
-import { useRouter } from 'next/navigation';
+  DropdownSection
+} from '@nextui-org/react'
+import AuthSvg from '@/assets/AuthSvg'
+import { MobileNav } from './MobileNavBar'
+import { AiOutlineHeart } from 'react-icons/ai'
+import Logo from '../logo'
+import BackDropCus from '../backdropCus/backdropCus'
+import { useRouter } from 'next/navigation'
 
 const avatarNav = [
   {
     name: 'Hồ sơ',
-    href: '/user',
+    href: '/user'
   },
   {
     name: 'Tin nhắn',
-    href: '/conversations',
-  },
-];
+    href: '/conversations'
+  }
+]
 
 const NavigationMenuDemo = ({ session }) => {
-  const [user] = useState(session?.user);
-  const [show, setShow] = useState('translate-y-0');
-  const [isUserOpen, setIsUserOpen] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const router = useRouter();
+  const [user] = useState(session?.user)
+  const [show, setShow] = useState('translate-y-0')
+  const [isUserOpen, setIsUserOpen] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const router = useRouter()
   useEffect(() => {
-    window.addEventListener('scroll', controlNavbar);
+    window.addEventListener('scroll', controlNavbar)
     return () => {
-      window.removeEventListener('scroll', controlNavbar);
-    };
-  });
+      window.removeEventListener('scroll', controlNavbar)
+    }
+  })
   const controlNavbar = () => {
     if (window.scrollY > 100) {
       if (window.scrollY > lastScrollY) {
-        setShow('-translate-y-[82px]');
+        setShow('-translate-y-[82px]')
       } else {
-        setShow('shadow-sm');
+        setShow('shadow-sm')
       }
     } else {
-      setShow('translate-y-0');
+      setShow('translate-y-0')
     }
-    setLastScrollY(window.scrollY);
-  };
+    setLastScrollY(window.scrollY)
+  }
   return (
     <div
       className={`w-full h-[50px] md:h-[80px] 
@@ -155,11 +155,11 @@ const NavigationMenuDemo = ({ session }) => {
               <Dropdown
                 shouldBlockScroll={true}
                 onOpenChange={(open) => {
-                  setIsUserOpen(open);
+                  setIsUserOpen(open)
                 }}
                 closeOnSelect={true}
                 onClose={() => {
-                  setIsUserOpen(false);
+                  setIsUserOpen(false)
                 }}
                 isOpen={isUserOpen}
               >
@@ -174,7 +174,7 @@ const NavigationMenuDemo = ({ session }) => {
                     {avatarNav.map((item, index) => (
                       <DropdownItem
                         onClick={() => {
-                          router.push(item.href);
+                          router.push(item.href)
                         }}
                         className="w-full"
                         key={index}
@@ -184,7 +184,7 @@ const NavigationMenuDemo = ({ session }) => {
                     ))}
 
                     <DropdownItem
-                      onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                    // onClick={() => signOut({ callbackUrl: '/auth/login' })}
                     >
                       <div className="flex flex-row gap-2 items-center h-8  ">
                         <div className="">{AuthSvg.signIn()}</div>
@@ -234,8 +234,8 @@ const NavigationMenuDemo = ({ session }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 // const ListItem = React.forwardRef(
 //   ({ children, title, ...props }, forwardedRef) => (
@@ -250,4 +250,4 @@ const NavigationMenuDemo = ({ session }) => {
 //   )
 // );
 
-export default NavigationMenuDemo;
+export default NavigationMenuDemo
