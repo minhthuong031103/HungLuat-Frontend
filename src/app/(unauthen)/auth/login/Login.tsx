@@ -7,7 +7,6 @@ import { Icons } from '@/assets/Icons';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import Loader from '@/components/Loader';
 import Link from 'next/link';
@@ -34,6 +33,7 @@ const formSchema = z.object({
 });
 const Login = ({ className }: { className?: string }) => {
   const router = useRouter();
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [show, setShow] = React.useState({
     showPass: false,
@@ -48,11 +48,11 @@ const Login = ({ className }: { className?: string }) => {
   });
   async function onSubmit(data) {
     setIsLoading(true);
-    const res = await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
+    // const res = await signIn('credentials', {
+    //   email: data.email,
+    //   password: data.password,
+    //   redirect: false,
+    // });
     setIsLoading(false);
 
     if (res?.error) {
@@ -141,61 +141,6 @@ const Login = ({ className }: { className?: string }) => {
             </div>
           </form>
         </Form>
-        {/* 
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Hoặc tiếp tục với
-            </span>
-          </div>
-        </div>
-        <div className="w-full flex flex-wrap md:flex-nowrap gap-6">
-          <Button
-            className="w-full "
-            onClick={() => {
-              setIsLoading(true);
-              signIn('github');
-            }}
-            variant="outline"
-            disabled={isLoading}
-          >
-            <div>
-              <Icons.gitHub className="mr-2 h-4 w-4" />
-            </div>{' '}
-            Github
-          </Button>
-          <Button
-            className="w-full"
-            onClick={() => {
-              setIsLoading(true);
-              signIn('discord');
-            }}
-            variant="outline"
-            disabled={isLoading}
-          >
-            <div>
-              <Icons.discord className="mr-2 h-4 w-4" />
-            </div>{' '}
-            Discord
-          </Button>
-          <Button
-            className="w-full"
-            onClick={() => {
-              setIsLoading(true);
-              signIn('google');
-            }}
-            variant="outline"
-            disabled={isLoading}
-          >
-            <div>
-              <Icons.google className="mr-2 h-4 w-4" />
-            </div>{' '}
-            Google
-          </Button>
-        </div> */}
       </div>
 
       <p className="mt-10 px-8 text-center text-sm text-muted-foreground">

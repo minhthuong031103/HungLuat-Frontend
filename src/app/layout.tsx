@@ -1,22 +1,23 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
-import { Toaster } from "react-hot-toast";
-import AuthProvider from "../../context/AuthProvider";
-import { QueryProvider } from "@/components/providers/QueryProvider";
+import './globals.css';
+import type { Metadata } from 'next';
+import { Montserrat } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
+import { QueryProvider } from '@/components/providers/QueryProvider';
+import { UserProvider } from '@/context/UserProvider';
+import { ReduxProvider } from '@/redux/Provider';
 
 const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-mont",
-  weight: "500",
+  subsets: ['latin'],
+  variable: '--font-mont',
+  weight: '500',
 });
 
 const metadata: Metadata = {
-  title: "UITEstate",
-  description: "Real Estate By UIT",
+  title: 'UITEstate',
+  description: 'Real Estate By UIT',
   openGraph: {
     images: [
-      "https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp",
+      'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp',
     ],
   },
 };
@@ -38,12 +39,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         className={`${montserrat.variable} ${montserrat.style.fontWeight}`}
         style={{ fontFamily: "'Nunito', sans-serif" }}
       >
-        <QueryProvider>
-          <AuthProvider>
-            <Toaster />
-            {children}
-          </AuthProvider>
-        </QueryProvider>
+        <ReduxProvider>
+          <UserProvider>
+            <QueryProvider>
+              <Toaster />
+              {children}
+            </QueryProvider>
+          </UserProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
