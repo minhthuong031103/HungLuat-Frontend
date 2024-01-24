@@ -54,7 +54,15 @@ const config: Config = {
         cardDetail: '#999999',
         description: '#4A4A68',
         textChosen: '#2458C6',
-        backgroundChosen: '#ECF5FF'
+        backgroundChosen: '#ECF5FF',
+        room: {
+          red: '#D01717',
+          orange: '#F2994A',
+          green: '#219653',
+          blue: '#2F80ED',
+          gray: '#828282',
+          detail: '#606060'
+        }
       },
       borderRadius: {
         xl: `12px`,

@@ -80,6 +80,7 @@ const AddApartmentModal = () => {
                   <CustomInput
                     label="Số tầng"
                     placeholder="Nhập số tầng"
+                    type="number"
                     value={apartmentFloor}
                     setValue={setApartmentFloor}
                   />

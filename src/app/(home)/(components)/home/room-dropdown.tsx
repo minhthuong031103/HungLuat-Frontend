@@ -8,20 +8,21 @@ import {
   DropdownItem
 } from '@nextui-org/react'
 import { CommonSvg } from '@/assets/CommonSvg'
-import { useModal } from '@/hooks/useModalStore'
+import { ModalType, useModal } from '@/hooks/useModalStore'
 import { ModalData } from '@/lib/interface'
 interface RoomDropdownProps {
   className?: string
   data?: ModalData
+  actionType: ModalType
 }
-const RoomDropdown = ({ className, data }: RoomDropdownProps) => {
+const RoomDropdown = ({ className, data, actionType }: RoomDropdownProps) => {
   const dropdownItems = [
     {
       key: 'edit',
       label: 'Chỉnh sửa',
       icon: CommonSvg.edit(),
       onAction: () => {
-        onOpen('editApartment')
+        onOpen(actionType)
       }
     },
     {

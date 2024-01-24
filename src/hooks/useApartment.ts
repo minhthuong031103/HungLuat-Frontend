@@ -31,10 +31,10 @@ export const useApartment = () => {
     }
   }
 
-  const getApartments = async () => {
+  const getApartments = async ({ searchField = '', search = '' }) => {
     try {
       const res = await requestApi({
-        endPoint: '/apartment/all',
+        endPoint: `/apartment/all?searchField=${searchField}&search=${search}`,
         method: 'GET'
       })
       return res
