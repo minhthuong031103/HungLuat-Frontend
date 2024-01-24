@@ -5,7 +5,6 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Link,
   Image
 } from '@nextui-org/react'
 import RoomDropdown from './room-dropdown'

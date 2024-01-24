@@ -1,26 +1,27 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Montserrat } from 'next/font/google';
-import { Toaster } from 'react-hot-toast';
-import { QueryProvider } from '@/components/providers/QueryProvider';
-import { UserProvider } from '@/context/UserProvider';
-import { ReduxProvider } from '@/redux/Provider';
+import './globals.css'
+import type { Metadata } from 'next'
+import { Montserrat } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
+import { QueryProvider } from '@/components/providers/QueryProvider'
+import { UserProvider } from '@/context/UserProvider'
+import { ReduxProvider } from '@/redux/Provider'
+import { ModalProvider } from '@/components/providers/modal-provider'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-mont',
-  weight: '500',
-});
+  weight: '500'
+})
 
 const metadata: Metadata = {
   title: 'UITEstate',
   description: 'Real Estate By UIT',
   openGraph: {
     images: [
-      'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp',
-    ],
-  },
-};
+      'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp'
+    ]
+  }
+}
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -43,13 +44,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           <UserProvider>
             <QueryProvider>
               <Toaster />
+              <ModalProvider />
               {children}
             </QueryProvider>
           </UserProvider>
         </ReduxProvider>
       </body>
     </html>
-  );
-};
-export { metadata };
-export default RootLayout;
+  )
+}
+export { metadata }
+export default RootLayout

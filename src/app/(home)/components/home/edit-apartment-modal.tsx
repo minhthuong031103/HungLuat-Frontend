@@ -8,31 +8,36 @@ import {
   ModalFooter,
   Button
 } from '@nextui-org/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CustomInput } from './custom-input'
 import { SelectAddress } from './select-address'
 import toast from 'react-hot-toast'
 import { useModal } from '@/hooks/use-modal-store'
-import { axiosClient } from '@/lib/axios'
-import { RETURNED_MESSAGES } from '@/lib/translate'
 
-const AddApartmentModal = () => {
-  const { isOpen, onClose, type } = useModal()
+const EditAppartmentModal = () => {
+  const { isOpen, onClose, type, data } = useModal()
 
   const [apartmentName, setApartmentName] = useState('')
   const [apartmentFloor, setApartmentFloor] = useState('')
   const [address, setAddress] = useState('')
+
   const [provinceValue, setProvinceValue] = useState('')
   const [districtValue, setDistrictValue] = useState('')
   const [wardValue, setWardValue] = useState('')
-
-  const isModalOpen = isOpen && type === 'createApartment'
+  // useEffect(() => {
+  //   if (data) {
+  //     setApartmentName(data.name)
+  //     setApartmentFloor(data.numberFloor?.toString())
+  //     setAddress(data.address)
+  //   }
+  // }, [data])
+  const isModalOpen = isOpen && type === 'editApartment'
   const resetState = () => {
     setApartmentName('')
     setApartmentFloor('')
     setAddress('')
   }
-  const handleAddApartment = async () => {
+  const handleEditApartment = () => {
     if (
       apartmentName &&
       apartmentFloor &&
@@ -41,44 +46,20 @@ const AddApartmentModal = () => {
       districtValue &&
       wardValue
     ) {
-      try {
-        const res = await axiosClient.post('/apartment/create', {
-          name: apartmentName,
-          numberFloor: Number(apartmentFloor),
-          address: `${address}, ${wardValue}, ${districtValue}, ${provinceValue}`,
-          city: provinceValue,
-          district: districtValue,
-          ward: wardValue,
-          houseNumber: address
-        })
-        if (res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_CREATED.ENG) {
-          toast.success(RETURNED_MESSAGES.APARTMENT.APARTMENT_CREATED.VIE)
-        } else if (
-          res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.ENG
-        ) {
-          toast.error(RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.VIE)
-        }
-      } catch (error) {
-        console.log('🚀 ~ handleAddApartment ~ error:', error)
-      }
-
+      toast.success('Cập nhật thông tin căn hộ thành công')
       resetState()
       onClose()
     } else {
-      toast.error('Vui lòng nhập đầy đủ thông tin trước khi tạo căn hộ')
+      toast.error('Vui lòng nhập đầy đủ thông tin trước khi chỉnh sửa')
     }
   }
-  const handleClose = () => {
-    resetState()
-    onClose()
-  }
   return (
-    <Modal size="2xl" isOpen={isModalOpen} onOpenChange={handleClose}>
+    <Modal size="2xl" isOpen={isModalOpen} onOpenChange={onClose}>
       <ModalContent>
         {() => (
           <>
             <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-              Tạo mới căn hộ
+              Cập nhật thông tin căn hộ
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="flex gap-[20px]">
@@ -123,7 +104,7 @@ const AddApartmentModal = () => {
             <ModalFooter>
               <Button
                 className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-                onPress={handleAddApartment}
+                onPress={handleEditApartment}
               >
                 Lưu
               </Button>
@@ -135,4 +116,4 @@ const AddApartmentModal = () => {
   )
 }
 
-export default AddApartmentModal
+export default EditAppartmentModal

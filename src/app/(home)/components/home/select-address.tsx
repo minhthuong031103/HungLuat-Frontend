@@ -3,9 +3,24 @@
 
 import { useEffect, useState } from 'react'
 import { Select, SelectItem } from '@nextui-org/react'
-import { getRequest } from '@/lib/fetch'
-
-export const SelectAddress = () => {
+// import { getRequest } from '@/lib/fetch'
+import axios from 'axios'
+interface SelectAddressProps {
+  provinceValue: string
+  setProvinceValue: (value: string) => void
+  districtValue: string
+  setDistrictValue: (value: string) => void
+  wardValue: string
+  setWardValue: (value: string) => void
+}
+export const SelectAddress = ({
+  provinceValue,
+  setProvinceValue,
+  districtValue,
+  setDistrictValue,
+  wardValue,
+  setWardValue
+}: SelectAddressProps) => {
   const [selectedProvince, setSelectedProvince] = useState(new Set([]))
   const [selectedDistrict, setSelectedDistrict] = useState(new Set([]))
   const [selectedWard, setSelectedWard] = useState(new Set([]))
@@ -25,11 +40,11 @@ export const SelectAddress = () => {
   useEffect(() => {
     async function getProvince() {
       setIsLoadingProvince(true)
-      const res = await getRequest({
-        endPoint: 'https://provinces.open-api.vn/api/p/'
-      })
-
-      setProvince(res)
+      // const res = await getRequest({
+      //   endPoint: 'https://provinces.open-api.vn/api/p/'
+      // })
+      const res = await axios('https://provinces.open-api.vn/api/p/')
+      setProvince(res.data)
       setIsLoadingProvince(false)
     }
     getProvince()
@@ -42,10 +57,13 @@ export const SelectAddress = () => {
         setIsLoadingDistrict(true)
         const valuesArray = Array.from(selectedProvince)
         const provinceCode = valuesArray[0]
-        const res = await getRequest({
-          endPoint: `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
-        })
-        setDistrict(res?.districts)
+        // const res = await getRequest({
+        //   endPoint: `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
+        // })
+        const res = await axios(
+          `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
+        )
+        setDistrict(res?.data?.districts)
         setIsLoadingDistrict(false)
       }
     }
@@ -57,52 +75,49 @@ export const SelectAddress = () => {
         setIsLoadingWard(true)
         const valuesArray = Array.from(selectedDistrict)
         const districtCode = valuesArray[0]
-        const res = await getRequest({
-          endPoint: `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
-        })
-        setWard(res?.wards)
+        // const res = await getRequest({
+        //   endPoint: `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
+        // })
+        const res = await axios.get(
+          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
+        )
+        setWard(res?.data?.wards)
         setIsLoadingWard(false)
       }
     }
 
     getWard()
   }, [selectedDistrict])
+  useEffect(() => {
+    async function setValue() {
+      if (selectedWard.size > 0) {
+        const valuesArrayProvince = Array.from(selectedProvince)
+        const provinceCode = valuesArrayProvince[0]
+        const provinceValue = await provinces.find(
+          (province) => province.code == provinceCode
+        )?.name
+        setProvinceValue(provinceValue)
+        const valuesArrayDistrict = Array.from(selectedDistrict)
+        const districtCode = valuesArrayDistrict[0]
+        const districtValue = await districts.find(
+          (district) => district.code == districtCode
+        )?.name
+        setDistrictValue(districtValue)
+        const valuesArrayWard = Array.from(selectedWard)
+        const wardCode = valuesArrayWard[0]
+        const wardValue = await wards.find((ward) => ward.code == wardCode)
+          ?.name
+        setWardValue(wardValue)
+      }
+    }
+
+    setValue()
+  }, [selectedWard])
+
   const isProvinceValid = selectedProvince.size > 0
   const isDistrictValid = selectedDistrict.size > 0
   const isWardValid = selectedWard.size > 0
 
-  // const onSubmit = () => {
-  //   const valuesArrayProvince = Array.from(selectedProvince)
-  //   const provinceCode = valuesArrayProvince[0]
-  //   const provinceValue = provinces.find(
-  //     (province) => province.code == provinceCode
-  //   )?.name
-
-  //   const valuesArrayDistrict = Array.from(selectedDistrict)
-  //   const districtCode = valuesArrayDistrict[0]
-  //   const districtValue = districts.find(
-  //     (district) => district.code == districtCode
-  //   )?.name
-
-  //   const valuesArrayWard = Array.from(selectedWard)
-  //   const wardCode = valuesArrayWard[0]
-  //   const wardValue = wards.find((ward) => ward.code == wardCode)?.name
-
-  //   if (danhMucValue === 'Căn hộ' || danhMucValue === 'Văn phòng') {
-  //     setAddressValue(
-  //       `Mã căn ${maCanValue}, tháp ${blockValue}, tầng ${tangSoValue} , số nhà ${houseNumberValue}, đường ${streetValue}, ${wardValue}, ${districtValue}, ${provinceValue}`
-  //     )
-  //   } else if (danhMucValue === 'Nhà ở') {
-  //     setAddressValue(
-  //       `Mã căn ${maCanValue}, phân khu lô ${phanKhuLoValue} , số nhà ${houseNumberValue}, đường ${streetValue}, ${wardValue}, ${districtValue}, ${provinceValue}`
-  //     )
-  //   } else {
-  //     setAddressValue(
-  //       `Phân khu ${tenPhanKhuValue}, mã lô ${maLoValue} ,số nhà ${houseNumberValue}, đường ${streetValue}, ${wardValue}, ${districtValue}, ${provinceValue}`
-  //     )
-  //   }
-  //   setIsModalOpen(false)
-  // }
   return (
     <>
       <Select
@@ -114,13 +129,15 @@ export const SelectAddress = () => {
         errorMessage={
           isProvinceValid || !provinceTouched
             ? ''
-            : 'Vui lòng chọn thành phố, tỉnh thành'
+            : 'Vui lòng chọn tỉnh, thành phố'
         }
         autoFocus={false}
         placeholder="Chọn thành phố, tỉnh thành"
         selectedKeys={selectedProvince}
         isLoading={isLoadingProvince}
         onSelectionChange={setSelectedProvince}
+        isRequired
+        labelPlacement="outside"
         className="w-full "
         onClose={() => setProvinceTouched(true)}
       >
@@ -134,6 +151,7 @@ export const SelectAddress = () => {
         key={'district'}
         radius={'sm'}
         variant={'bordered'}
+        isRequired
         label="Quận, huyện"
         isInvalid={isDistrictValid || !districtTouched ? false : true}
         errorMessage={
@@ -144,6 +162,7 @@ export const SelectAddress = () => {
         selectedKeys={selectedDistrict}
         isLoading={isLoadingDistrict}
         onSelectionChange={setSelectedDistrict}
+        labelPlacement="outside"
         className="w-full "
         onClose={() => setDistrictTouched(true)}
       >
@@ -157,6 +176,7 @@ export const SelectAddress = () => {
         key={'ward'}
         radius={'sm'}
         variant={'bordered'}
+        isRequired
         label="Xã, phường"
         isInvalid={isWardValid || !wardTouched ? false : true}
         errorMessage={
@@ -168,6 +188,7 @@ export const SelectAddress = () => {
         isLoading={isLoadingWard}
         onSelectionChange={setSelectedWard}
         className="w-full "
+        labelPlacement="outside"
         onClose={() => setWardTouched(true)}
       >
         {wards?.map((ward) => (
