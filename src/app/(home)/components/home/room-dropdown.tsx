@@ -1,25 +1,27 @@
+'use client'
 import React from 'react'
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownSection,
-  DropdownItem,
-  Button,
-  cn
+  DropdownItem
 } from '@nextui-org/react'
-import { AddNoteIcon } from './AddNoteIcon.jsx'
-import { BsThreeDots } from 'react-icons/bs'
-import { CommonSvg } from '../../../../assets/CommonSvg'
-
-const RoomDropdown = ({ className }) => {
+import { CommonSvg } from '@/assets/CommonSvg'
+import { useModal } from '@/hooks/use-modal-store'
+import { ModalData } from '@/lib/interface'
+interface RoomDropdownProps {
+  className?: string
+  data?: ModalData
+}
+const RoomDropdown = ({ className, data }: RoomDropdownProps) => {
   const dropdownItems = [
     {
       key: 'edit',
       label: 'Chỉnh sửa',
       icon: CommonSvg.edit(),
       onAction: () => {
-        console.log('edit')
+        onOpen('editApartment')
       }
     },
     {
@@ -31,6 +33,7 @@ const RoomDropdown = ({ className }) => {
       }
     }
   ]
+  const { onOpen } = useModal()
   return (
     <div className={className}>
       <Dropdown>
