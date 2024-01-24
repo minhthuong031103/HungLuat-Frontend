@@ -8,13 +8,14 @@ import { cn } from '@/lib/utils'
 interface Props {
   icon: React.ReactNode
   title: string
-  items: { name: string; link?: string }[]
+  items: { name: string; link: string }[]
 }
 
 export const CollapseItems = ({ icon, items, title }: Props) => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
-  const pathName = usePathname().split('/')[-1]
+  const pathName = usePathname().split('/').slice(-1)[0]
+
   return (
     <div className="flex gap-4 h-full items-center cursor-pointer">
       <Accordion className="px-0">
@@ -41,16 +42,17 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
                 key={index}
                 className={cn(
                   'flex gap-4 items-center px-4 py-2 rounded-sm scale-95 hover:scale-100 transition-all duration-150 ease-in-out cursor-pointer hover:bg-default-100 active:bg-default-200',
-                  pathName === item.link &&
+                  `/${pathName}` === item.link &&
                     'bg-backgroundChosen pointer-events-none'
                 )}
-                onClick={() => console.log(item.link)}
+                onClick={() => router.push(item.link)}
               >
                 {CommonSvg.circle()}
                 <span
                   className={cn(
                     'w-full flex text-description text-base font-medium hover:font-semibold',
-                    pathName === item.link && 'text-textChosen font-semibold'
+                    `/${pathName}` === item.link &&
+                      'text-textChosen font-semibold'
                   )}
                 >
                   {item.name}
