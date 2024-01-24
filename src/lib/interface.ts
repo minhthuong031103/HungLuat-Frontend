@@ -11,3 +11,13 @@ export interface ModalData {
   numberFloor?: number
   houseNumber?: string
 }
+
+export interface CreateApartmentProps {
+  name: string
+  city: string
+  district: string
+  ward: string
+  numberFloor: number
+  houseNumber: string
+  address: string
+}

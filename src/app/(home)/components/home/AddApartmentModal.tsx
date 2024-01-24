@@ -12,13 +12,12 @@ import { useState } from 'react'
 import { CustomInput } from './custom-input'
 import { SelectAddress } from './select-address'
 import toast from 'react-hot-toast'
-import { useModal } from '@/hooks/use-modal-store'
-import { axiosClient } from '@/lib/axios'
-import { RETURNED_MESSAGES } from '@/lib/translate'
+import { useModal } from '@/hooks/useModalStore'
+import { useApartment } from '@/hooks/useApartment'
 
 const AddApartmentModal = () => {
   const { isOpen, onClose, type } = useModal()
-
+  const { createApartment } = useApartment()
   const [apartmentName, setApartmentName] = useState('')
   const [apartmentFloor, setApartmentFloor] = useState('')
   const [address, setAddress] = useState('')
@@ -41,29 +40,16 @@ const AddApartmentModal = () => {
       districtValue &&
       wardValue
     ) {
-      try {
-        const res = await axiosClient.post('/apartment/create', {
-          name: apartmentName,
-          numberFloor: Number(apartmentFloor),
-          address: `${address}, ${wardValue}, ${districtValue}, ${provinceValue}`,
-          city: provinceValue,
-          district: districtValue,
-          ward: wardValue,
-          houseNumber: address
-        })
-        if (res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_CREATED.ENG) {
-          toast.success(RETURNED_MESSAGES.APARTMENT.APARTMENT_CREATED.VIE)
-        } else if (
-          res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.ENG
-        ) {
-          toast.error(RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.VIE)
-        }
-      } catch (error) {
-        console.log('🚀 ~ handleAddApartment ~ error:', error)
+      const data = {
+        name: apartmentName,
+        numberFloor: parseInt(apartmentFloor),
+        address: `${address}, ${wardValue}, ${districtValue}, ${provinceValue}`,
+        ward: wardValue,
+        district: districtValue,
+        city: provinceValue,
+        houseNumber: address
       }
-
-      resetState()
-      onClose()
+      await createApartment(data, resetState, onClose)
     } else {
       toast.error('Vui lòng nhập đầy đủ thông tin trước khi tạo căn hộ')
     }
