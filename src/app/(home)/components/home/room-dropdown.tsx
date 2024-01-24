@@ -8,7 +8,7 @@ import {
   DropdownItem
 } from '@nextui-org/react'
 import { CommonSvg } from '@/assets/CommonSvg'
-import { useModal } from '@/hooks/use-modal-store'
+import { useModal } from '@/hooks/useModalStore'
 import { ModalData } from '@/lib/interface'
 interface RoomDropdownProps {
   className?: string

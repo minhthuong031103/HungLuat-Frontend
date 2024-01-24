@@ -89,22 +89,22 @@ const useApi = () => {
             if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
               onLogout()
             }
-            const result = await sendPromiseMessage({
-              id: createUUID(),
-              jsonrpc: '2.0',
-              method: METHOD.refreshToken,
-              params: {
-                refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN)
-              }
-            })
-            console.log('🚀 ~ requestApi ~ result:', result)
+            // const result = await sendPromiseMessage({
+            //   id: createUUID(),
+            //   jsonrpc: '2.0',
+            //   method: METHOD.refreshToken,
+            //   params: {
+            //     refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN)
+            //   }
+            // })
+            // console.log('🚀 ~ requestApi ~ result:', result)
 
-            if (result.data && result.message == 'Forbidden access') {
-              onLogout()
-            }
-            const { accessToken, refreshToken } = result.data
-            setKeySite({ token: accessToken, refreshToken: refreshToken })
-            originalConfig.headers['Authorization'] = `Bearer ${accessToken}`
+            // if (result.data && result.message == 'Forbidden access') {
+            //   onLogout()
+            // }
+            // const { accessToken, refreshToken } = result.data
+            // setKeySite({ token: accessToken, refreshToken: refreshToken })
+            // originalConfig.headers['Authorization'] = `Bearer ${accessToken}`
 
             return instance(originalConfig)
           } catch (err) {

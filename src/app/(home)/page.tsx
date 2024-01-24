@@ -4,7 +4,7 @@ import { Button, useDisclosure } from '@nextui-org/react'
 import AddApartmentModal from './components/home/AddApartmentModal'
 import RoomDropdown from './components/home/room-dropdown'
 import { CommonSvg } from '@/assets/CommonSvg'
-import { SearchBar } from './components/home/SearchBar'
+import { SearchBar } from './components/home/searchbar'
 import ListApartment from './components/home/list-apartment'
 
 const page = () => {

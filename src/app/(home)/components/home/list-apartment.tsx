@@ -2,7 +2,7 @@ import { CommonSvg } from '@/assets/CommonSvg'
 import AddApartmentModal from './AddApartmentModal'
 import ApartmentCard from './apartment-card'
 import { Button } from '@nextui-org/react'
-import { useModal } from '@/hooks/use-modal-store'
+import { useModal } from '@/hooks/useModalStore'
 
 const ListApartment = () => {
   const apartments = [

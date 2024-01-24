@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react'
 import { CustomInput } from './custom-input'
 import { SelectAddress } from './select-address'
 import toast from 'react-hot-toast'
-import { useModal } from '@/hooks/use-modal-store'
+import { useModal } from '@/hooks/useModalStore'
 
 const EditAppartmentModal = () => {
   const { isOpen, onClose, type, data } = useModal()
