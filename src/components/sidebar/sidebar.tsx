@@ -109,7 +109,9 @@ export const SidebarWrapper = () => {
             />
             <CollapseItems
               icon={CommonSvg.stack()}
-              items={[]}
+              items={[
+                { name: 'Quản lý người dùng' },
+              ]}
               title="Quản lý hệ thống"
             />
           </div>

@@ -5,6 +5,7 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import { CommonSvg } from '@/assets/CommonSvg'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { ChevronDownIcon } from 'lucide-react'
 interface Props {
   icon: React.ReactNode
   title: string
@@ -19,7 +20,7 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
     <div className="flex gap-4 h-full items-center cursor-pointer">
       <Accordion className="px-0">
         <AccordionItem
-          indicator={<ChevronUpIcon className="text-black" />}
+          indicator={<ChevronDownIcon className="text-black" />}
           classNames={{
             indicator: 'data-[open=true]:-rotate-180',
             trigger:
