@@ -1,13 +1,13 @@
 import { ModalData } from '@/lib/interface'
 import { create } from 'zustand'
 
-export type ModalType = 'createApartment' | 'editApartment'
+export type ModalType = 'createApartment' | 'editApartment' | 'createRoom'
 
 interface ModalStore {
   type: ModalType | null
   isOpen: boolean
   data: ModalData
-  onOpen: (type: ModalType) => void
+  onOpen: (type: ModalType, data?: ModalData) => void
   onClose: () => void
 }
 

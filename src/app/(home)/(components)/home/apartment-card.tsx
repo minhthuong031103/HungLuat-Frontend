@@ -31,7 +31,10 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           src={apartment.url ? apartment.url : imageApartment}
           width={359}
         />
-        <RoomDropdown className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105" />
+        <RoomDropdown
+          className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105"
+          actionType="editApartment"
+        />
       </CardHeader>
       <Divider />
       <CardBody className="gap-[5px]">

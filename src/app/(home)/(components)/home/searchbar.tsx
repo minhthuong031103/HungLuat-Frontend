@@ -3,17 +3,17 @@
 
 import { CommonSvg } from '@/assets/CommonSvg'
 import { Button, Input } from '@nextui-org/react'
-import { useState } from 'react'
 
-export function SearchBar() {
-  const [searchValue, setSearchValue] = useState('')
-  const handleSearch = () => {
-    // if (searchValue === '') return setApartments(originalData)
-    // const newData = data.filter((item) =>
-    //   item.name.toLowerCase().includes(searchValue.toLowerCase())
-    // )
-    // setApartments(newData)
-  }
+interface SearchBarProps {
+  searchValue: string
+  setSearchValue: (value: string) => void
+  handleSearch: () => void
+}
+export function SearchBar({
+  searchValue,
+  setSearchValue,
+  handleSearch
+}: SearchBarProps) {
   return (
     <div className="w-full my-2 flex items-center gap-8">
       <Input
@@ -32,13 +32,10 @@ export function SearchBar() {
           innerWrapper: 'bg-transparent',
           inputWrapper: [
             'bg-white',
-
             'backdrop-blur-xl',
             'backdrop-saturate-200',
             'hover:bg-default-200/70',
-
             'group-data-[focused=true]:bg-default-200/50',
-
             '!cursor-text',
             'w-[535px]',
             'border-1',
