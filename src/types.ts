@@ -1,7 +1,7 @@
 export type Apartment = {
   name: string
   address: string
-  floors: number
+  numberFloor: number
   rooms: number
   stayed: number
   empty: number

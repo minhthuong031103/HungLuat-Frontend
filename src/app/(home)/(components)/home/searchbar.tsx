@@ -3,14 +3,25 @@
 
 import { CommonSvg } from '@/assets/CommonSvg'
 import { Button, Input } from '@nextui-org/react'
+import { useState } from 'react'
 
 export function SearchBar() {
+  const [searchValue, setSearchValue] = useState('')
+  const handleSearch = () => {
+    // if (searchValue === '') return setApartments(originalData)
+    // const newData = data.filter((item) =>
+    //   item.name.toLowerCase().includes(searchValue.toLowerCase())
+    // )
+    // setApartments(newData)
+  }
   return (
     <div className="w-full my-2 flex items-center gap-8">
       <Input
         isClearable
         radius="sm"
         size="sm"
+        value={searchValue}
+        onValueChange={setSearchValue}
         fullWidth={false}
         classNames={{
           input: [
@@ -43,6 +54,7 @@ export function SearchBar() {
       <Button
         className="bg-gray text-white px-4 py-2 font-semibold text-base w-[162px]"
         variant="solid"
+        onPress={handleSearch}
       >
         Tìm kiếm
       </Button>

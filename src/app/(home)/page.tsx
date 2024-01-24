@@ -1,13 +1,21 @@
 'use client'
 
-import { Button, useDisclosure } from '@nextui-org/react'
-import AddApartmentModal from './components/home/AddApartmentModal'
-import RoomDropdown from './components/home/room-dropdown'
 import { CommonSvg } from '@/assets/CommonSvg'
-import { SearchBar } from './components/home/searchbar'
-import ListApartment from './components/home/list-apartment'
+import { SearchBar } from './(components)/home/searchbar'
+import ListApartment from './(components)/home/list-apartment'
+import { useEffect, useState } from 'react'
+import { useApartment } from '@/hooks/useApartment'
 
 const page = () => {
+  const [apartments, setApartments] = useState([])
+  const { getApartments } = useApartment()
+  useEffect(() => {
+    const handleGetApartments = async () => {
+      const res = await getApartments()
+      setApartments(res.data.items)
+    }
+    handleGetApartments()
+  }, [])
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -22,7 +30,7 @@ const page = () => {
       </div>
 
       <div className="w-full h-full mt-4">
-        <ListApartment />
+        <ListApartment apartments={apartments} />
       </div>
     </>
   )

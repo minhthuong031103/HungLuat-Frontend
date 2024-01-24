@@ -7,8 +7,8 @@ export const useApartment = () => {
   const { requestApi } = useApi()
   const createApartment = async (
     data: CreateApartmentProps,
-    resetState,
-    onClose
+    resetState: () => void,
+    onClose: () => void
   ) => {
     try {
       const res = await requestApi({
@@ -31,5 +31,16 @@ export const useApartment = () => {
     }
   }
 
-  return { createApartment }
+  const getApartments = async () => {
+    try {
+      const res = await requestApi({
+        endPoint: '/apartment/all',
+        method: 'GET'
+      })
+      return res
+    } catch (error) {
+      console.log('🚀 ~ getApartment ~ error:', error)
+    }
+  }
+  return { createApartment, getApartments }
 }
