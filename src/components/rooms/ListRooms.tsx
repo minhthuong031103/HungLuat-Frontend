@@ -24,7 +24,7 @@ const ListRooms = ({ apartmentId }: ListRoomsProps) => {
         return (
           <div className="w-full h-full shrink-0 space-y-2">
             <p className="text-base text-black font-bold">Tầng{floor.floor}</p>
-            <div className="w-full grid gap-[10px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
+            <div className="w-full grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
               {floor.rooms.map((room) => {
                 return <RoomCard room={room} />
               })}

@@ -1,7 +1,11 @@
 import { ModalData } from '@/lib/interface'
 import { create } from 'zustand'
 
-export type ModalType = 'createApartment' | 'editApartment' | 'createRoom'
+export type ModalType =
+  | 'createApartment'
+  | 'editApartment'
+  | 'createRoom'
+  | 'editRoom'
 
 interface ModalStore {
   type: ModalType | null

@@ -11,6 +11,7 @@ interface CustomSelectProps {
   data: string[]
   className?: string
   classNames?: object
+  isLoading?: boolean
 }
 export const CustomSelect = ({
   label,
@@ -19,6 +20,7 @@ export const CustomSelect = ({
   setValue,
   variant = 'bordered',
   isRequired = false,
+  isLoading = false,
   data,
   className,
   classNames
@@ -32,6 +34,7 @@ export const CustomSelect = ({
       labelPlacement={'outside'}
       selectedKeys={value}
       classNames={classNames}
+      isLoading={isLoading}
       className={cn('max-w-xs', className)}
       onSelectionChange={(e) => {
         setValue(e)

@@ -9,7 +9,7 @@ import { CommonSvg } from '@/assets/CommonSvg'
 import { Apartment } from '@/types'
 import { Button } from '@nextui-org/react'
 import ListRooms from '@/components/rooms/ListRooms'
-import BuildingPlan from '@/components/buildingPlan/BuildingPlan'
+import BuildingPlan from '@/components/rooms/BuildingPlan'
 import { useModal } from '@/hooks/useModalStore'
 
 const RoomsPage = () => {
@@ -20,6 +20,7 @@ const RoomsPage = () => {
   const [statusPayment, setStatusPayment] = useState('')
   const [apartments, setApartments] = useState([])
   const [apartmentChosen, setApartmentChosen] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const { onOpen } = useModal()
   const handleGetApartments = async () => {
     const res = await getApartments({
@@ -37,6 +38,12 @@ const RoomsPage = () => {
   const classNameChosen = 'font-semibold text-sm text-white'
   const classNameNotChosen = 'font-medium text-sm text-black'
   const [apartment, setApartment] = useState({} as Apartment)
+  useEffect(() => {
+    if (apartments.length > 0) {
+      setIsLoading(false)
+      setApartmentChosen(new Set([apartments[0].name]))
+    }
+  }, [apartments])
   useEffect(() => {
     if (apartmentChosen) {
       const temp = apartments.find(
@@ -105,6 +112,7 @@ const RoomsPage = () => {
             placeholder="Chọn căn hộ"
             variant="flat"
             value={apartmentChosen}
+            isLoading={isLoading}
             setValue={setApartmentChosen}
             data={apartments.map((apartment) => apartment.name)}
             className="max-w-[250px]"
@@ -151,37 +159,39 @@ const RoomsPage = () => {
                   Sơ đồ tòa nhà
                 </p>
               </div>
-              <div className="ml-auto">
-                <Button className="rounded-[8px] px-4 py-2 bg-blueButton mr-6">
-                  <div className="flex flex-row items-center gap-x-[8px] ">
-                    <div>{CommonSvg.export()}</div>
-                    <div className="text-white mt-[1px] font-medium">
-                      Xuất phiếu
+              {!flag && (
+                <div className="ml-auto">
+                  <Button className="rounded-[8px] px-4 py-2 bg-blueButton mr-6">
+                    <div className="flex flex-row items-center gap-x-[8px] ">
+                      <div>{CommonSvg.export()}</div>
+                      <div className="text-white mt-[1px] font-medium">
+                        Xuất phiếu
+                      </div>
                     </div>
-                  </div>
-                </Button>
-                <Button
-                  className="rounded-[8px] px-4 py-2 bg-blueButton"
-                  onPress={() =>
-                    onOpen('createRoom', {
-                      numberFloor: apartment?.numberFloor
-                    })
-                  }
-                >
-                  <div className="flex flex-row items-center gap-x-[8px] ">
-                    <div>{CommonSvg.plus()}</div>
-                    <div className="text-white mt-[1px] font-medium">
-                      Thêm mới
+                  </Button>
+                  <Button
+                    className="rounded-[8px] px-4 py-2 bg-blueButton"
+                    onPress={() =>
+                      onOpen('createRoom', {
+                        numberFloor: apartment?.numberFloor
+                      })
+                    }
+                  >
+                    <div className="flex flex-row items-center gap-x-[8px] ">
+                      <div>{CommonSvg.plus()}</div>
+                      <div className="text-white mt-[1px] font-medium">
+                        Thêm mới
+                      </div>
                     </div>
-                  </div>
-                </Button>
-              </div>
+                  </Button>
+                </div>
+              )}
             </div>
             <div>
               {!flag ? (
                 <ListRooms apartmentId={apartment?.id} />
               ) : (
-                <BuildingPlan />
+                <BuildingPlan apartmentId={apartment?.id} />
               )}
             </div>
           </div>

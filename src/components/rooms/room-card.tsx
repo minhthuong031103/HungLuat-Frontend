@@ -25,7 +25,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
         <div className="w-[174px] h-[10px] bg-room-green"></div>
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
-          actionType="editApartment"
+          actionType="editRoom"
         />
       </CardHeader>
       <Divider />

@@ -61,7 +61,10 @@ const config: Config = {
           green: '#219653',
           blue: '#2F80ED',
           gray: '#828282',
-          detail: '#606060'
+          yellow: '#F2C94C',
+          detail: '#606060',
+          empty: '#C8C8C8',
+          borderColor: '#5C5C5C'
         }
       },
       borderRadius: {
