@@ -1,5 +1,4 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
-import { useApi } from '@/lib/axios';
 import { CreateApartmentProps } from '@/lib/interface';
 import { RETURNED_MESSAGES } from '@/lib/translate';
 import toast from 'react-hot-toast';

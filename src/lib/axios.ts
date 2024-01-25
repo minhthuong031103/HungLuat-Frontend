@@ -18,7 +18,6 @@ axiosClient.interceptors.request.use(
   async (req: any) => {
     const { getKey } = useKey();
     const token = getKey(KEY_CONTEXT.TOKEN);
-    console.log(token);
     if (token) {
       req.headers.Authorization = `Bearer ${token}`;
     }
@@ -42,9 +41,6 @@ export interface RequestProps {
   method: string;
   body?: any;
 }
-let isRefreshing = false;
-let refreshPromise: Promise<any> | null = null;
-
 const useApi = () => {
   const { setKeySite, setUserLogin, removeKey, getKey } = useKey();
 
@@ -77,7 +73,6 @@ const useApi = () => {
       (response) => {
         return response;
       },
-
       async (error) => {
         console.log('🚀 ~ requestApi ~ error:', error);
         const originalConfig = error.config;
@@ -89,22 +84,29 @@ const useApi = () => {
         ) {
           try {
             console.log('Access token expired');
-            if (!isRefreshing) {
-              isRefreshing = true;
-              refreshPromise = refreshAccessToken();
-            }
-            console.log('call refresh token api');
-            await refreshPromise;
+            // onLogout();
 
+            console.log('call refresh token api');
             if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
               onLogout();
             }
-            const res = await axiosClient.post('/auth/refresh-token', {
+            const res: any = await axiosClient.post('/auth/refresh-token', {
               refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN),
             });
-            originalConfig.headers['Authorization'] = `Bearer ${getKey(
-              KEY_CONTEXT.TOKEN
-            )}`;
+            console.log('🚀 ~ res:', res);
+
+            if (res?.message == 'Forbidden resource') {
+              onLogout();
+            }
+            if (res?.data?.accessToken && res?.data?.refreshToken) {
+              setKeySite({
+                token: res?.data?.accessToken,
+                refreshToken: res?.data?.refreshToken,
+              });
+              originalConfig.headers[
+                'Authorization'
+              ] = `Bearer ${res?.data?.accessToken}`;
+            }
 
             return instance(originalConfig);
           } catch (err) {
@@ -131,35 +133,8 @@ const useApi = () => {
     });
     return res?.data;
   }
-  async function refreshAccessToken() {
-    try {
-      console.log('Access token expired');
-      if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
-        onLogout();
-      }
-
-      const res = await axiosClient.post('/auth/refresh-token', {
-        refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN),
-      });
-
-      if (res?.data?.accessToken && res?.data?.refreshToken) {
-        setKeySite({
-          token: res?.data?.accessToken,
-          refreshToken: res?.data?.refreshToken,
-        });
-      }
-
-      isRefreshing = false;
-      return Promise.resolve();
-    } catch (err) {
-      console.log('🚀 ~ refreshAccessToken ~ err:', err);
-      onLogout();
-      return Promise.reject(err);
-    }
-  }
   return {
     requestApi,
   };
 };
-
 export { axiosClient, useApi };
