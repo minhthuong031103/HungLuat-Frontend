@@ -4,6 +4,7 @@ import AddApartmentModal from '@/app/(home)/(components)/home/AddApartmentModal'
 import EditAppartmentModal from '@/app/(home)/(components)/home/edit-apartment-modal'
 import { useEffect, useState } from 'react'
 import CreateRoomModal from '../rooms/create-room-modal'
+import EditRoomModal from '../rooms/edit-room-modal'
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false)
@@ -18,6 +19,7 @@ export const ModalProvider = () => {
       <AddApartmentModal />
       <EditAppartmentModal />
       <CreateRoomModal />
+      <EditRoomModal />
     </>
   )
 }
