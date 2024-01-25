@@ -6,19 +6,24 @@ export type ModalType =
   | 'editApartment'
   | 'createRoom'
   | 'editRoom'
+  | 'exportBill'
 
 interface ModalStore {
   type: ModalType | null
   isOpen: boolean
   data: ModalData
-  onOpen: (type: ModalType, data?: ModalData) => void
+  onOpen: (type: ModalType, data?: ModalData, onAction?: () => void) => void
   onClose: () => void
+  onAction: () => void
 }
 
 export const useModal = create<ModalStore>((set) => ({
   type: null,
   isOpen: false,
   data: {},
-  onOpen: (type, data = {}) => set({ type, isOpen: true, data }),
-  onClose: () => set({ type: null, isOpen: false })
+  onAction: () => {},
+  onOpen: (type, data = {}, onAction) =>
+    set({ type, isOpen: true, data, onAction }),
+  onClose: () =>
+    set({ type: null, isOpen: false, data: {}, onAction: () => {} })
 }))

@@ -1,11 +1,13 @@
 import { Input } from '@nextui-org/react'
 
 interface CustomInputProps {
-  label: string
-  placeholder: string
+  label?: string
+  placeholder?: string
   value: string
   setValue: (e: string) => void
   type?: string
+  disabled?: boolean
+  isRequired?: boolean
 }
 
 export const CustomInput = ({
@@ -13,15 +15,18 @@ export const CustomInput = ({
   placeholder,
   value,
   setValue,
+  disabled = false,
+  isRequired = true,
   type
 }: CustomInputProps) => {
   return (
     <Input
       type={type}
       label={label}
-      isClearable
+      isClearable={type !== 'number'}
       variant="bordered"
-      isRequired
+      disabled={disabled}
+      isRequired={isRequired}
       value={value}
       onValueChange={(e) => {
         setValue(e)
@@ -34,6 +39,7 @@ export const CustomInput = ({
         innerWrapper: 'bg-transparent',
         inputWrapper: ['border-1 px-[10px] py-[8px]']
       }}
+
       // startContent={
       //   <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
       // }

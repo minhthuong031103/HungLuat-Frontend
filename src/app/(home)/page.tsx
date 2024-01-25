@@ -1,6 +1,5 @@
 'use client'
 
-import { CommonSvg } from '@/assets/CommonSvg'
 import { SearchBar } from './(components)/home/searchbar'
 import ListApartment from './(components)/home/list-apartment'
 import { useEffect, useState } from 'react'
@@ -15,7 +14,7 @@ const page = () => {
       searchField: 'name',
       search: searchValue
     })
-    setApartments(res.data.items)
+    setApartments(res?.data?.items)
   }
   const { getApartments } = useApartment()
   useEffect(() => {
@@ -45,7 +44,7 @@ const page = () => {
       </div>
 
       <div className="w-full h-full mt-4">
-        <ListApartment apartments={apartments} />
+        <ListApartment apartments={apartments} onAction={handleGetApartments} />
       </div>
     </>
   )

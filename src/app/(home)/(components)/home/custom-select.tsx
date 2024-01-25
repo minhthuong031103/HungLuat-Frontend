@@ -12,6 +12,7 @@ interface CustomSelectProps {
   className?: string
   classNames?: object
   isLoading?: boolean
+  disabled?: boolean
 }
 export const CustomSelect = ({
   label,
@@ -23,6 +24,7 @@ export const CustomSelect = ({
   isLoading = false,
   data,
   className,
+  disabled = false,
   classNames
 }: CustomSelectProps) => {
   return (
@@ -36,8 +38,9 @@ export const CustomSelect = ({
       classNames={classNames}
       isLoading={isLoading}
       className={cn('max-w-xs', className)}
+      disabled={disabled}
       onSelectionChange={(e) => {
-        setValue(e)
+        setValue(e as any)
       }}
     >
       {data.map((item) => (
