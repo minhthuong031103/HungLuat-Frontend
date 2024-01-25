@@ -24,3 +24,9 @@ export type Room = {
   status: boolean
   suspenseMoney: number
 }
+
+export type numberFloor = {
+  rooms: Room[]
+  name: string
+  floor: number
+}

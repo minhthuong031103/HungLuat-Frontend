@@ -16,7 +16,7 @@ import { useModal } from '@/hooks/useModalStore'
 import { useApartment } from '@/hooks/useApartment'
 
 const AddApartmentModal = () => {
-  const { isOpen, onClose, type } = useModal()
+  const { isOpen, onClose, type, onAction } = useModal()
   const { createApartment } = useApartment()
   const [apartmentName, setApartmentName] = useState('')
   const [apartmentFloor, setApartmentFloor] = useState('')
@@ -50,6 +50,7 @@ const AddApartmentModal = () => {
         houseNumber: address
       }
       await createApartment(data, resetState, onClose)
+      onAction()
     } else {
       toast.error('Vui lòng nhập đầy đủ thông tin trước khi tạo căn hộ')
     }

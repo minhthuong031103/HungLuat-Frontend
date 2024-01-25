@@ -4,13 +4,16 @@ interface RoomActionProps {
   status: boolean
   onAction: () => void
 }
-const RoomAction = () => {
+const RoomAction = ({ status, onAction }: RoomActionProps) => {
   return (
-    <div className="flex items-center justify-center">
+    <div
+      className="flex items-center justify-center cursor-pointer"
+      onClick={onAction}
+    >
       <div className="py-2 px-4 flex items-center justify-center bg-room-red">
-        <p className="text-white text-sm font-bold">Xuất phiếu</p>
+        <p className="text-white text-sm font-bold ">Xuất phiếu</p>
       </div>
-      <div className="ml-[10px]">{CommonSvg.cancleBill()}</div>
+      <div className="ml-[10px]">{CommonSvg.export()}</div>
     </div>
   )
 }

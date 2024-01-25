@@ -7,16 +7,17 @@ import { Apartment } from '@/types'
 
 interface ListApartmentProps {
   apartments: Apartment[]
+  onAction?: () => void
 }
 
-const ListApartment = ({ apartments }: ListApartmentProps) => {
+const ListApartment = ({ apartments, onAction }: ListApartmentProps) => {
   const { onOpen } = useModal()
   return (
     <>
       <div className="flex items-end justify-between">
         <p className="font-semibold font-lg text-gray">Danh sách căn hộ</p>
         <Button
-          onPress={() => onOpen('createApartment')}
+          onPress={() => onOpen('createApartment', {}, onAction)}
           className="rounded-[8px] px-4 py-2 bg-blueButton"
         >
           <div className="flex flex-row items-center gap-x-[8px] ">

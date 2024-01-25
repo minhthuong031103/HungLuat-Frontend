@@ -1,6 +1,7 @@
 import { useRoom } from '@/hooks/useRoom'
 import { useEffect, useState } from 'react'
 import RoomCard from './room-card'
+import { numberFloor } from '@/types'
 
 interface ListRoomsProps {
   apartmentId: string
@@ -20,7 +21,7 @@ const ListRooms = ({ apartmentId }: ListRoomsProps) => {
 
   return (
     <div className="w-full h-auto space-y-4">
-      {floors.map((floor) => {
+      {floors.map((floor: numberFloor) => {
         return (
           <div className="w-full h-full shrink-0 space-y-2">
             <p className="text-base text-black font-bold">Tầng{floor.floor}</p>

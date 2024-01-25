@@ -32,7 +32,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           width={359}
         />
         <RoomDropdown
-          className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105"
+          className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105 rounded-full drop-shadow"
           actionType="editApartment"
         />
       </CardHeader>

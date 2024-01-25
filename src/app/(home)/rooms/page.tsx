@@ -18,7 +18,7 @@ const RoomsPage = () => {
   const [electricityPrice, setElectricityPrice] = useState('')
   const [statusRoom, setStatusRoom] = useState('')
   const [statusPayment, setStatusPayment] = useState('')
-  const [apartments, setApartments] = useState([])
+  const [apartments, setApartments] = useState([] as Apartment[])
   const [apartmentChosen, setApartmentChosen] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const { onOpen } = useModal()
@@ -41,7 +41,7 @@ const RoomsPage = () => {
   useEffect(() => {
     if (apartments.length > 0) {
       setIsLoading(false)
-      setApartmentChosen(new Set([apartments[0].name]))
+      setApartmentChosen(new Set([apartments[0].name]) as any)
     }
   }, [apartments])
   useEffect(() => {
@@ -49,7 +49,7 @@ const RoomsPage = () => {
       const temp = apartments.find(
         (item) => item.name === Array.from(apartmentChosen)[0]
       )
-      setApartment(temp)
+      setApartment(temp as any)
     }
   }, [apartmentChosen])
   const [flag, setFlag] = useState(false)
@@ -161,14 +161,6 @@ const RoomsPage = () => {
               </div>
               {!flag && (
                 <div className="ml-auto">
-                  <Button className="rounded-[8px] px-4 py-2 bg-blueButton mr-6">
-                    <div className="flex flex-row items-center gap-x-[8px] ">
-                      <div>{CommonSvg.export()}</div>
-                      <div className="text-white mt-[1px] font-medium">
-                        Xuất phiếu
-                      </div>
-                    </div>
-                  </Button>
                   <Button
                     className="rounded-[8px] px-4 py-2 bg-blueButton"
                     onPress={() =>
