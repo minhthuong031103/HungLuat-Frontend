@@ -21,3 +21,17 @@ export interface CreateApartmentProps {
   houseNumber: string
   address: string
 }
+
+export interface CreateCustomerProps {
+  name: string
+  phone: string
+  identityCard: string
+  address: string
+  city: string
+  district: string
+  ward: string
+  houseNumber: string
+  plate: string
+  registeredTemporaryResidence: boolean
+  roomId: number
+}

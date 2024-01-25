@@ -35,5 +35,17 @@ export const RETURNED_MESSAGES = {
       ENG: 'Apartment created',
       VIE: 'Tạo căn hộ thành công'
     }
+  },
+
+  CUSTOMER: {
+    CUSTOMER_EXISTED: {
+      ENG: 'Customer  is existed',
+      VIE: 'Khách thuê đã tồn tại'
+    },
+
+    CUSTOMER_CREATED: {
+      ENG: 'Customer created',
+      VIE: 'Tạo khách thuê thành công'
+    }
   }
 }
