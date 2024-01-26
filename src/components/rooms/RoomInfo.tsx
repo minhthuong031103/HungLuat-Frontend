@@ -2,6 +2,7 @@ import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
 import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
 import { useRoom } from '@/hooks/useRoom'
 import { DatePicker } from '../ui/date-picker'
+import BillTable from './BillTable'
 
 const RoomInfo = () => {
   const { state, roomInfo, handleSetValue } = useRoom()
@@ -88,9 +89,10 @@ const RoomInfo = () => {
           </div>
         </div>
       </div>
-      <div className="w-full flex flex-col space-y-3">
+      <div className="w-full flex flex-col space-y-5">
         <p className="text-gray text-lg font-medium">
           Thông tin hóa đơn tháng trước
+          <BillTable apartmentId="1" roomId="1" />
         </p>
       </div>
     </div>

@@ -240,6 +240,25 @@ export const useRoom = () => {
       console.log('🚀 ~ getRooms ~ error:', error)
     }
   }
+  const getBills = async ({ apartmentId, roomId }) => {
+    try {
+      return {
+        data: {
+          items: [
+            { id: 1, date: '02/2021', name: 'Hóa đơn tháng 2' },
+            { id: 2, date: '03/2021', name: 'Hóa đơn tháng 3' },
+            { id: 3, date: '04/2021', name: 'Hóa đơn tháng 4' },
+            { id: 4, date: '05/2021', name: 'Hóa đơn tháng 5' },
+            { id: 5, date: '06/2021', name: 'Hóa đơn tháng 6' }
+          ],
+          totalPages: 1,
+          totalItems: 5
+        }
+      }
+    } catch (error) {
+      console.log('🚀 ~ getRooms ~ error:', error)
+    }
+  }
   const resetState = () => {
     dispatch({ type: 'RESET' })
   }
@@ -259,6 +278,7 @@ export const useRoom = () => {
     resetState,
     getDetailRoom,
     roomInfo,
-    handleSetValue
+    handleSetValue,
+    getBills
   }
 }
