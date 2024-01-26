@@ -1,4 +1,5 @@
 'use client'
+import RoomCustomer from '@/components/rooms/RoomCustomer'
 import RoomInfo from '@/components/rooms/RoomInfo'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
@@ -22,7 +23,7 @@ const RoomDetailPage = () => {
     },
     {
       name: 'Danh sách khách thuê',
-      key: 'listUser'
+      key: 'listCustomer'
     },
     {
       name: 'Cấu hình phòng',
@@ -93,6 +94,7 @@ const RoomDetailPage = () => {
         </div>
       </div>
       <div>{flag === 'finance' && <RoomInfo />}</div>
+      <div>{flag === 'listCustomer' && <RoomCustomer />}</div>
     </div>
   )
 }

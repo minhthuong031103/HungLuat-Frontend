@@ -20,7 +20,6 @@ import {
   SelectItem,
 } from '@nextui-org/react';
 import { CommonSvg } from '@/assets/CommonSvg';
-import { VerticalDotsIcon } from './VerticalDotsIcon';
 import Loader from '../Loader';
 
 interface CustomerProps {
@@ -47,6 +46,7 @@ interface dataTableProps {
   renderCell?: any;
   isLoading?: boolean;
   columns: any;
+  renderTableSize?: boolean;
 }
 
 interface ColumnProps {
@@ -77,6 +77,7 @@ export default function DataTable({
   renderRight,
   renderCell,
   columns,
+  renderTableSize,
 }: dataTableProps) {
   const headerColumns = React.useMemo(() => {
     return columns;
@@ -99,7 +100,7 @@ export default function DataTable({
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex  gap-10 items-center">
+        <div className="flex gap-10 items-center">
           <div className="flex gap-3">
             <Button
               // onPress={() => onOpen('createApartment')}
@@ -111,25 +112,29 @@ export default function DataTable({
               </div>
             </Button>
           </div>
-          <Select
-            label="Giới hạn"
-            placeholder="Chọn giới hạn"
-            className="w-[120px]"
-            selectedKeys={[limit]}
-            onChange={(e) => {
-              setLimit(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            {limitOptions.map((limit) => (
-              <SelectItem key={limit.value} value={limit.value}>
-                {limit.label}
-              </SelectItem>
-            ))}
-          </Select>
-          <div>
-            Tổng số: <span className="font-semibold">{totalItems}</span>
-          </div>
+          {renderTableSize ? (
+            <>
+              <Select
+                label="Giới hạn"
+                placeholder="Chọn giới hạn"
+                className="w-[120px]"
+                selectedKeys={[limit]}
+                onChange={(e) => {
+                  setLimit(e.target.value);
+                  setCurrentPage(1);
+                }}
+              >
+                {limitOptions.map((limit) => (
+                  <SelectItem key={limit.value} value={limit.value}>
+                    {limit.label}
+                  </SelectItem>
+                ))}
+              </Select>
+              <div>
+                Tổng số: <span className="font-semibold">{totalItems}</span>
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
     );

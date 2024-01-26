@@ -47,23 +47,23 @@ const columnKeys = {
 const columns = [
   {
     id: columnKeys.name,
-    title: 'Tên khách hàng',
+    title: 'Họ tên',
     sortable: true,
   },
   {
     id: columnKeys.phone,
     title: 'Số điện thoại',
-    sortable: true,
+    sortable: false,
   },
   {
     id: columnKeys.address,
     title: 'Địa chỉ',
-    sortable: true,
+    sortable: false,
   },
   {
     id: columnKeys.identityCard,
-    title: 'Số CMND',
-    sortable: true,
+    title: 'CMND/CCCD',
+    sortable: false,
   },
 
   {
@@ -97,7 +97,7 @@ const CustomerTable = () => {
   const [search, setSearch] = useState(null);
   const [searchField, setSearchField] = useState('name');
   const { getCustomers } = useCustomer();
-  const handleSearch = () => {};
+  const handleSearch = () => { };
   const { data: customers, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
     queryFn: async () => {
@@ -128,7 +128,7 @@ const CustomerTable = () => {
           );
         case columnKeys.action:
           return (
-            <div className="relative flex w-24 justify-center items-center gap-2">
+            <div className="relative flex w-24 justify-left items-center gap-2">
               <Dropdown>
                 <DropdownTrigger>
                   <Button isIconOnly size="sm" variant="light">
@@ -186,6 +186,7 @@ const CustomerTable = () => {
           limit={limit}
           setLimit={setLimit}
           renderCell={renderCell}
+          renderTableSize={true}
         />
       </div>
     </>
