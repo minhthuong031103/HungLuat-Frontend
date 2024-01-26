@@ -13,7 +13,7 @@ import { useModal } from '@/hooks/useModalStore'
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
 import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
 
-const CreateRoomModal = () => {
+const EditRoomModal = () => {
   const { isOpen, onClose, type, data } = useModal()
   const [floor, setFloor] = useState([])
   useEffect(() => {
@@ -25,7 +25,7 @@ const CreateRoomModal = () => {
   }, [data])
   const [roomName, setRoomName] = useState('')
   const [floorChosen, setFloorChosen] = useState('')
-  const isModalOpen = isOpen && type === 'createRoom'
+  const isModalOpen = isOpen && type === 'editRoom'
   const resetState = () => {
     setFloor([])
     setRoomName('')
@@ -41,7 +41,7 @@ const CreateRoomModal = () => {
         {() => (
           <>
             <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-              Tạo mới phòng
+              Cập nhật thông tin phòng
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="flex gap-[20px]">
@@ -75,4 +75,4 @@ const CreateRoomModal = () => {
   )
 }
 
-export default CreateRoomModal
+export default EditRoomModal

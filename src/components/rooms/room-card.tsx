@@ -8,11 +8,12 @@ import {
 } from '@nextui-org/react'
 import RoomAction from './room-action'
 import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown'
+import { useModal } from '@/hooks/useModalStore'
 interface RoomCardProps {
   room: Room
 }
 const RoomCard = ({ room }: RoomCardProps) => {
-  console.log(room)
+  const { onOpen } = useModal()
   return (
     <Card
       className="max-w-[174px] h-[300px]"
@@ -21,15 +22,18 @@ const RoomCard = ({ room }: RoomCardProps) => {
         base: 'rounded-none drop-shadow border-1 border-borderColor bg-white'
       }}
     >
-      <CardHeader>
-        <div className="w-[174px] h-[10px] bg-room-green"></div>
+      <CardHeader onClick={() => console.log(123)}>
+        <div className="w-[174px] h-[10px] bg-room-green cursor-pointer"></div>
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
-          actionType="editApartment"
+          actionType="editRoom"
         />
       </CardHeader>
       <Divider />
-      <CardBody className="gap-4">
+      <CardBody
+        className="gap-4 cursor-pointer"
+        onClick={() => console.log(123)}
+      >
         <p className="text-sm font-semibold text-black">{room.name}</p>
         <div className="space-y-3.5">
           <div className="flex items-center">
@@ -70,7 +74,12 @@ const RoomCard = ({ room }: RoomCardProps) => {
       </CardBody>
       <Divider />
       <CardFooter className="flex items-center justify-center">
-        <RoomAction />
+        <RoomAction
+          onAction={() => {
+            onOpen('exportBill')
+          }}
+          status={true}
+        />
       </CardFooter>
     </Card>
   )

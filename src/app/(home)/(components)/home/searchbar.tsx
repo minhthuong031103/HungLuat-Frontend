@@ -18,6 +18,9 @@ export function SearchBar({
     <div className="w-full my-2 flex items-center gap-8">
       <Input
         isClearable
+        onKeyDown={(e: any) => {
+          if (e.key === 'Enter') handleSearch()
+        }}
         radius="sm"
         size="sm"
         value={searchValue}

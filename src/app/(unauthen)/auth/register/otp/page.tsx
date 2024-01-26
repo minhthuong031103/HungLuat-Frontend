@@ -1,7 +1,7 @@
 import React from 'react';
 import { Otp } from './Otp';
 import jwt from 'jsonwebtoken';
-import prisma from '@/lib/prisma';
+// import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 
 const page = async ({ searchParams }: { searchParams: any }) => {
@@ -16,16 +16,16 @@ const page = async ({ searchParams }: { searchParams: any }) => {
       }
       email = decoded?.email;
       const otp = Math.floor(100000 + Math.random() * 900000); // generate 6-digit OTP
-      if (email) {
-        await prisma.user.update({
-          data: {
-            otp: otp.toString(),
-          },
-          where: {
-            email: email,
-          },
-        });
-      }
+      // if (email) {
+      //   await prisma.user.update({
+      //     data: {
+      //       otp: otp.toString(),
+      //     },
+      //     where: {
+      //       email: email,
+      //     },
+      //   });
+      // }
 
       //   const transporter = await nodemailer.createTransport({
       //     host: 'smtp.gmail.com',
