@@ -1,5 +1,7 @@
 import React from "react";
-export const SearchIcon = (props) => (
+import {IconSvgProps} from "./types";
+
+export const SearchIcon = (props: IconSvgProps) => (
   <svg
     aria-hidden="true"
     fill="none"

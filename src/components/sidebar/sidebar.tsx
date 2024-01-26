@@ -27,8 +27,8 @@ export const SidebarWrapper = () => {
               items={[
                 { name: 'Quản lý căn hộ', link: '/' },
                 { name: 'Quản lý phòng', link: '/rooms' },
-                { name: 'Danh sách khách trọ', link: '/2' },
-                { name: 'Quản lý biểu mẫu', link: '/3' }
+                { name: 'Danh sách khách trọ', link: '/customers' },
+                { name: 'Quản lý biểu mẫu', link: '/forms' }
               ]}
               title="Quản lý phòng"
             />
@@ -43,7 +43,7 @@ export const SidebarWrapper = () => {
             <CollapseItems
               icon={CommonSvg.stack()}
               items={[
-                { name: 'Quản lý người dùng' },
+                { name: 'Quản lý người dùng', link: '/users' },
               ]}
               title="Quản lý hệ thống"
             />

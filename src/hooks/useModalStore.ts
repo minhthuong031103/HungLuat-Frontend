@@ -1,5 +1,5 @@
-import { ModalData } from '@/lib/interface'
-import { create } from 'zustand'
+import { ModalData } from '@/lib/interface';
+import { create } from 'zustand';
 
 export type ModalType =
   | 'createApartment'
@@ -7,14 +7,16 @@ export type ModalType =
   | 'createRoom'
   | 'editRoom'
   | 'exportBill'
+  | 'createCustomer'
+  | 'editCustomer';
 
 interface ModalStore {
-  type: ModalType | null
-  isOpen: boolean
-  data: ModalData
-  onOpen: (type: ModalType, data?: ModalData, onAction?: () => void) => void
-  onClose: () => void
-  onAction: () => void
+  type: ModalType | null;
+  isOpen: boolean;
+  data: ModalData;
+  onOpen: (type: ModalType, data?: ModalData, onAction?: () => void) => void;
+  onClose: () => void;
+  onAction: () => void;
 }
 
 export const useModal = create<ModalStore>((set) => ({
@@ -25,5 +27,5 @@ export const useModal = create<ModalStore>((set) => ({
   onOpen: (type, data = {}, onAction) =>
     set({ type, isOpen: true, data, onAction }),
   onClose: () =>
-    set({ type: null, isOpen: false, data: {}, onAction: () => {} })
-}))
+    set({ type: null, isOpen: false, data: {}, onAction: () => {} }),
+}));

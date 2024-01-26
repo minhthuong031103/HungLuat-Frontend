@@ -14,7 +14,7 @@ import { SelectAddress } from './select-address'
 import toast from 'react-hot-toast'
 import { useModal } from '@/hooks/useModalStore'
 
-const EditAppartmentModal = () => {
+const EditApartmentModal = () => {
   const { isOpen, onClose, type, data } = useModal()
 
   const [apartmentName, setApartmentName] = useState('')
@@ -116,4 +116,4 @@ const EditAppartmentModal = () => {
   )
 }
 
-export default EditAppartmentModal
+export default EditApartmentModal
