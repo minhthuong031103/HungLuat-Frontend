@@ -17,7 +17,8 @@ const CreateRoomModal = () => {
   const { isOpen, onClose, type, data } = useModal()
   const [floor, setFloor] = useState([])
   useEffect(() => {
-    if (data && floor.length === 0 && data?.numberFloor) {
+    if (data && data?.numberFloor) {
+      setFloor([])
       for (let i = 1; i <= data?.numberFloor; i++) {
         setFloor((prev: any) => [...prev, `Tầng ${i}`] as any)
       }

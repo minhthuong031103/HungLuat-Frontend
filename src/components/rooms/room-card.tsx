@@ -45,13 +45,13 @@ const RoomCard = ({ room }: RoomCardProps) => {
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-xs">Tiền phòng</p>
             <p className="text-black font-semibold text-xs ml-auto">
-              {room.rent}
+              {room.roomPrice}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-xs">Tiền cọc</p>
             <p className="text-black font-semibold text-xs ml-auto">
-              {room.deposit}
+              {room.depositPrice}
             </p>
           </div>
           <div className="flex items-center">

@@ -5,24 +5,43 @@ import ListApartment from './(components)/home/list-apartment'
 import { useEffect, useState } from 'react'
 import { useApartment } from '@/hooks/useApartment'
 import { ChevronDown } from 'lucide-react'
-
+import { Pagination, Spinner } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
+import { queryKey } from '@/lib/constant'
+import { Apartment } from '@/types'
+import Loader from '@/components/Loader'
+interface ResponseProps {
+  items: Apartment[]
+  totalItems: number
+  totalPages: number
+}
 const page = () => {
-  const [apartments, setApartments] = useState([])
   const [searchValue, setSearchValue] = useState('')
-  const handleGetApartments = async () => {
-    const res = await getApartments({
-      searchField: 'name',
-      search: searchValue
-    })
-    setApartments(res?.data?.items)
-  }
+  const [currentPage, setCurrentPage] = useState(1)
+
   const { getApartments } = useApartment()
-  useEffect(() => {
-    handleGetApartments()
-  }, [])
-  const handleSearch = () => {
-    handleGetApartments()
-  }
+
+  const {
+    data: apartments,
+    isLoading,
+    refetch
+  } = useQuery<ResponseProps>({
+    queryKey: [
+      queryKey.APARTMENTS,
+      { currentPage, limit: 10, searchValue, searchField: 'name' }
+    ],
+    queryFn: async () => {
+      const res = await getApartments({
+        page: currentPage,
+        limit: 10,
+        search: searchValue,
+        searchField: 'name'
+      })
+      return res?.data
+    }
+  })
+  console.log('🚀 ~ page ~ apartments:', apartments)
+
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -30,7 +49,7 @@ const page = () => {
         <SearchBar
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          handleSearch={handleSearch}
+          setCurrentPage={setCurrentPage}
         />
         <div className="w-fit pb-2 flex items-center gap-3 cursor-pointer group">
           <p className="font-medium text-base text-gray group-hover:font-semibold group-hover:scale-105">
@@ -42,10 +61,29 @@ const page = () => {
           />
         </div>
       </div>
-
-      <div className="w-full h-full mt-4">
-        <ListApartment apartments={apartments} onAction={handleGetApartments} />
-      </div>
+      {isLoading ? (
+        <div className="w-full flex justify-center items-center h-[200px]">
+          <Spinner />
+        </div>
+      ) : (
+        <div className="w-full h-full mt-4">
+          <ListApartment
+            apartments={apartments?.items || []}
+            onAction={refetch}
+          />
+          <div className="py-8 px-2 flex justify-center items-center">
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={currentPage}
+              total={apartments?.totalPages || 1}
+              onChange={setCurrentPage}
+            />
+          </div>
+        </div>
+      )}
     </>
   )
 }
