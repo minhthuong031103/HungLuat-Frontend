@@ -1,41 +1,45 @@
 /** @format */
 
-import * as React from "react";
-import { format } from "date-fns";
-import { vi } from "date-fns/locale";
-import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from 'react'
+import { format } from 'date-fns'
+import { vi } from 'date-fns/locale'
+import { Calendar as CalendarIcon } from 'lucide-react'
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@components/ui/popover";
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@components/ui/calendar'
+import { Popover, PopoverContent, PopoverTrigger } from '@components/ui/popover'
 
 interface DatePickerProps {
-  date: Date;
-  setDate: (date: Date) => void;
-  label?: string;
+  date: Date
+  labelCustom?: string
+  setDate: (date: Date) => void
+  label?: string
 }
 
-export function DatePicker({ date, setDate, label }: DatePickerProps) {
+export function DatePicker({
+  date,
+  setDate,
+  label,
+  labelCustom
+}: DatePickerProps) {
   return (
     <div className="flex flex-col space-y-3">
-      {label && <div className="font-bold text-sm ">{label}</div>}
+      {label && (
+        <div className={cn('font-bold text-sm ', labelCustom)}>{label}</div>
+      )}
       <Popover>
         <PopoverTrigger asChild>
           <Button
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "w-full justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              'w-full justify-start text-left font-normal',
+              !date && 'text-muted-foreground'
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {date ? (
-              format(date, "dd MMMM, yyyy", { locale: vi })
+              format(date, 'dd MMMM, yyyy', { locale: vi })
             ) : (
               <span>Chọn ngày</span>
             )}
@@ -46,5 +50,5 @@ export function DatePicker({ date, setDate, label }: DatePickerProps) {
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }

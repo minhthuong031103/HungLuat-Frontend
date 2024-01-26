@@ -9,11 +9,13 @@ import {
 import RoomAction from './room-action'
 import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown'
 import { useModal } from '@/hooks/useModalStore'
+import { useRouter } from 'next/navigation'
 interface RoomCardProps {
   room: Room
 }
 const RoomCard = ({ room }: RoomCardProps) => {
   const { onOpen } = useModal()
+  const router = useRouter()
   return (
     <Card
       className="max-w-[174px] h-[300px]"
@@ -22,7 +24,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
         base: 'rounded-none drop-shadow border-1 border-borderColor bg-white'
       }}
     >
-      <CardHeader onClick={() => console.log(123)}>
+      <CardHeader onClick={() => router.push(`/rooms/${room.id}`)}>
         <div className="w-[174px] h-[10px] bg-room-green cursor-pointer"></div>
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
@@ -32,7 +34,7 @@ const RoomCard = ({ room }: RoomCardProps) => {
       <Divider />
       <CardBody
         className="gap-4 cursor-pointer"
-        onClick={() => console.log(123)}
+        onClick={() => router.push(`/rooms/${room.id}`)}
       >
         <p className="text-sm font-semibold text-black">{room.name}</p>
         <div className="space-y-3.5">

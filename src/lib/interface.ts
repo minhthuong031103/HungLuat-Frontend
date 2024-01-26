@@ -10,6 +10,7 @@ export interface ModalData {
   ward?: string
   numberFloor?: number
   houseNumber?: string
+  apartmentId?: number
 }
 
 export interface CreateApartmentProps {

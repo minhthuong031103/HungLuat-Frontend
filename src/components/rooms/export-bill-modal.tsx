@@ -53,14 +53,6 @@ const ExportBillModal = () => {
   const renderNumberInput = (label, value, placeholder, disabled = false) =>
     renderInput(label, value, placeholder, 'number', disabled)
 
-  const renderCheckbox = (label) => (
-    <div className="w-[20%] mt-5">
-      <Checkbox radius="sm" size="md" defaultSelected color="success">
-        {label}
-      </Checkbox>
-    </div>
-  )
-
   const renderInputRow = (inputs) => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
   )
@@ -92,7 +84,7 @@ const ExportBillModal = () => {
                   'Nhập chỉ số điện mới'
                 )
               ])}
-              {renderCheckbox('Nước khoáng')}
+              <p className="text-gray font-semibold text-lg">Chi phí</p>
               {renderInputRow([
                 renderNumberInput(
                   'Tổng tiền điện',
@@ -117,11 +109,7 @@ const ExportBillModal = () => {
               ])}
               {renderInputRow([
                 renderNumberInput('Tiền phòng', state.roomPrice, 'Tiền phòng'),
-                renderNumberInput(
-                  'Trả trước',
-                  state.suspendedPrice,
-                  'Trả trước'
-                ),
+                renderNumberInput('Trả trước', state.depositPrice, 'Trả trước'),
                 renderNumberInput('Tiền xe', state.parkingPrice, 'Tiền xe'),
                 renderNumberInput(
                   'Tiền Internet',
