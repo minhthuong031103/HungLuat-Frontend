@@ -34,40 +34,50 @@ interface ResponseProps {
   totalPages: number;
 }
 
+const columnKeys = {
+  name: 'name',
+  phone: 'phone',
+  address: 'address',
+  identityCard: 'identityCard',
+  registeredTemporaryResidence: 'registeredTemporaryResidence',
+  roomId: 'roomId',
+  action: 'action',
+};
+
 const columns = [
   {
-    id: 'name',
+    id: columnKeys.name,
     title: 'Tên khách hàng',
     sortable: true,
   },
   {
-    id: 'phone',
+    id: columnKeys.phone,
     title: 'Số điện thoại',
     sortable: true,
   },
   {
-    id: 'address',
+    id: columnKeys.address,
     title: 'Địa chỉ',
     sortable: true,
   },
   {
-    id: 'identityCard',
+    id: columnKeys.identityCard,
     title: 'Số CMND',
     sortable: true,
   },
 
   {
-    id: 'registeredTemporaryResidence',
+    id: columnKeys.registeredTemporaryResidence,
     title: 'Tạm trú',
     sortable: true,
   },
   {
-    id: 'roomId',
+    id: columnKeys.roomId,
     title: 'Phòng',
   },
 
   {
-    id: 'action',
+    id: columnKeys.action,
     title: 'Thao tác',
     sortable: false,
   },
@@ -106,7 +116,7 @@ const CustomerTable = () => {
       const cellValue = user[columnKey];
 
       switch (columnKey) {
-        case 'registeredTemporaryResidence':
+        case columnKeys.registeredTemporaryResidence:
           return (
             <div className="flex items-center justify-start ml-3">
               <Checkbox
@@ -116,7 +126,7 @@ const CustomerTable = () => {
               ></Checkbox>
             </div>
           );
-        case 'action':
+        case columnKeys.action:
           return (
             <div className="relative flex w-24 justify-center items-center gap-2">
               <Dropdown>
