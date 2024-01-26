@@ -23,9 +23,9 @@ export const CustomInput = ({
     <Input
       type={type}
       label={label}
-      isClearable={type !== 'number'}
+      isClearable={type === 'text'}
       variant="bordered"
-      disabled={disabled}
+      isDisabled={disabled}
       isRequired={isRequired}
       value={value}
       onValueChange={(e) => {
@@ -37,7 +37,7 @@ export const CustomInput = ({
         label: 'text-black ',
         input: [],
         innerWrapper: 'bg-transparent',
-        inputWrapper: ['border-1 px-[10px] py-[8px]']
+        inputWrapper: ['border-1 px-[10px] py-[8px] ']
       }}
 
       // startContent={

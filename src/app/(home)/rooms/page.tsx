@@ -27,7 +27,7 @@ const RoomsPage = () => {
       searchField: 'name',
       search: searchValue
     })
-    setApartments(res.data.items)
+    setApartments(res?.data?.items)
   }
   const { getApartments } = useApartment()
   useEffect(() => {
