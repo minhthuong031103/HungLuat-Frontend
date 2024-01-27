@@ -52,16 +52,6 @@ export const useApartment = () => {
     sortDirection = 'asc'
   }: GetQueryParamsProps) => {
     try {
-      console.log(
-        getQueryParams({
-          searchField,
-          search,
-          page,
-          limit,
-          sortBy,
-          sortDirection
-        })
-      )
       const res = await requestApi({
         endPoint: `/apartment/all?${getQueryParams({
           searchField,

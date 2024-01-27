@@ -8,6 +8,7 @@ interface CustomInputProps {
   type?: string
   disabled?: boolean
   isRequired?: boolean
+  readonly?: boolean
 }
 
 export const CustomInput = ({
@@ -17,16 +18,18 @@ export const CustomInput = ({
   setValue,
   disabled = false,
   isRequired = true,
+  readonly = false,
   type
 }: CustomInputProps) => {
   return (
     <Input
       type={type}
       label={label}
-      isClearable={type === 'text'}
+      isClearable={disabled || readonly ? false : true}
       variant="bordered"
       isDisabled={disabled}
       isRequired={isRequired}
+      isReadOnly={readonly}
       value={value}
       onValueChange={(e) => {
         setValue(e)

@@ -2,19 +2,20 @@
 import RoomInfo from '@/components/rooms/RoomInfo'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
+import { queryKey } from '@/lib/constant'
 import { cn } from '@/lib/utils'
 import { BreadcrumbItem, Breadcrumbs, Button } from '@nextui-org/react'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const RoomDetailPage = () => {
   const { roomId } = useParams()
   const classNameChosen = 'font-semibold text-sm text-white'
   const classNameNotChosen = 'font-medium text-sm text-black'
-  const { getDetailRoom } = useRoom()
   const [flag, setFlag] = useState('finance')
   const { onOpen } = useModal()
-  const { data: roomDetail, refetch } = getDetailRoom({ roomId: roomId })
+
   const render = [
     {
       name: 'Tài chính phòng',
@@ -32,7 +33,9 @@ const RoomDetailPage = () => {
   const buttonRender = [
     {
       content: 'Hợp đồng',
-      action: () => {}
+      action: () => {
+        onOpen('contractRoom')
+      }
     },
     {
       content: 'Xuất phiếu',
@@ -50,11 +53,51 @@ const RoomDetailPage = () => {
       }
     }
   ]
+  const { getDetailRoom, dispatch } = useRoom()
+  const {
+    data: roomDetail,
+    refetch,
+    isLoading
+  } = useQuery({
+    queryKey: [queryKey.ROOMDETAILS, { roomId }],
+    queryFn: async () => {
+      const res = await getDetailRoom({
+        roomId: roomId
+      })
+      if (res?.data && res?.data?.startDate && res?.data?.endDate) {
+        const endDate = new Date(res?.data?.endDate)
+        const startDate = new Date(res?.data?.startDate)
+        const dayStayed = Math.ceil(
+          (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
+        )
+        if (
+          endDate.getMonth() === new Date().getMonth() &&
+          endDate.getFullYear() === new Date().getFullYear()
+        ) {
+          dispatch({
+            type: 'SET_VALUES',
+            payload: { ...res?.data, endDate: endDate, startDate: startDate }
+          })
+        } else {
+          dispatch({
+            type: 'SET_VALUES',
+            payload: {
+              ...res?.data,
+              startDate: new Date(new Date().setDate(1)),
+              endDate: new Date(),
+              dayStayed: dayStayed
+            }
+          })
+        }
+      }
+      return res?.data
+    }
+  })
   return (
     <div className="pt-2 space-y-4">
       <Breadcrumbs>
         <BreadcrumbItem href="/rooms">Danh sách phòng</BreadcrumbItem>
-        <BreadcrumbItem>P1-Chi</BreadcrumbItem>
+        <BreadcrumbItem>{roomDetail?.name}</BreadcrumbItem>
       </Breadcrumbs>
       <div className="flex items-end pt-3">
         {render?.map((item) => (
@@ -92,7 +135,11 @@ const RoomDetailPage = () => {
           ))}
         </div>
       </div>
-      <div>{flag === 'finance' && <RoomInfo />}</div>
+      <div>
+        {flag === 'finance' && (
+          <RoomInfo roomId={roomId} refetch={refetch} isLoading={isLoading} />
+        )}
+      </div>
     </div>
   )
 }
