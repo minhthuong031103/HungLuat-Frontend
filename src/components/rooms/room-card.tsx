@@ -61,9 +61,9 @@ const RoomCard = ({ room }: RoomCardProps) => {
             </p>
           </div>
           <div className="flex items-center">
-            <p className="text-room-detail font-normal text-xs">Nợ</p>
+            <p className="text-room-detail font-normal text-xs">Nợ cũ</p>
             <p className="text-black font-semibold text-xs ml-auto">
-              {room.debt}
+              {room.oldDebt}
             </p>
           </div>
           <div className="flex items-center">

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import CreateRoomModal from '../rooms/create-room-modal'
 import EditRoomModal from '../rooms/edit-room-modal'
 import ExportBillModal from '../rooms/export-bill-modal'
+import ContractRoomModal from '../rooms/contract-room-modal'
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false)
@@ -22,6 +23,7 @@ export const ModalProvider = () => {
       <CreateRoomModal />
       <EditRoomModal />
       <ExportBillModal />
+      <ContractRoomModal />
     </>
   )
 }

@@ -13,7 +13,7 @@ export type Apartment = {
 export type Room = {
   apartmentId: string
   billStatus: boolean
-  debt: number
+  oldDebt: number
   depositPrice: number
   description: string
   floor: number

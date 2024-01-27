@@ -40,7 +40,7 @@ export function SearchBar({
         }}
         radius="sm"
         size="sm"
-        value={searchValue}
+        value={searchValue || ''}
         onValueChange={onSearchChange}
         fullWidth={false}
         classNames={{

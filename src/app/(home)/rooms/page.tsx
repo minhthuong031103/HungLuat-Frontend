@@ -7,7 +7,7 @@ import { CustomSelect } from '../(components)/home/custom-select'
 import { useApartment } from '@/hooks/useApartment'
 import { CommonSvg } from '@/assets/CommonSvg'
 import { Apartment } from '@/types'
-import { Button, Select, SelectItem } from '@nextui-org/react'
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
 import ListRooms from '@/components/rooms/ListRooms'
 import BuildingPlan from '@/components/rooms/BuildingPlan'
 import { useModal } from '@/hooks/useModalStore'
@@ -31,6 +31,7 @@ const RoomsPage = () => {
   const [apartmentChosen, setApartmentChosen] = useState('')
   const { onOpen } = useModal()
   const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false)
   const { getApartments } = useApartment()
   const {
     data: apartments,
@@ -40,10 +41,7 @@ const RoomsPage = () => {
     isFetching,
     isFetchingNextPage
   } = useInfiniteQuery(
-    [
-      queryKey.APARTMENTS_SELECT,
-      { currentPage, limit: 10, searchValue, searchField: 'name' }
-    ],
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
     ({ pageParam = 0 }) =>
       getApartments({
         page: pageParam,
@@ -80,8 +78,13 @@ const RoomsPage = () => {
 
   const [floors, setFloors] = useState([])
   const handleGetRooms = async () => {
-    const res = await getRooms({ apartmentId: Number(apartmentChosen) })
+    setLoading(true)
+    const res = await getRooms({
+      apartmentId: Number(apartmentChosen),
+      search: searchValue
+    })
     setFloors(res?.data?.rooms)
+    setLoading(false)
   }
   const { getRooms } = useRoom()
   useEffect(() => {
@@ -91,7 +94,9 @@ const RoomsPage = () => {
   }, [apartmentChosen])
 
   const [month, setMonth] = useState('')
-  const handleSearch = () => {}
+  const handleSearch = () => {
+    handleGetRooms()
+  }
   const classNameChosen = 'font-semibold text-sm text-white'
   const classNameNotChosen = 'font-medium text-sm text-black'
 
@@ -163,9 +168,9 @@ const RoomsPage = () => {
           <Select
             placeholder="Chọn căn hộ"
             className="max-w-[250px]"
-            selectedKeys={[apartmentChosen]}
-            disallowEmptySelection
+            selectedKeys={apartmentChosen ? [apartmentChosen] : []}
             isLoading={isFetching}
+            disallowEmptySelection
             scrollRef={scrollerRef}
             onOpenChange={setIsOpen}
             classNames={{
@@ -252,13 +257,25 @@ const RoomsPage = () => {
                 </div>
               )}
             </div>
-            <div>
-              {!flag ? (
-                <ListRooms floors={floors} />
-              ) : (
-                <BuildingPlan apartmentId={apartmentChosen} />
-              )}
-            </div>
+            {loading ? (
+              <div className="w-full h-[300px] flex items-center justify-center">
+                <Spinner />
+              </div>
+            ) : floors.length === 0 ? (
+              <div className="w-full h-[300px] flex items-center justify-center">
+                <p className="font-medium text-base text-room-detail/50">
+                  Không có dữ liệu...
+                </p>
+              </div>
+            ) : (
+              <div>
+                {!flag ? (
+                  <ListRooms floors={floors} />
+                ) : (
+                  <BuildingPlan apartmentId={apartmentChosen} />
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

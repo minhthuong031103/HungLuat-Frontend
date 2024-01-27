@@ -25,5 +25,6 @@ export const queryKey = {
   APARTMENTS: 'apartments',
   APARTMENTS_SELECT: 'apartmentsSelect',
 
-  BILL: 'bill'
+  BILL: 'bill',
+  ROOMDETAILS: 'roomDetails'
 }
