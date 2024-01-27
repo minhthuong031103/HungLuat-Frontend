@@ -3,9 +3,10 @@ import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
 import { useRoom } from '@/hooks/useRoom'
 import { DatePicker } from '../ui/date-picker'
 import BillTable from './BillTable'
+import { Button } from '@nextui-org/react'
 
 const RoomInfo = () => {
-  const { state, roomInfo, handleSetValue } = useRoom()
+  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom()
   return (
     <div className="w-full h-full space-y-4">
       <div className="w-full flex flex-col space-y-3">
@@ -73,19 +74,30 @@ const RoomInfo = () => {
               ))}
             </div>
           ))}
-          <div className="flex gap-20 items-center">
+          <div className="flex gap-8 items-center">
             <DatePicker
               label="Chọn ngày bắt đầu"
               date={state.startDate}
               labelCustom="font-medium text-sm"
               setDate={(date) => handleSetValue('startDate', date)}
             />
+            <span className="flex mt-8 h-[1px] w-[15px] bg-gray rounded-full"></span>
             <DatePicker
               label="Chọn ngày thanh toán"
               labelCustom="font-medium text-sm"
               date={state.endDate}
               setDate={(date) => handleSetValue('endDate', date)}
             />
+          </div>
+          <div className="flex justify-end w-full">
+            <Button
+              className="rounded-[8px] px-4 py-4 bg-blueButton"
+              onPress={updateRoomStates}
+            >
+              <div className="flex flex-row items-center gap-x-[8px] ">
+                <div className="text-white mt-[1px] font-medium">Cập nhật</div>
+              </div>
+            </Button>
           </div>
         </div>
       </div>

@@ -40,7 +40,6 @@ const page = () => {
       return res?.data
     }
   })
-  console.log('🚀 ~ page ~ apartments:', apartments)
 
   return (
     <>

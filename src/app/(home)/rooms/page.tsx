@@ -14,46 +14,24 @@ import { useModal } from '@/hooks/useModalStore'
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { queryKey } from '@/lib/constant'
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll'
+import { useRoom } from '@/hooks/useRoom'
 
 interface ResponseProps {
   items: any
   totalItems: number
   totalPages: number
 }
+
 const RoomsPage = () => {
   const [searchAdvanced, setSearchAdvanced] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [electricityPrice, setElectricityPrice] = useState('')
   const [statusRoom, setStatusRoom] = useState('')
   const [statusPayment, setStatusPayment] = useState('')
-
   const [apartmentChosen, setApartmentChosen] = useState('')
-
   const { onOpen } = useModal()
-
   const [currentPage, setCurrentPage] = useState(1)
-
   const { getApartments } = useApartment()
-
-  // const {
-  //   data: apartments,
-  //   isLoading,
-  //   refetch
-  // } = useQuery<ResponseProps>({
-  //   queryKey: [
-  //     queryKey.APARTMENTS,
-  //     { currentPage, limit: 10, searchValue, searchField: 'name' }
-  //   ],
-  //   queryFn: async () => {
-  //     const res = await getApartments({
-  //       page: currentPage,
-  //       limit: 10,
-  //       search: searchValue,
-  //       searchField: 'name'
-  //     })
-  //     return res?.data
-  //   }
-  // })
   const {
     data: apartments,
     fetchNextPage,
@@ -63,7 +41,7 @@ const RoomsPage = () => {
     isFetchingNextPage
   } = useInfiniteQuery(
     [
-      queryKey.APARTMENTS,
+      queryKey.APARTMENTS_SELECT,
       { currentPage, limit: 10, searchValue, searchField: 'name' }
     ],
     ({ pageParam = 0 }) =>
@@ -88,33 +66,42 @@ const RoomsPage = () => {
       }
     }
   )
-  console.log('🚀 ~ RoomsPage ~ hasNextPage:', hasNextPage)
-
-  const [month, setMonth] = useState('')
-  const handleSearch = () => {}
-  const classNameChosen = 'font-semibold text-sm text-white'
-  const classNameNotChosen = 'font-medium text-sm text-black'
   useEffect(() => {
-    if (apartments?.pages[0]?.data?.items?.length > 0) {
+    console.log(apartments)
+    if (apartments?.pages?.[0]?.data?.items[0]?.id) {
       setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString())
     }
-    console.log(apartments)
   }, [apartments])
   const apartment: Apartment = apartments?.pages?.map((page) => {
     return page.data.items.find(
       (item) => item.id.toString() === apartmentChosen
     )
   })[0]
+
+  const [floors, setFloors] = useState([])
+  const handleGetRooms = async () => {
+    const res = await getRooms({ apartmentId: Number(apartmentChosen) })
+    setFloors(res?.data?.rooms)
+  }
+  const { getRooms } = useRoom()
+  useEffect(() => {
+    if (Number(apartmentChosen)) {
+      handleGetRooms()
+    }
+  }, [apartmentChosen])
+
+  const [month, setMonth] = useState('')
+  const handleSearch = () => {}
+  const classNameChosen = 'font-semibold text-sm text-white'
+  const classNameNotChosen = 'font-medium text-sm text-black'
+
   const [isOpen, setIsOpen] = useState(false)
-
   const [flag, setFlag] = useState(false)
-
   const [, scrollerRef] = useInfiniteScroll({
     isEnabled: isOpen,
     hasMore: hasNextPage,
     shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
     onLoadMore: () => {
-      console.log(123)
       fetchNextPage()
     }
   })
@@ -245,9 +232,14 @@ const RoomsPage = () => {
                   <Button
                     className="rounded-[8px] px-4 py-2 bg-blueButton"
                     onPress={() =>
-                      onOpen('createRoom', {
-                        numberFloor: apartment?.numberFloor
-                      })
+                      onOpen(
+                        'createRoom',
+                        {
+                          numberFloor: apartment?.numberFloor,
+                          apartmentId: Number(apartmentChosen)
+                        },
+                        handleGetRooms
+                      )
                     }
                   >
                     <div className="flex flex-row items-center gap-x-[8px] ">
@@ -262,7 +254,7 @@ const RoomsPage = () => {
             </div>
             <div>
               {!flag ? (
-                <ListRooms apartmentId={apartmentChosen} />
+                <ListRooms floors={floors} />
               ) : (
                 <BuildingPlan apartmentId={apartmentChosen} />
               )}

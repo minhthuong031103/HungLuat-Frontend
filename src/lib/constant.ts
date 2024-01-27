@@ -23,5 +23,7 @@ export const imageApartment =
 export const queryKey = {
   CUSTOMERS: 'customers',
   APARTMENTS: 'apartments',
+  APARTMENTS_SELECT: 'apartmentsSelect',
+
   BILL: 'bill'
 }

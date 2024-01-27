@@ -71,7 +71,6 @@ const BillTable = ({ apartmentId, roomId }: BillTaleProps) => {
     queryKey: [queryKey.BILL, { apartmentId, roomId }],
     queryFn: async () => {
       const res = await getBills({
-        apartmentId: apartmentId,
         roomId: roomId
       })
       return res?.data
@@ -96,6 +95,7 @@ const BillTable = ({ apartmentId, roomId }: BillTaleProps) => {
           setSearch={setSearch}
           isLoading={isLoading}
           data={bills?.items || []}
+          showLimit={false}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           totalPages={bills?.totalPages || 0}
