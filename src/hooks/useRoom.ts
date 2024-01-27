@@ -1,7 +1,9 @@
 import { useApiAxios } from '@/components/providers/ApiProvider'
 import { useApi } from '@/lib/axios'
+import { RETURNED_MESSAGES } from '@/lib/translate'
 import { useQuery } from '@tanstack/react-query'
-import { useReducer } from 'react'
+import { useEffect, useMemo, useReducer } from 'react'
+import toast from 'react-hot-toast'
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_VALUES':
@@ -46,15 +48,31 @@ const initialState = {
   startDate: new Date(new Date().setDate(1)),
   endDate: new Date()
 }
+
 export const useRoom = () => {
   const { requestApi } = useApiAxios()
+
   const [state, dispatch] = useReducer(reducer, initialState)
+
   const handleSetValue = (key, value) => {
-    dispatch({
-      type: 'SET_VALUES',
-      payload: { [key]: value }
-    })
+    if (
+      (key == 'startDate' && value < state.endDate) ||
+      (key == 'endDate' && value > state.startDate) ||
+      (key != 'startDate' && key != 'endDate')
+    ) {
+      dispatch({ type: 'SET_VALUES', payload: { [key]: value } })
+    }
   }
+  const dateDiff = useMemo(() => {
+    const startDate = new Date(state.startDate)
+    const endDate = new Date(state.endDate)
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays + 1
+  }, [state.startDate, state.endDate])
+  useEffect(() => {
+    handleSetValue('dayStayed', dateDiff)
+  }, [dateDiff])
   const roomInfo = [
     {
       id: 1,
@@ -240,7 +258,7 @@ export const useRoom = () => {
       console.log('🚀 ~ getRooms ~ error:', error)
     }
   }
-  const getBills = async ({ apartmentId, roomId }) => {
+  const getBills = async ({ roomId }) => {
     try {
       return {
         data: {
@@ -259,6 +277,25 @@ export const useRoom = () => {
       console.log('🚀 ~ getRooms ~ error:', error)
     }
   }
+  const createRoom = async ({ data, resetState: rsState, onClose }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/room/create`,
+        method: 'POST',
+        body: data
+      })
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_CREATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOM_CREATED.VIE)
+        rsState()
+        onClose()
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_EXISTED.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_EXISTED.VIE)
+      }
+      return res
+    } catch (error) {
+      console.log('🚀 ~ createRoom ~ error:', error)
+    }
+  }
   const resetState = () => {
     dispatch({ type: 'RESET' })
   }
@@ -271,6 +308,9 @@ export const useRoom = () => {
       }
     })
   }
+  const updateRoomStates = async () => {
+    console.log('🚀 ~ updateRoomStates ~ data:', state)
+  }
   return {
     getRooms,
     state,
@@ -279,6 +319,8 @@ export const useRoom = () => {
     getDetailRoom,
     roomInfo,
     handleSetValue,
-    getBills
+    getBills,
+    createRoom,
+    updateRoomStates
   }
 }

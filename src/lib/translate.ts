@@ -47,5 +47,17 @@ export const RETURNED_MESSAGES = {
       ENG: 'Customer created',
       VIE: 'Tạo khách thuê thành công'
     }
+  },
+
+  ROOM: {
+    ROOM_EXISTED: {
+      ENG: 'Room is existed',
+      VIE: 'Tên phòng đã tồn tại'
+    },
+
+    ROOM_CREATED: {
+      ENG: 'Room created',
+      VIE: 'Tạo phòng thành công'
+    }
   }
 }
