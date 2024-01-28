@@ -93,7 +93,14 @@ const ExportBillModal = () => {
                 ),
                 renderNumberInput(
                   'Điện tiêu thụ',
-                  state.newElectric - state.oldElectric,
+                  Number(state.oldElectric) >= Number(state.newElectric)
+                    ? 0
+                    : Math.floor(
+                        (Number(state.newElectric) -
+                          Number(state.oldElectric)) *
+                          100
+                      ) / 100,
+
                   'Điện tiêu thụ'
                 ),
                 renderNumberInput(

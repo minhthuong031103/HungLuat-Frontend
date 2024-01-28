@@ -210,7 +210,7 @@ const Invoice = ({ data }) => {
           <Text style={{ fontWeight: 600 }}>Nguyễn Ngọc Bình</Text>
         </Text>
         <Text>
-          - Sốđiện thoại: <Text style={{ fontWeight: 600 }}>0963618637</Text>
+          - Số điện thoại: <Text style={{ fontWeight: 600 }}>0963618637</Text>
         </Text>
       </View>
       <View>
@@ -262,9 +262,15 @@ const Invoice = ({ data }) => {
     {
       id: 2,
       name: 'Điện và Phí ANTT',
-      unit: `${data.newElectric - data.oldElectric} (mới ${
-        data.newElectric
-      } - cũ ${data.oldElectric})`,
+      unit: `${
+        Number(data.oldElectric) >= Number(data.newElectric)
+          ? 0
+          : Math.floor(
+              (Number(data.newElectric) - Number(data.oldElectric)) * 100
+            ) / 100
+      } (mới ${Math.floor(data.newElectric * 100) / 100} - cũ ${
+        data.oldElectric
+      })`,
       price: `${convertPriceNotVND(data.electricPrice)}đ/KWh`,
       total: convertPriceNotVND(data.totalElectricPrice)
     },
