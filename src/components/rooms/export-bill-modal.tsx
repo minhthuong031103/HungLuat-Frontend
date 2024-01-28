@@ -1,22 +1,22 @@
-'use client';
+'use client'
 
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { useModal } from '@/hooks/useModalStore';
-import { useRoom } from '@/hooks/useRoom';
-import { convertPrice, formatDateCustom } from '@/lib/utils';
-import { Modal } from '@mantine/core';
-import { Button, Divider } from '@nextui-org/react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import Invoice from '../invoice/invoice';
-import { SidebarWrapper } from '../sidebar/sidebar';
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
+import { useModal } from '@/hooks/useModalStore'
+import { useRoom } from '@/hooks/useRoom'
+import { convertPrice, formatDateCustom } from '@/lib/utils'
+import { Modal } from '@mantine/core'
+import { Button, Divider } from '@nextui-org/react'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import Invoice from '../invoice/invoice'
+import { SidebarWrapper } from '../sidebar/sidebar'
 
 const ExportBillModal = () => {
-  const { isOpen, onClose, type } = useModal();
-  const { state } = useRoom();
-  const isModalOpen = isOpen && type === 'exportBill';
+  const { isOpen, onClose, type } = useModal()
+  const { state } = useRoom()
+  const isModalOpen = isOpen && type === 'exportBill'
   const handleExportBill = () => {
-    onClose();
-  };
+    onClose()
+  }
 
   const renderInput = (
     label,
@@ -37,14 +37,14 @@ const ExportBillModal = () => {
         disabled={disabled}
       />
     </div>
-  );
+  )
 
   const renderNumberInput = (label, value, placeholder, disabled = false) =>
-    renderInput(label, value, placeholder, 'text', disabled);
+    renderInput(label, value, placeholder, 'text', disabled)
 
   const renderInputRow = (inputs) => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
-  );
+  )
   return (
     <Modal
       closeOnClickOutside={false}
@@ -68,7 +68,7 @@ const ExportBillModal = () => {
               'Số ngày ở trong tháng',
               state.dayStayed,
               'Số ngày ở trong tháng'
-            ),
+            )
           ])}
           {renderInputRow([
             renderNumberInput('Tiền nợ cũ', state.oldDebt, 'Tiền nợ cũ'),
@@ -79,7 +79,7 @@ const ExportBillModal = () => {
                 ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
                 : 0,
               'Số ngày ở trong tháng'
-            ),
+            )
           ])}
           <p className="text-gray font-semibold text-lg">Tiền dịch vụ</p>
 
@@ -87,14 +87,20 @@ const ExportBillModal = () => {
             renderNumberInput('Giá điện', state.electricPrice, 'Nhập giá điện'),
             renderNumberInput(
               'Điện tiêu thụ',
-              state.newElectric - state.oldElectric,
+              Number(state.oldElectric) >= Number(state.newElectric)
+                ? 0
+                : Math.floor(
+                    (Number(state.newElectric) - Number(state.oldElectric)) *
+                      100
+                  ) / 100,
+
               'Điện tiêu thụ'
             ),
             renderNumberInput(
               'Tổng tiền điện',
               state.totalElectricPrice,
               'Tổng tiền điện'
-            ),
+            )
           ])}
           {renderInputRow([
             renderNumberInput(
@@ -116,7 +122,7 @@ const ExportBillModal = () => {
               'Tổng tiền giữ xe',
               state.totalParkingPrice,
               'Tổng tiền giữ xe'
-            ),
+            )
           ])}
 
           <div className="w-full">
@@ -144,7 +150,7 @@ const ExportBillModal = () => {
               data={{
                 ...state,
                 startDate: formatDateCustom(state.startDate),
-                endDate: formatDateCustom(state.endDate),
+                endDate: formatDateCustom(state.endDate)
               }}
             />
           }
@@ -159,7 +165,7 @@ const ExportBillModal = () => {
         </PDFDownloadLink>
       </>
     </Modal>
-  );
-};
+  )
+}
 
-export default ExportBillModal;
+export default ExportBillModal

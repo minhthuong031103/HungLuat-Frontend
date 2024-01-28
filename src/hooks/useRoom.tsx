@@ -136,6 +136,12 @@ export const RoomProvider = ({ children }) => {
         key != 'roomStatus' &&
         checkValueNumberInput(key, value))
     ) {
+      if (value === '') {
+        value = 0
+      }
+      if (value[0] == '0' && value[1] != '.' && value.length > 1) {
+        value = value.slice(1)
+      }
       dispatch({ type: 'SET_VALUES', payload: { [key]: value } })
     }
   }
@@ -441,10 +447,16 @@ export const RoomProvider = ({ children }) => {
     return false
   }
   useEffect(() => {
-    const EP = Math.floor(
-      (Number(state.newElectric) - Number(state.oldElectric)) *
-        Number(state.electricPrice)
-    )
+    const EP =
+      Number(state.oldElectric) >= Number(state.newElectric)
+        ? 0
+        : Math.floor(
+            (Math.floor(
+              (Number(state.newElectric) - Number(state.oldElectric)) * 100
+            ) /
+              100) *
+              Number(state.electricPrice)
+          )
     const WP = Number(state.waterPrice) * Number(state.peopleAmount)
     const PP = Number(state.parkingPrice) * Number(state.vehicleAmount)
     const EPV = Number(state.elevatorPrice) * Number(state.peopleAmount)
