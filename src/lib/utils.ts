@@ -176,6 +176,14 @@ export const convertPrice = (price) => {
 
   return formatter.replace('₫', 'VND')
 }
+export const convertPriceNotVND = (price) => {
+  const formatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND'
+  }).format(price)
+
+  return formatter.replace('₫', '')
+}
 export function formatDateCustom(date) {
   const day = String(date.getDate()).padStart(2, '0')
   const month = String(date.getMonth() + 1).padStart(2, '0')

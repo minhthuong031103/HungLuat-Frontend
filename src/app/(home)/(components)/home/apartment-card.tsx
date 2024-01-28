@@ -17,7 +17,7 @@ interface ApartmentCardProps {
 const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
   return (
     <Card
-      className="max-w-[359px] max-h-[533px]"
+      className="max-w-[383px] h-[555px]"
       classNames={{
         header: 'p-0 flex relative',
         base: 'rounded-none'
@@ -29,7 +29,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           height={186}
           radius="none"
           src={apartment.url ? apartment.url : imageApartment}
-          width={359}
+          width={383}
         />
         <RoomDropdown
           className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105 rounded-full drop-shadow"
@@ -64,7 +64,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <div className="flex flex-col gap-[5px] h-fit w-full">
+        <div className="flex flex-col gap-2 h-fit w-full">
           <div className="flex items-center">
             <p className="text-cardDetail font-medium text-sm">Đang ở</p>
             <p className="text-black font-semibold text-base ml-auto">

@@ -66,7 +66,7 @@ const RoomsPage = () => {
   )
   useEffect(() => {
     console.log(apartments)
-    if (apartments?.pages?.[0]?.data?.items[0]?.id) {
+    if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
       setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString())
     }
   }, [apartments])

@@ -218,7 +218,7 @@ export const RoomProvider = ({ children }) => {
       id: 4,
       contents: [
         {
-          label: 'Chỉ số điện lúc bàn giao (kWh)',
+          label: 'Chỉ số điện lúc bàn giao (KWh)',
           type: 'text',
           placeholder: 'Chỉ số điện lúc bàn giao',
           isRequired: true,
@@ -227,7 +227,7 @@ export const RoomProvider = ({ children }) => {
           setValue: (value) => handleSetValue('defaultElectric', value)
         },
         {
-          label: 'Chỉ số điện cũ (kWh)',
+          label: 'Chỉ số điện cũ (KWh)',
           type: 'text',
           placeholder: 'Nhập chỉ số điện cũ',
           isRequired: true,
@@ -241,7 +241,7 @@ export const RoomProvider = ({ children }) => {
       id: 5,
       contents: [
         {
-          label: 'Giá điện (VNĐ / kWh)',
+          label: 'Giá điện (VNĐ / KWh)',
           type: 'text',
           placeholder: 'Giá điện',
           isRequired: true,
@@ -250,7 +250,7 @@ export const RoomProvider = ({ children }) => {
         },
 
         {
-          label: 'Chỉ số điện mới (kWh)',
+          label: 'Chỉ số điện mới (KWh)',
           type: 'text',
           placeholder: 'Nhập chỉ số điện mới',
           isRequired: true,

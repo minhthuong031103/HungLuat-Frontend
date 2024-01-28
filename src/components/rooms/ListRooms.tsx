@@ -12,9 +12,13 @@ const ListRooms = ({ floors }) => {
             <p className="text-base text-black font-bold">
               Tầng {floor?.floor}
             </p>
-            <div className="w-full grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
               {floor?.rooms?.map((room) => {
-                return <RoomCard key={room.id} room={room} />
+                return (
+                  <div key={room.id}>
+                    <RoomCard room={room} />
+                  </div>
+                )
               })}
             </div>
           </div>
