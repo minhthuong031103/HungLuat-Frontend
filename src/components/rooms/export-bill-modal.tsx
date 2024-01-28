@@ -7,14 +7,15 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Input,
-  Checkbox,
   Divider
 } from '@nextui-org/react'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { convertPrice } from '@/lib/utils'
+import { convertPrice, formatDateCustom } from '@/lib/utils'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import { SidebarWrapper } from '../sidebar/sidebar'
+import Invoice from '../invoice/invoice'
 
 const ExportBillModal = () => {
   const { isOpen, onClose, type } = useModal()
@@ -144,12 +145,25 @@ const ExportBillModal = () => {
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button
-                className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
-                onPress={handleExportBill}
+              <PDFDownloadLink
+                document={
+                  <Invoice
+                    data={{
+                      ...state,
+                      startDate: formatDateCustom(state.startDate),
+                      endDate: formatDateCustom(state.endDate)
+                    }}
+                  />
+                }
+                fileName="invoice.pdf"
               >
-                Xác nhận
-              </Button>
+                <Button
+                  className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
+                  onPress={handleExportBill}
+                >
+                  Xác nhận
+                </Button>
+              </PDFDownloadLink>
             </ModalFooter>
           </>
         )}

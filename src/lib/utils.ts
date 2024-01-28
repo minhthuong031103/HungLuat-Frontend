@@ -176,3 +176,24 @@ export const convertPrice = (price) => {
 
   return formatter.replace('₫', 'VND')
 }
+export function formatDateCustom(date) {
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}`
+}
+export function addDaysToDateString(originalDateString, daysToAdd) {
+  // Parse the original string into a Date object
+  const [day, month, year] = originalDateString.split('/')
+  const originalDate = new Date(`${year}-${month}-${day}`)
+
+  // Add the specified number of days
+  originalDate.setDate(originalDate.getDate() + daysToAdd)
+
+  // Format the new date back into 'dd/mm/yyyy'
+  const newDay = String(originalDate.getDate()).padStart(2, '0')
+  const newMonth = String(originalDate.getMonth() + 1).padStart(2, '0')
+  const newYear = originalDate.getFullYear()
+
+  return `${newDay}/${newMonth}/${newYear}`
+}
