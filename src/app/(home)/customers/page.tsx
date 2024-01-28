@@ -1,9 +1,9 @@
-'use client';
+'use client'
 
-import CustomerTable from './CustomerTable';
+import CustomerTable from './CustomerTable'
 
 const page = () => {
-  return <CustomerTable />;
-};
+  return <CustomerTable />
+}
 
-export default page;
+export default page

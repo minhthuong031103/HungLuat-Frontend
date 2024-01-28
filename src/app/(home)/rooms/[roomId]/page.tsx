@@ -1,10 +1,12 @@
 'use client'
+import CustomerList from '@/components/rooms/CustomerList'
 import RoomInfo from '@/components/rooms/RoomInfo'
+import RoomSetting from '@/components/rooms/RoomSetting'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
 import { queryKey } from '@/lib/constant'
 import { cn } from '@/lib/utils'
-import { BreadcrumbItem, Breadcrumbs, Button } from '@nextui-org/react'
+import { BreadcrumbItem, Breadcrumbs, Button, Divider } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -23,7 +25,7 @@ const RoomDetailPage = () => {
     },
     {
       name: 'Danh sách khách thuê',
-      key: 'listUser'
+      key: 'customerList'
     },
     {
       name: 'Cấu hình phòng',
@@ -40,7 +42,7 @@ const RoomDetailPage = () => {
     {
       content: 'Xuất phiếu',
       action: () => {
-        onOpen('exportBill')
+        onOpen('exportBill', { roomId: Number(roomId) }, refetch)
       }
     },
     {
@@ -135,9 +137,15 @@ const RoomDetailPage = () => {
           ))}
         </div>
       </div>
+      <Divider className="mt-8" />
+
       <div>
-        {flag === 'finance' && (
+        {flag === 'finance' ? (
           <RoomInfo roomId={roomId} refetch={refetch} isLoading={isLoading} />
+        ) : flag === 'customerList' ? (
+          <CustomerList />
+        ) : (
+          <RoomSetting />
         )}
       </div>
     </div>
