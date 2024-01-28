@@ -49,10 +49,10 @@ const CustomerAddModal = () => {
     scrollerRef,
     rooms,
   } = useApartmentScroll();
-  console.log('🚀 ~ CustomerAddModal ~ rooms:', rooms);
-  console.log('🚀 ~ CustomerAddModal ~ apartmentChosen:', apartmentChosen);
+
   return (
     <Modal
+      closeOnClickOutside={false}
       centered
       title="Thêm khách trọ"
       classNames={{

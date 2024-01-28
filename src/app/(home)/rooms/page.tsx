@@ -261,7 +261,7 @@ const RoomsPage = () => {
               <div className="w-full h-[300px] flex items-center justify-center">
                 <Spinner />
               </div>
-            ) : floors.length === 0 ? (
+            ) : floors?.length === 0 ? (
               <div className="w-full h-[300px] flex items-center justify-center">
                 <p className="font-medium text-base text-room-detail/50">
                   Không có dữ liệu...
