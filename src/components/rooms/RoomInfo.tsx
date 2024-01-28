@@ -19,7 +19,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
       ) : (
         <div className="w-full h-full space-y-4">
           <div className="w-full flex flex-col space-y-3">
-            <p className="text-gray text-lg font-medium">Thông tin phòng</p>
+            <p className="text-gray text-lg font-semibold">Thông tin phòng</p>
             <div className="w-full space-y-5">
               <p className="text-gray text-base font-medium">Tiền phòng</p>
               <div className="w-[70%] flex gap-10 items-center">

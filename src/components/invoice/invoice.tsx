@@ -1,4 +1,8 @@
-import { addDaysToDateString, convertPrice } from '@/lib/utils'
+import {
+  addDaysToDateString,
+  convertPriceNotVND,
+  getDaysAmountInMonth
+} from '@/lib/utils'
 import {
   Text,
   View,
@@ -7,6 +11,7 @@ import {
   StyleSheet,
   Font
 } from '@react-pdf/renderer'
+import { getDaysInMonth } from 'date-fns'
 import { Fragment } from 'react'
 
 const Invoice = ({ data }) => {
@@ -185,7 +190,7 @@ const Invoice = ({ data }) => {
         {new Date().getFullYear()}
       </Text>
       <Text style={{ fontSize: 14, fontWeight: 600 }}>
-        (Từ ngày {data.startDate} đến {data.endDate})
+        (Từ ngày {data.startDate}đến {data.endDate})
       </Text>
     </View>
   )
@@ -205,7 +210,7 @@ const Invoice = ({ data }) => {
           <Text style={{ fontWeight: 600 }}>Nguyễn Ngọc Bình</Text>
         </Text>
         <Text>
-          - Số điện thoại: <Text style={{ fontWeight: 600 }}>0963618637</Text>
+          - Sốđiện thoại: <Text style={{ fontWeight: 600 }}>0963618637</Text>
         </Text>
       </View>
       <View>
@@ -228,7 +233,7 @@ const Invoice = ({ data }) => {
         <Text style={{ fontWeight: 600 }}>Nội dung</Text>
       </View>
       <View style={[styles.theader, styles.theader2]}>
-        <Text style={{ fontWeight: 600 }}>Đơn giá x Đơn vị tính</Text>
+        <Text style={{ fontWeight: 600 }}>Đơn giá xĐơn vị tính</Text>
       </View>
       <View style={styles.theader}>
         <Text style={{ fontWeight: 600 }}>Thành tiền</Text>
@@ -239,73 +244,91 @@ const Invoice = ({ data }) => {
     {
       id: 1,
       name: 'Tiền thuê phòng',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit:
+        data.dayStayed === getDaysInMonth(new Date())
+          ? 'Trọn tháng'
+          : `${data.dayStayed} ngày`,
+      price: `${convertPriceNotVND(data.roomPrice)}đ/tháng`,
+      total: convertPriceNotVND(
+        Math.floor(
+          (Number(data.roomPrice) * Number(data.dayStayed)) /
+            getDaysAmountInMonth(
+              new Date().getMonth() + 1,
+              new Date().getFullYear()
+            )
+        )
+      )
     },
     {
       id: 2,
       name: 'Điện và Phí ANTT',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit: `${data.newElectric - data.oldElectric} (mới ${
+        data.newElectric
+      } - cũ ${data.oldElectric})`,
+      price: `${convertPriceNotVND(data.electricPrice)}đ/KWh`,
+      total: convertPriceNotVND(data.totalElectricPrice)
     },
     {
       id: 3,
       name: 'Nước',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit: `${data.peopleAmount} người`,
+      price: `${convertPriceNotVND(data.waterPrice)}đ/người`,
+      total: convertPriceNotVND(data.totalWaterPrice)
     },
     {
       id: 4,
       name: 'Tiền thang máy',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit: `${data.peopleAmount} người`,
+      price: `${convertPriceNotVND(data.elevatorPrice)}đ/người`,
+      total: convertPriceNotVND(data.totalElevatorPrice)
     },
 
     {
       id: 5,
       name: 'Tiền internet',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit: '1 phòng',
+      price: `${convertPriceNotVND(data.internetPrice)}đ/phòng`,
+      total: convertPriceNotVND(data.internetPrice)
     },
     {
       id: 6,
-      name: 'Tiền giữ xe',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      name: 'Tiền dịch vụ',
+      unit: '1 phòng',
+      price: `${convertPriceNotVND(data.servicePrice)}đ/phòng`,
+      total: convertPriceNotVND(data.servicePrice)
     },
     {
       id: 7,
       name: 'Tiền phụ thu',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      unit: `${data.peopleRealStayed}/4 người`,
+      price: `${convertPriceNotVND(data.surcharge)}đ/số người quá quy định`,
+      total: convertPriceNotVND(
+        Number(data.peopleRealStayed) - 4 > 0
+          ? (Number(data.peopleRealStayed) - 4) * Number(data.surcharge)
+          : 0
+      )
     },
     {
       id: 8,
-      name: 'Tiền nợ cũ',
-      unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      name: 'Tiền giữ xe',
+      unit: `${data.vehicleAmount} xe`,
+      price: `${convertPriceNotVND(data.parkingPrice)}đ/xe`,
+      total: convertPriceNotVND(data.totalParkingPrice)
     },
     {
       id: 9,
-      name: 'Tiền nợ mới',
+      name: 'Tiền nợ cũ',
       unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      price: `${convertPriceNotVND(data.oldDebt)}đ`,
+      total: convertPriceNotVND(data.oldDebt)
     },
+
     {
       id: 10,
       name: 'Chi phí phát sinh khác',
       unit: '1',
-      price: '6.500.000',
-      total: '6.500.000'
+      price: `${convertPriceNotVND(data.otherPrice)}đ`,
+      total: convertPriceNotVND(data.otherPrice)
     }
   ]
   const TableBody = () =>
@@ -320,7 +343,7 @@ const Invoice = ({ data }) => {
           </View>
           <View style={[styles.tbody, styles.tbody2]}>
             <Text>
-              {item.unit} x {item.price}
+              {item.price} x {item.unit}
             </Text>
           </View>
           <View
@@ -346,7 +369,7 @@ const Invoice = ({ data }) => {
         ]}
       >
         <Text style={{ fontWeight: 600, color: 'blue', fontSize: 15 }}>
-          {convertPrice(data.totalPrice)}
+          {convertPriceNotVND(data.netProceeds)}
         </Text>
       </View>
     </View>
@@ -372,8 +395,7 @@ const Invoice = ({ data }) => {
         <Text style={{ fontWeight: 600, color: 'blue' }}>6905 2052 205 75</Text>
         . Nội dung CK:{' '}
         <Text style={{ fontWeight: 600, color: 'blue' }}>
-          {data.roomName} T{new Date().getMonth() + 1}/
-          {new Date().getFullYear()}
+          {data.name} T{new Date().getMonth() + 1}/{new Date().getFullYear()}
         </Text>
       </Text>
     </View>
