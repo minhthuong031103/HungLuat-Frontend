@@ -190,7 +190,7 @@ const Invoice = ({ data }) => {
         {new Date().getFullYear()}
       </Text>
       <Text style={{ fontSize: 14, fontWeight: 600 }}>
-        (Từ ngày {data.startDate}đến {data.endDate})
+        (Từ ngày {data.startDate} đến {data.endDate})
       </Text>
     </View>
   )
@@ -247,7 +247,7 @@ const Invoice = ({ data }) => {
       unit:
         data.dayStayed === getDaysInMonth(new Date())
           ? 'Trọn tháng'
-          : `${data.dayStayed} ngày`,
+          : `${data.dayStayed}/${getDaysInMonth(new Date())} ngày`,
       price: `${convertPriceNotVND(data.roomPrice)}đ/tháng`,
       total: convertPriceNotVND(
         Math.floor(
@@ -266,9 +266,9 @@ const Invoice = ({ data }) => {
         Number(data.oldElectric) >= Number(data.newElectric)
           ? 0
           : Math.floor(
-              (Number(data.newElectric) - Number(data.oldElectric)) * 100
-            ) / 100
-      } (mới ${Math.floor(data.newElectric * 100) / 100} - cũ ${
+              (Number(data.newElectric) - Number(data.oldElectric)) * 10
+            ) / 10
+      } (mới ${Math.floor(data.newElectric * 10) / 10} - cũ ${
         data.oldElectric
       })`,
       price: `${convertPriceNotVND(data.electricPrice)}đ/KWh`,
@@ -324,15 +324,21 @@ const Invoice = ({ data }) => {
     {
       id: 9,
       name: 'Tiền nợ cũ',
-      unit: '1',
+
       price: `${convertPriceNotVND(data.oldDebt)}đ`,
       total: convertPriceNotVND(data.oldDebt)
     },
-
     {
       id: 10,
+      name: 'Tiền nợ mới',
+
+      price: `${convertPriceNotVND(data.newDebt)}đ`,
+      total: `- ${convertPriceNotVND(data.newDebt)}`
+    },
+    {
+      id: 11,
       name: 'Chi phí phát sinh khác',
-      unit: '1',
+
       price: `${convertPriceNotVND(data.otherPrice)}đ`,
       total: convertPriceNotVND(data.otherPrice)
     }
@@ -349,7 +355,8 @@ const Invoice = ({ data }) => {
           </View>
           <View style={[styles.tbody, styles.tbody2]}>
             <Text>
-              {item.price} x {item.unit}
+              {item.price}
+              {item.unit && ` x ${item.unit}`}
             </Text>
           </View>
           <View
@@ -375,7 +382,7 @@ const Invoice = ({ data }) => {
         ]}
       >
         <Text style={{ fontWeight: 600, color: 'blue', fontSize: 15 }}>
-          {convertPriceNotVND(data.netProceeds)}
+          {convertPriceNotVND(data.suspenseMoney)}
         </Text>
       </View>
     </View>

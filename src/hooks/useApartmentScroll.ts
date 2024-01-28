@@ -1,26 +1,26 @@
-import { useApiAxios } from '@/components/providers/ApiProvider';
-import { queryKey } from '@/lib/constant';
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useApartment } from './useApartment';
+import { useApiAxios } from '@/components/providers/ApiProvider'
+import { queryKey } from '@/lib/constant'
+import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useEffect, useState } from 'react'
+import { useApartment } from './useApartment'
 
 export const useApartmentScroll = () => {
-  const [apartmentChosen, setApartmentChosen] = useState('');
-  const [searchValue, setSearchValue] = useState('');
+  const [apartmentChosen, setApartmentChosen] = useState('')
+  const [searchValue, setSearchValue] = useState('')
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const { getApartments } = useApartment();
-  const { requestApi } = useApiAxios();
-  const [rooms, setRooms] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const { getApartments } = useApartment()
+  const { requestApi } = useApiAxios()
+  const [rooms, setRooms] = useState([])
   const {
     data: apartments,
     fetchNextPage,
     hasNextPage,
     refetch: refetchData,
     isFetching,
-    isFetchingNextPage,
+    isFetchingNextPage
   } = useInfiniteQuery(
     [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
     ({ pageParam = 0 }) =>
@@ -28,7 +28,7 @@ export const useApartmentScroll = () => {
         page: pageParam,
         limit: 10,
         search: searchValue,
-        searchField: 'name',
+        searchField: 'name'
       }),
     {
       staleTime: 1000 * 60 * 1,
@@ -36,54 +36,54 @@ export const useApartmentScroll = () => {
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage, pages) => {
         if (
-          lastPage.data.currentPage === 1 &&
-          pages.length < lastPage.data.totalPages
+          lastPage?.data.currentPage === 1 &&
+          pages.length < lastPage?.data.totalPages
         )
-          return 2;
-        if (pages.length < lastPage.data.totalPages) return pages.length;
-        else return undefined;
-      },
+          return 2
+        if (pages.length < lastPage?.data.totalPages) return pages.length
+        else return undefined
+      }
     }
-  );
-  const [isScrollOpen, setIsScrollOpen] = useState(false);
-  const [flag, setFlag] = useState(false);
+  )
+  const [isScrollOpen, setIsScrollOpen] = useState(false)
+  const [flag, setFlag] = useState(false)
   const [, scrollerRef] = useInfiniteScroll({
     isEnabled: isScrollOpen,
     hasMore: hasNextPage,
     shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
     onLoadMore: () => {
-      fetchNextPage();
-    },
-  });
+      fetchNextPage()
+    }
+  })
   const getRooms = async ({
     apartmentId,
     search = '',
-    searchField = 'name',
+    searchField = 'name'
   }) => {
     try {
       const res = await requestApi({
         endPoint: `/room/apartment/${apartmentId}?search=${search}&searchField=${searchField}`,
-        method: 'GET',
-      });
-      return res;
+        method: 'GET'
+      })
+      return res
     } catch (error) {
-      console.log('🚀 ~ getRooms ~ error:', error);
+      console.log('🚀 ~ getRooms ~ error:', error)
     }
-  };
+  }
   const handleGetRooms = async () => {
-    setLoading(true);
+    setLoading(true)
     const res = await getRooms({
       apartmentId: Number(apartmentChosen),
-      search: searchValue,
-    });
-    setRooms(res?.data?.rooms);
-    setLoading(false);
-  };
+      search: searchValue
+    })
+    setRooms(res?.data?.rooms)
+    setLoading(false)
+  }
   useEffect(() => {
     if (Number(apartmentChosen)) {
-      handleGetRooms();
+      handleGetRooms()
     }
-  }, [apartmentChosen]);
+  }, [apartmentChosen])
 
   return {
     apartmentChosen,
@@ -106,6 +106,6 @@ export const useApartmentScroll = () => {
     flag,
     setFlag,
     scrollerRef,
-    rooms,
-  };
-};
+    rooms
+  }
+}

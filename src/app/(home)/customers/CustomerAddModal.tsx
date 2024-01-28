@@ -1,43 +1,27 @@
-'use client';
+'use client'
 
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { DatePicker } from '@/components/ui/date-picker';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-
-import { useApartment } from '@/hooks/useApartment';
-import { useApartmentScroll } from '@/hooks/useApartmentScroll';
-import { useCustomer } from '@/hooks/useCustomer';
-import { useModal } from '@/hooks/useModalStore';
-import { useRoom } from '@/hooks/useRoom';
-import { EModalType, queryKey } from '@/lib/constant';
-import { checkValueNumberInput } from '@/lib/utils';
-import { Apartment, Room } from '@/types';
-import { Modal } from '@mantine/core';
-import { Button, Select, SelectItem } from '@nextui-org/react';
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { SelectAddress } from '../(components)/home/select-address';
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
+import { DatePicker } from '@/components/ui/date-picker'
+import { useApartmentScroll } from '@/hooks/useApartmentScroll'
+import { useCustomer } from '@/hooks/useCustomer'
+import { useModal } from '@/hooks/useModalStore'
+import { EModalType } from '@/lib/constant'
+import { checkValueNumberInput } from '@/lib/utils'
+import { Apartment, Room } from '@/types'
+import { Modal } from '@mantine/core'
+import { Button, Select, SelectItem } from '@nextui-org/react'
 
 const CustomerAddModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE;
+  const { isOpen, onClose, type } = useModal()
+  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE
 
-  const resetState = () => {
-    //
-  };
-  const { handleSetCustomerValue, customerState } = useCustomer();
-  const handleCreateContract = () => {
-    resetState();
-    onClose();
-  };
+  const { handleSetCustomerValue, customerState, resetCustomerState } =
+    useCustomer()
+  const handleAddCustomer = () => {
+    // resetCustomerState()
+    console.log(customerState)
+    onClose()
+  }
 
   const {
     apartmentChosen,
@@ -47,8 +31,8 @@ const CustomerAddModal = () => {
     isFetching,
     setIsScrollOpen,
     scrollerRef,
-    rooms,
-  } = useApartmentScroll();
+    rooms
+  } = useApartmentScroll()
 
   return (
     <Modal
@@ -56,8 +40,9 @@ const CustomerAddModal = () => {
       centered
       title="Thêm khách trọ"
       classNames={{
-        header:
-          'flex justify-center items-center text-gray uppercase font-bold text-xl',
+        header: 'flex justify-center items-center relative',
+        title: 'font-bold text-gray uppercase font-bold text-xl',
+        close: 'm-0 absolute right-3 top-3'
       }}
       opened={isModalOpen}
       onClose={onClose}
@@ -83,7 +68,7 @@ const CustomerAddModal = () => {
               value={customerState.phone}
               setValue={(value) => {
                 checkValueNumberInput('phone', value) &&
-                  handleSetCustomerValue('phone', value);
+                  handleSetCustomerValue('phone', value)
               }}
             />
           </div>
@@ -105,7 +90,7 @@ const CustomerAddModal = () => {
               setValue={(value) => {
                 {
                   checkValueNumberInput('identityCard', value) &&
-                    handleSetCustomerValue('identityCard', value);
+                    handleSetCustomerValue('identityCard', value)
                 }
               }}
             />
@@ -113,7 +98,7 @@ const CustomerAddModal = () => {
           <div className="w-[50%]">
             <DatePicker
               label="Ngày cấp"
-              date={customerState.dayOfBirth}
+              date={customerState.issueDate}
               labelCustom="font-medium text-sm text-black"
               setDate={(value) => handleSetCustomerValue('issueDate', value)}
             />
@@ -133,8 +118,8 @@ const CustomerAddModal = () => {
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
               onChange={(e) => {
-                setApartmentChosen(e.target.value);
-                setCurrentPage(1);
+                setApartmentChosen(e.target.value)
+                setCurrentPage(1)
               }}
             >
               {apartments ? (
@@ -161,18 +146,18 @@ const CustomerAddModal = () => {
               isDisabled={!apartmentChosen.length}
               selectedKeys={customerState.roomId ? [customerState.roomId] : []}
               onChange={(e) => {
-                handleSetCustomerValue('roomId', e.target.value);
+                handleSetCustomerValue('roomId', e.target.value)
               }}
             >
               {rooms?.map((item: any) => {
-                console.log('🚀 ~ {rooms?.map ~ item:', item);
+                console.log('🚀 ~ {rooms?.map ~ item:', item)
                 return item?.rooms?.map((room: Room) => {
                   return (
                     <SelectItem key={room.id} value={room.id}>
                       {room.name}
                     </SelectItem>
-                  );
-                });
+                  )
+                })
               })}
             </Select>
           </div>
@@ -185,7 +170,7 @@ const CustomerAddModal = () => {
               value={customerState.address}
               setValue={(value) => {
                 {
-                  handleSetCustomerValue('address', value);
+                  handleSetCustomerValue('address', value)
                 }
               }}
             />
@@ -194,14 +179,14 @@ const CustomerAddModal = () => {
         <div className="flex w-full flex-row justify-end">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-            //  onPress={handleEditApartment}
+            onPress={handleAddCustomer}
           >
             Lưu
           </Button>
         </div>
       </div>
     </Modal>
-  );
-};
+  )
+}
 
-export default CustomerAddModal;
+export default CustomerAddModal

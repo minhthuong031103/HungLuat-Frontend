@@ -3,18 +3,61 @@
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
-import { convertPrice, formatDateCustom } from '@/lib/utils'
+import {
+  convertPrice,
+  formatDateCustom,
+  getDaysAmountInMonth
+} from '@/lib/utils'
 import { Modal } from '@mantine/core'
-import { Button, Divider } from '@nextui-org/react'
-import { PDFDownloadLink } from '@react-pdf/renderer'
+import { Button, Divider, Spinner } from '@nextui-org/react'
+import { BlobProvider } from '@react-pdf/renderer'
 import Invoice from '../invoice/invoice'
-import { SidebarWrapper } from '../sidebar/sidebar'
-
+import { saveAs } from 'file-saver'
+import { useState } from 'react'
 const ExportBillModal = () => {
-  const { isOpen, onClose, type } = useModal()
-  const { state } = useRoom()
+  const { isOpen, onClose, type, data, onAction } = useModal()
+  const { roomId } = data
+  const { state, exportBill } = useRoom()
+  const [isLoading, setIsLoading] = useState(false)
   const isModalOpen = isOpen && type === 'exportBill'
-  const handleExportBill = () => {
+  const handleExportBill = async (blob) => {
+    setIsLoading(true)
+    const data = {
+      roomId: roomId,
+      customerId: '1',
+      endDate: state.endDate,
+      roomPrice: Math.floor(
+        (Number(state.roomPrice) * Number(state.dayStayed)) /
+          getDaysAmountInMonth(
+            new Date().getMonth() + 1,
+            new Date().getFullYear()
+          )
+      ),
+      totalElectricPrice: state.totalElectricPrice,
+      totalWaterPrice: state.totalWaterPrice,
+      totalElevatorPrice: state.totalElevatorPrice,
+      totalParkingPrice: state.totalParkingPrice,
+      internetPrice: state.internetPrice,
+      servicePrice: state.servicePrice,
+      otherPrice: state.otherPrice,
+      totalSurcharge:
+        Number(state.peopleRealStayed) - 4 > 0
+          ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
+          : 0,
+      suspenseMoney: state.suspenseMoney,
+      newDebt: state.newDebt,
+      oldDebt: state.oldDebt,
+      newElectric: state.newElectric,
+      oldElectric: state.oldElectric,
+
+      files: [blob]
+    }
+    await exportBill(data, onAction)
+    setIsLoading(false)
+    await saveAs(
+      blob,
+      `${state.name} T${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+    )
     onClose()
   }
 
@@ -50,15 +93,18 @@ const ExportBillModal = () => {
       closeOnClickOutside={false}
       radius={15}
       size={'auto'}
+      title="Xuất phiếu thu"
+      classNames={{
+        header: 'flex justify-center items-center relative',
+        title: 'font-bold text-gray uppercase font-bold text-xl',
+        close: 'm-0 absolute right-3 top-3'
+      }}
       removeScrollProps={{ allowPinchZoom: true }}
       opened={isModalOpen}
       centered
       onClose={onClose}
     >
       <>
-        <div className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-          Xuất phiếu thu
-        </div>
         <div className="space-y-2">
           <p className="text-gray font-semibold text-lg">Tiền phòng</p>
           {renderInputRow([
@@ -90,9 +136,8 @@ const ExportBillModal = () => {
               Number(state.oldElectric) >= Number(state.newElectric)
                 ? 0
                 : Math.floor(
-                    (Number(state.newElectric) - Number(state.oldElectric)) *
-                      100
-                  ) / 100,
+                    (Number(state.newElectric) - Number(state.oldElectric)) * 10
+                  ) / 10,
 
               'Điện tiêu thụ'
             ),
@@ -125,7 +170,7 @@ const ExportBillModal = () => {
             )
           ])}
 
-          <div className="w-full">
+          <div className="w-full pt-2">
             <Divider className="my-4" />
             <div className="w-full flex justify-between gap-5 px-5">
               <div className="flex gap-5">
@@ -144,25 +189,28 @@ const ExportBillModal = () => {
             <Divider className="mt-4" />
           </div>
         </div>
-        <PDFDownloadLink
-          document={
-            <Invoice
-              data={{
-                ...state,
-                startDate: formatDateCustom(state.startDate),
-                endDate: formatDateCustom(state.endDate)
-              }}
-            />
-          }
-          fileName="invoice.pdf"
-        >
-          <Button
-            className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
-            onPress={handleExportBill}
+        <div className="mt-5 flex justify-end py-4">
+          <BlobProvider
+            document={
+              <Invoice
+                data={{
+                  ...state,
+                  startDate: formatDateCustom(state.startDate),
+                  endDate: formatDateCustom(state.endDate)
+                }}
+              />
+            }
           >
-            Xác nhận
-          </Button>
-        </PDFDownloadLink>
+            {({ blob }) => (
+              <Button
+                className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
+                onPress={() => handleExportBill(blob)}
+              >
+                {isLoading ? <Spinner color="white" size="sm" /> : 'Xác nhận'}
+              </Button>
+            )}
+          </BlobProvider>
+        </div>
       </>
     </Modal>
   )

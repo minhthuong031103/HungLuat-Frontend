@@ -1,7 +1,11 @@
 'use client'
 import { useApiAxios } from '@/components/providers/ApiProvider'
 import { RETURNED_MESSAGES } from '@/lib/translate'
-import { checkValueNumberInput, getDaysAmountInMonth } from '@/lib/utils'
+import {
+  blobToBase64,
+  checkValueNumberInput,
+  getDaysAmountInMonth
+} from '@/lib/utils'
 
 import { createContext, useContext, useEffect, useReducer } from 'react'
 import toast from 'react-hot-toast'
@@ -102,6 +106,7 @@ interface IRoomContext {
   resetState: any
   getDetailRoom: any
   updateRoomStates: any
+  exportBill: any
 }
 interface StateContractProps {
   customerName: string
@@ -117,12 +122,31 @@ interface StateContractProps {
   permanentResidence: string
   note: string
 }
+interface exportBillProps {
+  roomId: string
+  customerId: string
+  endDate: Date
+  roomPrice: number
+  totalElectricPrice: number
+  totalWaterPrice: number
+  totalElevatorPrice: number
+  totalParkingPrice: number
+  internetPrice: number
+  servicePrice: number
+  otherPrice: number
+  totalSurcharge: number
+  suspenseMoney: number
+  newDebt: number
+  oldDebt: number
+  newElectric: number
+  oldElectric: number
+  files: any[]
+}
 const RoomContext = createContext<any>(null)
 
 export const RoomProvider = ({ children }) => {
   const { requestApi } = useApiAxios()
   const [state, dispatch] = useReducer(reducer, initialState)
-  console.log('🚀 ~ RoomProvider ~ state:', state)
   const [contractState, dispatchContract]: [StateContractProps, any] =
     useReducer(reducerContract, initContractState)
 
@@ -153,7 +177,7 @@ export const RoomProvider = ({ children }) => {
     const endDate = new Date(state.endDate)
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    handleSetValue('dayStayed', diffDays + 1)
+    handleSetValue('dayStayed', diffDays)
   }, [state.startDate, state.endDate])
   const roomInfo = [
     {
@@ -452,9 +476,9 @@ export const RoomProvider = ({ children }) => {
         ? 0
         : Math.floor(
             (Math.floor(
-              (Number(state.newElectric) - Number(state.oldElectric)) * 100
+              (Number(state.newElectric) - Number(state.oldElectric)) * 10
             ) /
-              100) *
+              10) *
               Number(state.electricPrice)
           )
     const WP = Number(state.waterPrice) * Number(state.peopleAmount)
@@ -522,7 +546,6 @@ export const RoomProvider = ({ children }) => {
         startDate: state.startDate,
         endDate: state.endDate
       }
-      console.log(state.startDate)
       try {
         const res = await requestApi({
           endPoint: `/room/info/update`,
@@ -549,6 +572,34 @@ export const RoomProvider = ({ children }) => {
       return
     }
   }
+
+  const exportBill = async (data: exportBillProps, refetch: () => void) => {
+    const formData = new FormData()
+    const dataKey = Object.keys(data)
+    for (let i = 0; i < dataKey.length; i++) {
+      formData.append(dataKey[i], data[dataKey[i]])
+    }
+    const base64 = (await blobToBase64(data.files[0])) as string
+    formData.append('files', base64)
+
+    try {
+      const res = await requestApi({
+        endPoint: `/bill/export`,
+        method: 'POST',
+        body: formData
+      })
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
+        toast.success('Xuất hóa đơn thành công')
+        refetch()
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE)
+      } else {
+        toast.error('Xuất hóa đơn thất bại')
+      }
+    } catch (error) {
+      toast.error('Xuất hóa đơn thất bại')
+    }
+  }
   return (
     <RoomContext.Provider
       value={{
@@ -564,7 +615,8 @@ export const RoomProvider = ({ children }) => {
         createRoom,
         resetState,
         getDetailRoom,
-        updateRoomStates
+        updateRoomStates,
+        exportBill
       }}
     >
       {children}
