@@ -1,29 +1,33 @@
-import './globals.css'
-import type { Metadata } from 'next'
-import { Montserrat } from 'next/font/google'
-import { Toaster } from 'react-hot-toast'
-import { QueryProvider } from '@/components/providers/QueryProvider'
-import { UserProvider } from '@/context/UserProvider'
-import { ReduxProvider } from '@/redux/Provider'
-import { ModalProvider } from '@/components/providers/modal-provider'
-import { ApiContextProvider } from '@/components/providers/ApiProvider'
-import { RoomProvider } from '@/hooks/useRoom'
+import { ApiContextProvider } from '@/components/providers/ApiProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
+import { ModalProvider } from '@/components/providers/modal-provider';
+import { UserProvider } from '@/context/UserProvider';
+import { RoomProvider } from '@/hooks/useRoom';
+import { ReduxProvider } from '@/redux/Provider';
+import '@mantine/core/styles.css';
+import type { Metadata } from 'next';
+import { Montserrat } from 'next/font/google';
+import 'react-day-picker/dist/style.css';
+import { Toaster } from 'react-hot-toast';
+import './globals.css';
+
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
   variable: '--font-mont',
-  weight: '500'
-})
+  weight: '500',
+});
 
 const metadata: Metadata = {
   title: 'UITEstate',
   description: 'Real Estate By UIT',
   openGraph: {
     images: [
-      'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp'
-    ]
-  }
-}
+      'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp',
+    ],
+  },
+};
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -37,6 +41,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
         <link rel="icon" href="/logoEstate.png" />
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+        <ColorSchemeScript />
       </head>
       <body
         className={`${montserrat.variable} ${montserrat.style.fontWeight}`}
@@ -45,19 +50,21 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <ReduxProvider>
           <UserProvider>
             <ApiContextProvider>
-              <QueryProvider>
-                <RoomProvider>
-                  <Toaster />
-                  <ModalProvider />
-                  {children}
-                </RoomProvider>
-              </QueryProvider>
+              <MantineProvider>
+                <QueryProvider>
+                  <RoomProvider>
+                    <Toaster />
+                    <ModalProvider />
+                    {children}
+                  </RoomProvider>
+                </QueryProvider>
+              </MantineProvider>
             </ApiContextProvider>
           </UserProvider>
         </ReduxProvider>
       </body>
     </html>
-  )
-}
-export { metadata }
-export default RootLayout
+  );
+};
+export { metadata };
+export default RootLayout;
