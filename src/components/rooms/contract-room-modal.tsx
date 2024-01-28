@@ -13,6 +13,7 @@ import {
   DialogTitle
 } from '@/components/ui/dialog'
 import { Button } from '@nextui-org/react'
+import { checkValueNumberInput } from '@/lib/utils'
 const ContractRoomModal = () => {
   const { isOpen, onClose, type, data } = useModal()
   const { contractState, handleSetContract } = useRoom()
@@ -26,36 +27,6 @@ const ContractRoomModal = () => {
   }
 
   return (
-    // <Modal
-    //   size="3xl"
-    //   isOpen={isModalOpen}
-    //   onOpenChange={onClose}
-    //   classNames={{
-    //     body: 'z-10'
-    //   }}
-    // >
-    //   <ModalContent>
-    //     {() => (
-    //       <>
-    //         <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-    //           Hợp đồng
-    //         </ModalHeader>
-    //         <ModalBody className="space-y-4">
-
-    //         </ModalBody>
-
-    //         <ModalFooter>
-    //           <Button
-    //             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-    //             onPress={handleCreateContract}
-    //           >
-    //             Lưu
-    //           </Button>
-    //         </ModalFooter>
-    //       </>
-    //     )}
-    //   </ModalContent>
-    // </Modal>
     <Dialog open={isModalOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
@@ -80,38 +51,53 @@ const ContractRoomModal = () => {
                   setValue={(value) => handleSetContract('phoneNumber', value)}
                 />
               </div>
-              <div>
+              <div className="w-[33%]">
                 <DatePicker
-                  label="Ngày ký hợp đồng"
-                  date={contractState.dateContract}
-                  labelCustom="font-medium text-sm"
-                  setDate={(value) => handleSetContract('dateContract', value)}
+                  label="Ngày sinh"
+                  date={contractState.dayOfBirth}
+                  labelCustom="font-medium text-sm text-black"
+                  setDate={(value) => handleSetContract('dayOfBirth', value)}
                 />
               </div>
             </div>
             <div className="flex gap-[20px] w-full items-end">
               <div className="w-[33%]">
-                <CustomInput
-                  label="Họ tên khách hàng"
-                  placeholder="Nhập tên khách hàng"
-                  value={contractState.customerName}
-                  setValue={(value) => handleSetContract('customerName', value)}
+                <DatePicker
+                  label="Ngày ký hợp đồng"
+                  date={contractState.dateContract}
+                  labelCustom="font-medium text-sm text-black"
+                  setDate={(value) => handleSetContract('dateContract', value)}
+                />
+              </div>
+              <div className="w-[33%]">
+                <DatePicker
+                  label="Ngày hết hạn hợp đồng"
+                  labelCustom="font-medium text-sm text-black"
+                  date={contractState.dateExpired}
+                  setDate={(value) => handleSetContract('dateExpired', value)}
                 />
               </div>
               <div className="w-[33%]">
                 <CustomInput
-                  label="Số điện thoại"
-                  placeholder="Nhập SĐT khách hàng"
-                  value={contractState.phoneNumber}
-                  setValue={(value) => handleSetContract('phoneNumber', value)}
+                  label="CMND/CCCD"
+                  placeholder="Nhập CMND/CCCD"
+                  value={contractState.identityCard}
+                  setValue={(value) => {
+                    {
+                      checkValueNumberInput('identityCard', value) &&
+                        handleSetContract('identityCard', value)
+                    }
+                  }}
                 />
               </div>
-              <div>
+            </div>
+            <div className="flex gap-[20px] w-full items-end">
+              <div className="w-[33%]">
                 <DatePicker
-                  label="Ngày ký hợp đồng"
-                  date={contractState.dateContract}
-                  labelCustom="font-medium text-sm"
-                  setDate={(value) => handleSetContract('dateContract', value)}
+                  label="Ngày cấp"
+                  date={contractState.issueDate}
+                  labelCustom="font-medium text-sm text-black"
+                  setDate={(value) => handleSetContract('issueDate', value)}
                 />
               </div>
             </div>
