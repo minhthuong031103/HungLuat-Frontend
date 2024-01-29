@@ -1,45 +1,45 @@
-'use client';
-import { CommonSvg } from '@/assets/CommonSvg';
-import BuildingPlan from '@/components/rooms/BuildingPlan';
-import ListRooms from '@/components/rooms/ListRooms';
-import { useApartment } from '@/hooks/useApartment';
-import { useModal } from '@/hooks/useModalStore';
-import { useRoom } from '@/hooks/useRoom';
-import { queryKey } from '@/lib/constant';
-import { cn, getCurrentMonth } from '@/lib/utils';
-import { Apartment } from '@/types';
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { ChevronDown } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { CustomSelect } from '../(components)/home/custom-select';
-import { SearchBar } from '../(components)/home/searchbar';
+'use client'
+import { CommonSvg } from '@/assets/CommonSvg'
+import BuildingPlan from '@/components/rooms/BuildingPlan'
+import ListRooms from '@/components/rooms/ListRooms'
+import { useApartment } from '@/hooks/useApartment'
+import { useModal } from '@/hooks/useModalStore'
+import { useRoom } from '@/hooks/useRoom'
+import { queryKey } from '@/lib/constant'
+import { cn, getCurrentMonth } from '@/lib/utils'
+import { Apartment } from '@/types'
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
+import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { ChevronDown } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { CustomSelect } from '../(components)/home/custom-select'
+import { SearchBar } from '../(components)/home/searchbar'
 
 interface ResponseProps {
-  items: any;
-  totalItems: number;
-  totalPages: number;
+  items: any
+  totalItems: number
+  totalPages: number
 }
 
 const RoomsPage = () => {
-  const [searchAdvanced, setSearchAdvanced] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [electricityPrice, setElectricityPrice] = useState('');
-  const [statusRoom, setStatusRoom] = useState('');
-  const [statusPayment, setStatusPayment] = useState('');
-  const [apartmentChosen, setApartmentChosen] = useState('');
-  const { onOpen } = useModal();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const { getApartments } = useApartment();
+  const [searchAdvanced, setSearchAdvanced] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+  const [electricityPrice, setElectricityPrice] = useState('')
+  const [statusRoom, setStatusRoom] = useState('')
+  const [statusPayment, setStatusPayment] = useState('')
+  const [apartmentChosen, setApartmentChosen] = useState('')
+  const { onOpen } = useModal()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const { getApartments } = useApartment()
   const {
     data: apartments,
     fetchNextPage,
     hasNextPage,
     refetch: refetchData,
     isFetching,
-    isFetchingNextPage,
+    isFetchingNextPage
   } = useInfiniteQuery(
     [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
     ({ pageParam = 0 }) =>
@@ -47,7 +47,7 @@ const RoomsPage = () => {
         page: pageParam,
         limit: 10,
         search: searchValue,
-        searchField: 'name',
+        searchField: 'name'
       }),
     {
       staleTime: 1000 * 60 * 1,
@@ -55,61 +55,61 @@ const RoomsPage = () => {
       refetchOnWindowFocus: false,
       getNextPageParam: (lastPage, pages) => {
         if (
-          lastPage.data.currentPage === 1 &&
-          pages.length < lastPage.data.totalPages
+          lastPage?.data.currentPage === 1 &&
+          pages?.length < lastPage?.data.totalPages
         )
-          return 2;
-        if (pages.length < lastPage.data.totalPages) return pages.length;
-        else return undefined;
-      },
+          return 2
+        if (pages?.length < lastPage?.data.totalPages) return pages?.length
+        else return undefined
+      }
     }
-  );
+  )
   useEffect(() => {
-    console.log(apartments);
+    console.log(apartments)
     if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
-      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
+      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString())
     }
-  }, [apartments]);
+  }, [apartments])
   const apartment: Apartment = apartments?.pages?.map((page) => {
     return page.data.items.find(
       (item) => item.id.toString() === apartmentChosen
-    );
-  })[0];
+    )
+  })[0]
 
-  const [floors, setFloors] = useState([]);
+  const [floors, setFloors] = useState([])
   const handleGetRooms = async () => {
-    setLoading(true);
+    setLoading(true)
     const res = await getRooms({
       apartmentId: Number(apartmentChosen),
-      search: searchValue,
-    });
-    setFloors(res?.data?.rooms);
-    setLoading(false);
-  };
-  const { getRooms } = useRoom();
+      search: searchValue
+    })
+    setFloors(res?.data?.rooms)
+    setLoading(false)
+  }
+  const { getRooms } = useRoom()
   useEffect(() => {
     if (Number(apartmentChosen)) {
-      handleGetRooms();
+      handleGetRooms()
     }
-  }, [apartmentChosen]);
+  }, [apartmentChosen])
 
-  const [month, setMonth] = useState('');
+  const [month, setMonth] = useState('')
   const handleSearch = () => {
-    handleGetRooms();
-  };
-  const classNameChosen = 'font-semibold text-sm text-white';
-  const classNameNotChosen = 'font-medium text-sm text-black';
+    handleGetRooms()
+  }
+  const classNameChosen = 'font-semibold text-sm text-white'
+  const classNameNotChosen = 'font-medium text-sm text-black'
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [flag, setFlag] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [flag, setFlag] = useState(false)
   const [, scrollerRef] = useInfiniteScroll({
     isEnabled: isOpen,
     hasMore: hasNextPage,
     shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
     onLoadMore: () => {
-      fetchNextPage();
-    },
-  });
+      fetchNextPage()
+    }
+  })
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -178,11 +178,11 @@ const RoomsPage = () => {
               value:
                 'text-gray uppercase font-semibold text-lg group-data-[has-value=true]:text-gray',
               trigger:
-                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white',
+                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white'
             }}
             onChange={(e) => {
-              setApartmentChosen(e.target.value);
-              setCurrentPage(1);
+              setApartmentChosen(e.target.value)
+              setCurrentPage(1)
             }}
           >
             {apartments ? (
@@ -241,7 +241,7 @@ const RoomsPage = () => {
                         'createRoom',
                         {
                           numberFloor: apartment?.numberFloor,
-                          apartmentId: Number(apartmentChosen),
+                          apartmentId: Number(apartmentChosen)
                         },
                         handleGetRooms
                       )
@@ -280,7 +280,7 @@ const RoomsPage = () => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default RoomsPage;
+export default RoomsPage

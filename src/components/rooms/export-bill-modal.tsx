@@ -56,7 +56,9 @@ const ExportBillModal = () => {
     setIsLoading(false)
     await saveAs(
       blob,
-      `${state.name} T${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+      `${state.name} T${
+        new Date().getMonth() + 1
+      }/${new Date().getFullYear()}.pdf`
     )
     onClose()
   }
