@@ -1,26 +1,27 @@
-import React from 'react';
+import { CommonSvg } from '@/assets/CommonSvg';
 import { Customer } from '@/types';
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
   Button,
-  User,
-  Pagination,
-  Selection,
   Checkbox,
   Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
   DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Pagination,
   Select,
   SelectItem,
+  Selection,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  User,
 } from '@nextui-org/react';
-import { CommonSvg } from '@/assets/CommonSvg';
+import React from 'react';
 import Loader from '../Loader';
+import { VerticalDotsIcon } from './VerticalDotsIcon';
 
 interface CustomerProps {
   id: string;
@@ -46,7 +47,8 @@ interface dataTableProps {
   renderCell?: any;
   isLoading?: boolean;
   columns: any;
-  renderTableSize?: boolean;
+  showLimit?: boolean;
+  renderHeader?: any;
 }
 
 interface ColumnProps {
@@ -74,10 +76,11 @@ export default function DataTable({
   keyName,
   search = null,
   setSearch,
+  showLimit = true,
   renderRight,
   renderCell,
+  renderHeader,
   columns,
-  renderTableSize,
 }: dataTableProps) {
   const headerColumns = React.useMemo(() => {
     return columns;
@@ -100,41 +103,29 @@ export default function DataTable({
   const topContent = React.useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex gap-10 items-center">
-          <div className="flex gap-3">
-            <Button
-              // onPress={() => onOpen('createApartment')}
-              className="rounded-[8px] px-4 py-2 bg-blueButton"
+        <div className="flex flex-col gap-5 items-start">
+          {renderHeader && renderHeader()}
+          <div className="flex flex-row gap-x-5 items-center">
+            <Select
+              label="Giới hạn"
+              placeholder="Chọn giới hạn"
+              className="w-[120px]"
+              selectedKeys={[limit]}
+              onChange={(e) => {
+                setLimit(e.target.value);
+                setCurrentPage(1);
+              }}
             >
-              <div className="flex flex-row items-center gap-x-[8px] ">
-                <div>{CommonSvg.plus()}</div>
-                <div className="text-white mt-[1px] font-medium">Thêm</div>
-              </div>
-            </Button>
+              {limitOptions.map((limit) => (
+                <SelectItem key={limit.value} value={limit.value}>
+                  {limit.label}
+                </SelectItem>
+              ))}
+            </Select>
+            <div>
+              Tổng số: <span className="font-semibold">{totalItems}</span>
+            </div>
           </div>
-          {renderTableSize ? (
-            <>
-              <Select
-                label="Giới hạn"
-                placeholder="Chọn giới hạn"
-                className="w-[120px]"
-                selectedKeys={[limit]}
-                onChange={(e) => {
-                  setLimit(e.target.value);
-                  setCurrentPage(1);
-                }}
-              >
-                {limitOptions.map((limit) => (
-                  <SelectItem key={limit.value} value={limit.value}>
-                    {limit.label}
-                  </SelectItem>
-                ))}
-              </Select>
-              <div>
-                Tổng số: <span className="font-semibold">{totalItems}</span>
-              </div>
-            </>
-          ) : null}
         </div>
       </div>
     );
@@ -166,7 +157,7 @@ export default function DataTable({
       classNames={{
         wrapper: 'max-h-[700px]',
       }}
-      topContent={topContent}
+      topContent={showLimit ? topContent : null}
       selectionMode="single"
       topContentPlacement="outside"
     >

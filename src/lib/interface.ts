@@ -4,6 +4,7 @@ export interface LoginProps {
 }
 
 export interface ModalData {
+  roomId?: number
   name?: string
   city?: string
   district?: string

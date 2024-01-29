@@ -1,3 +1,4 @@
+import { EModalType } from '@/lib/constant';
 import { ModalData } from '@/lib/interface';
 import { create } from 'zustand';
 
@@ -8,7 +9,9 @@ export type ModalType =
   | 'editRoom'
   | 'exportBill'
   | 'createCustomer'
-  | 'editCustomer';
+  | 'editCustomer'
+  | 'contractRoom'
+  | EModalType.CUSTOMER_CREATE;
 
 interface ModalStore {
   type: ModalType | null;

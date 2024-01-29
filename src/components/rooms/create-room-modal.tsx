@@ -12,12 +12,14 @@ import { useEffect, useState } from 'react'
 import { useModal } from '@/hooks/useModalStore'
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
 import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
+import { useRoom } from '@/hooks/useRoom'
 
 const CreateRoomModal = () => {
-  const { isOpen, onClose, type, data } = useModal()
+  const { isOpen, onClose, type, data, onAction } = useModal()
   const [floor, setFloor] = useState([])
   useEffect(() => {
-    if (data && floor.length === 0 && data?.numberFloor) {
+    if (data && data?.numberFloor) {
+      setFloor([])
       for (let i = 1; i <= data?.numberFloor; i++) {
         setFloor((prev: any) => [...prev, `Tầng ${i}`] as any)
       }
@@ -26,14 +28,24 @@ const CreateRoomModal = () => {
   const [roomName, setRoomName] = useState('')
   const [floorChosen, setFloorChosen] = useState('')
   const isModalOpen = isOpen && type === 'createRoom'
+  const { createRoom } = useRoom()
   const resetState = () => {
     setFloor([])
     setRoomName('')
     setFloorChosen('')
   }
-  const handleCreateRoom = () => {
-    resetState()
-    onClose()
+  const handleCreateRoom = async () => {
+    const numberFloor = Number(Array.from(floorChosen)[0].split(' ')[1])
+    await createRoom({
+      data: {
+        name: roomName,
+        apartmentId: data?.apartmentId,
+        floor: numberFloor
+      },
+      resetState,
+      onClose
+    })
+    onAction()
   }
   return (
     <Modal size="2xl" isOpen={isModalOpen} onOpenChange={onClose}>

@@ -13,9 +13,7 @@ import {
   DropdownTrigger
 } from '@nextui-org/react'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronDown } from 'lucide-react'
 import React, { useState } from 'react'
-import { SearchBar } from '../(components)/home/searchbar'
 interface CustomerProps {
   id: string
   title: string
@@ -35,7 +33,6 @@ interface ResponseProps {
   totalItems: number
   totalPages: number
 }
-
 const columnKeys = {
   name: 'name',
   phone: 'phone',
@@ -92,15 +89,13 @@ const NormalRenderCell = ({ cellValue }) => {
     </div>
   )
 }
-
-const CustomerTable = () => {
+const CustomerList = () => {
   const [limit, setLimit] = useState('10')
   const [currentPage, setCurrentPage] = useState(1)
   const [search, setSearch] = useState(null)
   const [searchField, setSearchField] = useState('name')
   const { getCustomers } = useCustomer()
   const { onOpen } = useModal()
-  const handleSearch = () => { }
   const { data: customers, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
     queryFn: async () => {
@@ -154,26 +149,6 @@ const CustomerTable = () => {
   )
   return (
     <>
-      <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
-        <p className="font-medium text-sm text-black">Tìm kiếm</p>
-        <SearchBar
-          searchValue={search}
-          setSearchValue={setSearch}
-          handleSearch={handleSearch}
-        />
-        <div className="w-fit pb-2 flex items-center gap-3 cursor-pointer group">
-          <p className="font-medium text-base text-gray group-hover:font-semibold group-hover:scale-105">
-            Tìm kiếm nâng cao
-          </p>
-          <ChevronDown
-            className="text-gray group-hover:font-semibold group-hover:scale-105"
-            size={18}
-          />
-        </div>
-      </div>
-      <div className="flex items-end justify-between mt-4">
-        <p className="font-semibold font-lg text-gray">DANH SÁCH KHÁCH TRỌ</p>
-      </div>
       <div className="w-full h-full mt-4 grid gap-4 grid-cols-1">
         <DataTable
           renderHeader={() => {
@@ -210,4 +185,4 @@ const CustomerTable = () => {
   )
 }
 
-export default CustomerTable
+export default CustomerList

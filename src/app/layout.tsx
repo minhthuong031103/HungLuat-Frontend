@@ -1,12 +1,17 @@
-import './globals.css';
+import { ApiContextProvider } from '@/components/providers/ApiProvider';
+import { QueryProvider } from '@/components/providers/QueryProvider';
+import { ModalProvider } from '@/components/providers/modal-provider';
+import { UserProvider } from '@/context/UserProvider';
+import { RoomProvider } from '@/hooks/useRoom';
+import { ReduxProvider } from '@/redux/Provider';
+import '@mantine/core/styles.css';
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
+import 'react-day-picker/dist/style.css';
 import { Toaster } from 'react-hot-toast';
-import { QueryProvider } from '@/components/providers/QueryProvider';
-import { UserProvider } from '@/context/UserProvider';
-import { ReduxProvider } from '@/redux/Provider';
-import { ModalProvider } from '@/components/providers/modal-provider';
-import { ApiContextProvider } from '@/components/providers/ApiProvider';
+import './globals.css';
+
+import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -36,6 +41,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
         <link rel="icon" href="/logoEstate.png" />
         <script async src="https://js.stripe.com/v3/pricing-table.js"></script>
+        <ColorSchemeScript />
       </head>
       <body
         className={`${montserrat.variable} ${montserrat.style.fontWeight}`}
@@ -44,11 +50,15 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         <ReduxProvider>
           <UserProvider>
             <ApiContextProvider>
-              <QueryProvider>
-                <Toaster />
-                <ModalProvider />
-                {children}
-              </QueryProvider>
+              <MantineProvider>
+                <QueryProvider>
+                  <RoomProvider>
+                    <Toaster />
+                    <ModalProvider />
+                    {children}
+                  </RoomProvider>
+                </QueryProvider>
+              </MantineProvider>
             </ApiContextProvider>
           </UserProvider>
         </ReduxProvider>

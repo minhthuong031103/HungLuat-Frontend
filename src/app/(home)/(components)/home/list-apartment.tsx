@@ -26,9 +26,11 @@ const ListApartment = ({ apartments, onAction }: ListApartmentProps) => {
           </div>
         </Button>
       </div>
-      <div className="w-full h-full mt-4 grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
+      <div className="w-full h-full mt-4 grid gap-5 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
         {apartments?.map((apartment, index) => (
-          <ApartmentCard key={index} apartment={apartment} />
+          <div key={index}>
+            <ApartmentCard apartment={apartment} />
+          </div>
         ))}
       </div>
     </>

@@ -44,7 +44,7 @@ export interface RequestProps {
 const useApi = () => {
   const { setKeySite, setUserLogin, removeKey, getKey } = useKey()
 
-  const { onLogout } = useAuth()
+  const { onLogout1 } = useAuth()
 
   async function requestApi({ endPoint, method, body }: RequestProps) {
     const headers = {
@@ -88,15 +88,18 @@ const useApi = () => {
 
             console.log('call refresh token api')
             if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
-              onLogout()
+              onLogout1()
             }
             const res: any = await axiosClient.post('/auth/refresh-token', {
               refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN)
             })
             console.log('🚀 ~ res:', res)
 
-            if (res?.message == 'Forbidden resource') {
-              onLogout()
+            if (
+              res?.message == 'Forbidden resource' ||
+              res?.statusCode == 403
+            ) {
+              onLogout1()
             }
             if (res?.data?.accessToken && res?.data?.refreshToken) {
               setKeySite({
@@ -111,7 +114,7 @@ const useApi = () => {
             return instance(originalConfig)
           } catch (err) {
             console.log('🚀 ~ requestApi ~ err:', err)
-            onLogout()
+            onLogout1()
             return Promise.reject(err)
           }
         }
@@ -120,7 +123,7 @@ const useApi = () => {
           error.response.data.statusCode === 403 &&
           error.response.data.message == 'Forbidden resource'
         ) {
-          onLogout()
+          onLogout1()
         }
         return Promise.reject(error)
       }

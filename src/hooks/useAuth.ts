@@ -57,6 +57,11 @@ export const useAuth = () => {
     dispatchActions({ type: EUserType.LOGOUT, payload: {} }, userDispatch)
   }
 
+  const onLogout1 = async () => {
+    removeKeySite()
+    dispatchActions({ type: EUserType.LOGOUT, payload: {} }, userDispatch)
+  }
+
   const useCheckNotLoggedIn = () => {
     useEffect(() => {
       if (!isAuth) {
@@ -93,6 +98,7 @@ export const useAuth = () => {
     onLogout,
     useCheckLoggedIn,
     useCheckNotLoggedIn,
+    onLogout1,
     loading
   }
 }

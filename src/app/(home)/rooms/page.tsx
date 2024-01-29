@@ -1,58 +1,115 @@
-'use client'
-import { cn, getCurrentMonth } from '@/lib/utils'
-import { SearchBar } from '../(components)/home/searchbar'
-import { ChevronDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { CustomSelect } from '../(components)/home/custom-select'
-import { useApartment } from '@/hooks/useApartment'
-import { CommonSvg } from '@/assets/CommonSvg'
-import { Apartment } from '@/types'
-import { Button } from '@nextui-org/react'
-import ListRooms from '@/components/rooms/ListRooms'
-import BuildingPlan from '@/components/rooms/BuildingPlan'
-import { useModal } from '@/hooks/useModalStore'
+'use client';
+import { CommonSvg } from '@/assets/CommonSvg';
+import BuildingPlan from '@/components/rooms/BuildingPlan';
+import ListRooms from '@/components/rooms/ListRooms';
+import { useApartment } from '@/hooks/useApartment';
+import { useModal } from '@/hooks/useModalStore';
+import { useRoom } from '@/hooks/useRoom';
+import { queryKey } from '@/lib/constant';
+import { cn, getCurrentMonth } from '@/lib/utils';
+import { Apartment } from '@/types';
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { CustomSelect } from '../(components)/home/custom-select';
+import { SearchBar } from '../(components)/home/searchbar';
+
+interface ResponseProps {
+  items: any;
+  totalItems: number;
+  totalPages: number;
+}
 
 const RoomsPage = () => {
-  const [searchAdvanced, setSearchAdvanced] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [electricityPrice, setElectricityPrice] = useState('')
-  const [statusRoom, setStatusRoom] = useState('')
-  const [statusPayment, setStatusPayment] = useState('')
-  const [apartments, setApartments] = useState([] as Apartment[])
-  const [apartmentChosen, setApartmentChosen] = useState('')
-  const [isLoading, setIsLoading] = useState(true)
-  const { onOpen } = useModal()
-  const handleGetApartments = async () => {
-    const res = await getApartments({
-      searchField: 'name',
-      search: searchValue
-    })
-    setApartments(res?.data?.items)
-  }
-  const { getApartments } = useApartment()
-  useEffect(() => {
-    handleGetApartments()
-  }, [])
-  const [month, setMonth] = useState('')
-  const handleSearch = () => {}
-  const classNameChosen = 'font-semibold text-sm text-white'
-  const classNameNotChosen = 'font-medium text-sm text-black'
-  const [apartment, setApartment] = useState({} as Apartment)
-  useEffect(() => {
-    if (apartments.length > 0) {
-      setIsLoading(false)
-      setApartmentChosen(new Set([apartments[0].name]) as any)
+  const [searchAdvanced, setSearchAdvanced] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [electricityPrice, setElectricityPrice] = useState('');
+  const [statusRoom, setStatusRoom] = useState('');
+  const [statusPayment, setStatusPayment] = useState('');
+  const [apartmentChosen, setApartmentChosen] = useState('');
+  const { onOpen } = useModal();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const { getApartments } = useApartment();
+  const {
+    data: apartments,
+    fetchNextPage,
+    hasNextPage,
+    refetch: refetchData,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery(
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
+    ({ pageParam = 0 }) =>
+      getApartments({
+        page: pageParam,
+        limit: 10,
+        search: searchValue,
+        searchField: 'name',
+      }),
+    {
+      staleTime: 1000 * 60 * 1,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+      getNextPageParam: (lastPage, pages) => {
+        if (
+          lastPage.data.currentPage === 1 &&
+          pages.length < lastPage.data.totalPages
+        )
+          return 2;
+        if (pages.length < lastPage.data.totalPages) return pages.length;
+        else return undefined;
+      },
     }
-  }, [apartments])
+  );
   useEffect(() => {
-    if (apartmentChosen) {
-      const temp = apartments.find(
-        (item) => item.name === Array.from(apartmentChosen)[0]
-      )
-      setApartment(temp as any)
+    console.log(apartments);
+    if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
+      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
     }
-  }, [apartmentChosen])
-  const [flag, setFlag] = useState(false)
+  }, [apartments]);
+  const apartment: Apartment = apartments?.pages?.map((page) => {
+    return page.data.items.find(
+      (item) => item.id.toString() === apartmentChosen
+    );
+  })[0];
+
+  const [floors, setFloors] = useState([]);
+  const handleGetRooms = async () => {
+    setLoading(true);
+    const res = await getRooms({
+      apartmentId: Number(apartmentChosen),
+      search: searchValue,
+    });
+    setFloors(res?.data?.rooms);
+    setLoading(false);
+  };
+  const { getRooms } = useRoom();
+  useEffect(() => {
+    if (Number(apartmentChosen)) {
+      handleGetRooms();
+    }
+  }, [apartmentChosen]);
+
+  const [month, setMonth] = useState('');
+  const handleSearch = () => {
+    handleGetRooms();
+  };
+  const classNameChosen = 'font-semibold text-sm text-white';
+  const classNameNotChosen = 'font-medium text-sm text-black';
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const [, scrollerRef] = useInfiniteScroll({
+    isEnabled: isOpen,
+    hasMore: hasNextPage,
+    shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
+    onLoadMore: () => {
+      fetchNextPage();
+    },
+  });
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -108,27 +165,43 @@ const RoomsPage = () => {
       </div>
       <div className="w-full h-full mt-4">
         <div className="flex gap-4 items-center">
-          <CustomSelect
+          <Select
             placeholder="Chọn căn hộ"
-            variant="flat"
-            value={apartmentChosen}
-            isLoading={isLoading}
-            setValue={setApartmentChosen}
-            data={apartments.map((apartment) => apartment.name)}
             className="max-w-[250px]"
+            selectedKeys={apartmentChosen ? [apartmentChosen] : []}
+            isLoading={isFetching}
+            disallowEmptySelection
+            scrollRef={scrollerRef}
+            onOpenChange={setIsOpen}
             classNames={{
               selectorIcon: 'text-gray',
               value:
                 'text-gray uppercase font-semibold text-lg group-data-[has-value=true]:text-gray',
               trigger:
-                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white'
+                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white',
             }}
-          />
+            onChange={(e) => {
+              setApartmentChosen(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            {apartments ? (
+              apartments?.pages?.map((page) =>
+                page?.data?.items?.map((item: Apartment) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.name}
+                  </SelectItem>
+                ))
+              )
+            ) : (
+              <SelectItem key={''}></SelectItem>
+            )}
+          </Select>
           <p className="font-bold text-gray text-lg">
             Tháng {getCurrentMonth()}
           </p>
         </div>
-        {apartmentChosen && apartment && (
+        {apartmentChosen && (
           <div className="mt-2 space-y-5 pl-4">
             <div className="flex gap-2 items-center ">
               <div>{CommonSvg.address()}</div>
@@ -164,9 +237,14 @@ const RoomsPage = () => {
                   <Button
                     className="rounded-[8px] px-4 py-2 bg-blueButton"
                     onPress={() =>
-                      onOpen('createRoom', {
-                        numberFloor: apartment?.numberFloor
-                      })
+                      onOpen(
+                        'createRoom',
+                        {
+                          numberFloor: apartment?.numberFloor,
+                          apartmentId: Number(apartmentChosen),
+                        },
+                        handleGetRooms
+                      )
                     }
                   >
                     <div className="flex flex-row items-center gap-x-[8px] ">
@@ -179,18 +257,30 @@ const RoomsPage = () => {
                 </div>
               )}
             </div>
-            <div>
-              {!flag ? (
-                <ListRooms apartmentId={apartment?.id} />
-              ) : (
-                <BuildingPlan apartmentId={apartment?.id} />
-              )}
-            </div>
+            {loading ? (
+              <div className="w-full h-[300px] flex items-center justify-center">
+                <Spinner />
+              </div>
+            ) : floors?.length === 0 ? (
+              <div className="w-full h-[300px] flex items-center justify-center">
+                <p className="font-medium text-base text-room-detail/50">
+                  Không có dữ liệu...
+                </p>
+              </div>
+            ) : (
+              <div>
+                {!flag ? (
+                  <ListRooms floors={floors} />
+                ) : (
+                  <BuildingPlan apartmentId={apartmentChosen} />
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default RoomsPage
+export default RoomsPage;

@@ -1,34 +1,64 @@
 'use client'
 
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  Input,
-  Checkbox,
-  Divider
-} from '@nextui-org/react'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
 import { useModal } from '@/hooks/useModalStore'
 import { useRoom } from '@/hooks/useRoom'
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-
+import {
+  convertPrice,
+  formatDateCustom,
+  getDaysAmountInMonth
+} from '@/lib/utils'
+import { Modal } from '@mantine/core'
+import { Button, Divider, Spinner } from '@nextui-org/react'
+import { BlobProvider } from '@react-pdf/renderer'
+import Invoice from '../invoice/invoice'
+import { saveAs } from 'file-saver'
+import { useState } from 'react'
 const ExportBillModal = () => {
-  const { isOpen, onClose, type, data } = useModal()
-  const { state, resetState, dispatch } = useRoom()
+  const { isOpen, onClose, type, data, onAction } = useModal()
+  const { roomId } = data
+  const { state, exportBill } = useRoom()
+  const [isLoading, setIsLoading] = useState(false)
   const isModalOpen = isOpen && type === 'exportBill'
-  const handleExportBill = () => {
-    resetState()
-    onClose()
-  }
+  const handleExportBill = async (blob) => {
+    setIsLoading(true)
+    const data = {
+      roomId: roomId,
+      customerId: '1',
+      endDate: state.endDate,
+      roomPrice: Math.floor(
+        (Number(state.roomPrice) * Number(state.dayStayed)) /
+          getDaysAmountInMonth(
+            new Date().getMonth() + 1,
+            new Date().getFullYear()
+          )
+      ),
+      totalElectricPrice: state.totalElectricPrice,
+      totalWaterPrice: state.totalWaterPrice,
+      totalElevatorPrice: state.totalElevatorPrice,
+      totalParkingPrice: state.totalParkingPrice,
+      internetPrice: state.internetPrice,
+      servicePrice: state.servicePrice,
+      otherPrice: state.otherPrice,
+      totalSurcharge:
+        Number(state.peopleRealStayed) - 4 > 0
+          ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
+          : 0,
+      suspenseMoney: state.suspenseMoney,
+      newDebt: state.newDebt,
+      oldDebt: state.oldDebt,
+      newElectric: state.newElectric,
+      oldElectric: state.oldElectric,
 
-  const handleSetValue = (key, value) => {
-    dispatch({
-      type: 'SET_VALUES',
-      payload: { [key]: value }
-    })
+      files: [blob]
+    }
+    await exportBill(data, onAction)
+    setIsLoading(false)
+    await saveAs(
+      blob,
+      `${state.name} T${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+    )
+    onClose()
   }
 
   const renderInput = (
@@ -44,101 +74,144 @@ const ExportBillModal = () => {
         value={value}
         placeholder={placeholder}
         type={inputType}
-        setValue={(value) => handleSetValue(label, value)}
+        isRequired={false}
+        readonly={true}
+        setValue={() => {}}
         disabled={disabled}
       />
     </div>
   )
 
   const renderNumberInput = (label, value, placeholder, disabled = false) =>
-    renderInput(label, value, placeholder, 'number', disabled)
+    renderInput(label, value, placeholder, 'text', disabled)
 
   const renderInputRow = (inputs) => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
   )
-
   return (
-    <Modal size="3xl" isOpen={isModalOpen} onOpenChange={onClose}>
-      <ModalContent>
-        {() => (
-          <>
-            <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-              Xuất phiếu thu
-            </ModalHeader>
-            <ModalBody className="space-y-2">
-              {renderInputRow([
-                renderNumberInput(
-                  'Giá điện',
-                  state.electricPrice,
-                  'Nhập giá điện'
-                ),
-                renderNumberInput(
-                  'Chỉ số điện cũ',
-                  state.oldElectric,
-                  'Nhập chỉ số điện cũ',
-                  true
-                ),
-                renderNumberInput(
-                  'Chỉ số điện mới',
-                  state.newElectric,
-                  'Nhập chỉ số điện mới'
-                )
-              ])}
-              <p className="text-gray font-semibold text-lg">Chi phí</p>
-              {renderInputRow([
-                renderNumberInput(
-                  'Tổng tiền điện',
-                  state.totalElectricPrice,
-                  'Tổng tiền điện'
-                ),
-                renderNumberInput(
-                  'Tổng tiền nước',
-                  state.waterPrice,
-                  'Tổng tiền nước'
-                ),
-                renderNumberInput(
-                  'Tiền dịch vụ',
-                  state.servicePrice,
-                  'Tiền dịch vụ'
-                ),
-                renderNumberInput(
-                  'Chi phí phát sinh khác',
-                  state.otherPrice,
-                  'Chi phí phát sinh'
-                )
-              ])}
-              {renderInputRow([
-                renderNumberInput('Tiền phòng', state.roomPrice, 'Tiền phòng'),
-                renderNumberInput('Trả trước', state.depositPrice, 'Trả trước'),
-                renderNumberInput('Tiền xe', state.parkingPrice, 'Tiền xe'),
-                renderNumberInput(
-                  'Tiền Internet',
-                  state.internetPrice,
-                  'Tiền Internet'
-                )
-              ])}
-              <div className="w-full">
-                <Divider className="my-4" />
-                <div className="w-full flex justify-end gap-5 px-5">
-                  <p className="font-bold text-black text-lg">TỔNG TIỀN</p>
-                  <p className="text-xl font-bold text-room-red">
-                    {state.totalPrice}
-                  </p>
-                </div>
-                <Divider className="mt-4" />
+    <Modal
+      closeOnClickOutside={false}
+      radius={15}
+      size={'auto'}
+      title="Xuất phiếu thu"
+      classNames={{
+        header: 'flex justify-center items-center relative',
+        title: 'font-bold text-gray uppercase font-bold text-xl',
+        close: 'm-0 absolute right-3 top-3'
+      }}
+      removeScrollProps={{ allowPinchZoom: true }}
+      opened={isModalOpen}
+      centered
+      onClose={onClose}
+    >
+      <>
+        <div className="space-y-2">
+          <p className="text-gray font-semibold text-lg">Tiền phòng</p>
+          {renderInputRow([
+            renderNumberInput('Tiền phòng', state.roomPrice, 'Tiền phòng'),
+            renderNumberInput('Tiền cọc', state.depositPrice, 'Tiền Cọc'),
+            renderNumberInput(
+              'Số ngày ở trong tháng',
+              state.dayStayed,
+              'Số ngày ở trong tháng'
+            )
+          ])}
+          {renderInputRow([
+            renderNumberInput('Tiền nợ cũ', state.oldDebt, 'Tiền nợ cũ'),
+            renderNumberInput('Tiền nợ mới', state.newDebt, 'Tiền nợ mới'),
+            renderNumberInput(
+              'Tổng tiền phụ thu',
+              Number(state.peopleRealStayed) - 4 > 0
+                ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
+                : 0,
+              'Số ngày ở trong tháng'
+            )
+          ])}
+          <p className="text-gray font-semibold text-lg">Tiền dịch vụ</p>
+
+          {renderInputRow([
+            renderNumberInput('Giá điện', state.electricPrice, 'Nhập giá điện'),
+            renderNumberInput(
+              'Điện tiêu thụ',
+              Number(state.oldElectric) >= Number(state.newElectric)
+                ? 0
+                : Math.floor(
+                    (Number(state.newElectric) - Number(state.oldElectric)) * 10
+                  ) / 10,
+
+              'Điện tiêu thụ'
+            ),
+            renderNumberInput(
+              'Tổng tiền điện',
+              state.totalElectricPrice,
+              'Tổng tiền điện'
+            )
+          ])}
+          {renderInputRow([
+            renderNumberInput(
+              'Tổng tiền nước',
+              state.totalWaterPrice,
+              'Tổng tiền nước'
+            ),
+            renderNumberInput(
+              'Tiền dịch vụ',
+              state.servicePrice,
+              'Tiền dịch vụ'
+            ),
+            renderNumberInput(
+              'Chi phí phát sinh khác',
+              state.otherPrice,
+              'Chi phí phát sinh'
+            ),
+            renderNumberInput(
+              'Tổng tiền giữ xe',
+              state.totalParkingPrice,
+              'Tổng tiền giữ xe'
+            )
+          ])}
+
+          <div className="w-full pt-2">
+            <Divider className="my-4" />
+            <div className="w-full flex justify-between gap-5 px-5">
+              <div className="flex gap-5">
+                <p className="font-bold text-black text-lg">TẠM THU</p>
+                <p className="text-xl font-bold text-room-red">
+                  {convertPrice(state.suspenseMoney)}
+                </p>
               </div>
-            </ModalBody>
-            <ModalFooter>
+              <div className="flex gap-5">
+                <p className="font-bold text-black text-lg">TỔNG TIỀN</p>
+                <p className="text-xl font-bold text-room-red">
+                  {convertPrice(state.netProceeds)}
+                </p>
+              </div>
+            </div>
+            <Divider className="mt-4" />
+          </div>
+        </div>
+        <div className="mt-5 flex justify-end py-4">
+          <BlobProvider
+            document={
+              <Invoice
+                data={{
+                  ...state,
+                  startDate: formatDateCustom(state.startDate),
+                  endDate: formatDateCustom(state.endDate)
+                }}
+              />
+            }
+          >
+            {({ blob }) => (
               <Button
                 className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
-                onPress={handleExportBill}
+                onPress={() => handleExportBill(blob)}
               >
-                Xác nhận
+                {isLoading ? <Spinner color="white" size="sm" /> : 'Xác nhận'}
               </Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
+            )}
+          </BlobProvider>
+        </div>
+      </>
     </Modal>
   )
 }
