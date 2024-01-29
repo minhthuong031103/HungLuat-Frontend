@@ -504,7 +504,7 @@ const Invoice = ({ data }) => {
         </Text>
       </Text>
       <Text
-        style={{ fontSize: 12, fontWeight: 700, color: 'black', marginTop: 15 }}
+        style={{ fontSize: 12, fontWeight: 700, color: 'black', marginTop: 7 }}
       >
         Trân trọng cảm ơn sự hợp tác của quý khách!
       </Text>
