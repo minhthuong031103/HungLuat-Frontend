@@ -29,11 +29,9 @@ export interface CreateCustomerProps {
   phone: string
   identityCard: string
   address: string
-  city: string
-  district: string
-  ward: string
-  houseNumber: string
-  plate: string
-  registeredTemporaryResidence: boolean
-  roomId: number
+  issuedDate: Date
+  roomId: string | number
+  dayOfBirth: Date
+  identityFrontUrl: string
+  identityBackUrl: string
 }
