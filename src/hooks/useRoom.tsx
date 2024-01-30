@@ -4,9 +4,9 @@ import { RETURNED_MESSAGES } from '@/lib/translate'
 import {
   blobToBase64,
   checkValueNumberInput,
-  getDaysAmountInMonth,
+  getDaysAmountInMonth,,
   getQueryParams
-} from '@/lib/utils'
+} from '@/lib/utils';
 
 import { createContext, useContext, useEffect, useReducer } from 'react'
 import toast from 'react-hot-toast'
@@ -80,71 +80,59 @@ const reducerContract = (state: StateContractProps, action) => {
   }
 }
 const initContractState: StateContractProps = {
-  customerName: '',
+  roomId: '',
+  customerId: '',
   phoneNumber: '',
-  dateContract: new Date(),
-  dateExpired: new Date(new Date().setMonth(new Date().getMonth() + 6)),
-  dayOfBirth: new Date(),
-  identityCard: '',
-  identityCardImage: '',
-  identityCardImageBack: '',
-  issueDate: new Date(),
-  issuePlace: '',
-  permanentResidence: '',
+  daySignContract: new Date(),
+  dayEndContract: new Date(),
   note: ''
 }
 
 interface IRoomContext {
-  state: any
-  dispatch: any
-  contractState: any
-  dispatchContract: any
-  handleSetValue: any
-  handleSetContract: any
-  roomInfo: any
-  getRooms: any
-  getBills: any
+  state: any;
+  dispatch: any;
+  contractState: any;
+  dispatchContract: any;
+  handleSetValue: any;
+  handleSetContract: any;
+  roomInfo: any;
+  getRooms: any;
+  getBills: any;
   getAllBills: any
-  createRoom: any
-  resetState: any
-  getDetailRoom: any
-  updateRoomStates: any
-  exportBill: any
+  createRoom: any;
+  resetState: any;
+  getDetailRoom: any;
+  updateRoomStates: any;
+  exportBill: any;
 }
 interface StateContractProps {
-  customerName: string
+  roomId: string
+  customerId: string
   phoneNumber: string
-  dateContract: Date
-  dateExpired: Date
-  dayOfBirth: Date
-  identityCard: string
-  identityCardImage: string
-  identityCardImageBack: string
-  issueDate: Date
-  issuePlace: string
-  permanentResidence: string
+  daySignContract: Date
+  dayEndContract: Date
   note: string
 }
 export interface exportBillProps {
-  roomId: string
+  roomId: string;
   apartmentId: string
-  customerId: string
-  endDate: Date
-  roomPrice: number
-  totalElectricPrice: number
-  totalWaterPrice: number
-  totalElevatorPrice: number
-  totalParkingPrice: number
-  internetPrice: number
-  servicePrice: number
-  otherPrice: number
-  totalSurcharge: number
-  suspenseMoney: number
-  newDebt: number
-  oldDebt: number
-  newElectric: number
-  oldElectric: number
-  files: any[]
+  customerId: string;
+  endDate: Date;
+  roomPrice: number;
+  totalElectricPrice: number;
+  totalWaterPrice: number;
+  totalElevatorPrice: number;
+  totalParkingPrice: number;
+  internetPrice: number;
+  servicePrice: number;
+  otherPrice: number;
+  totalSurcharge: number;
+  suspenseMoney: number;
+  newDebt: number;
+  oldDebt: number;
+  newElectric: number;
+  oldElectric: number;
+  files: any[];
   fileName: string
 }
 const RoomContext = createContext<any>(null)

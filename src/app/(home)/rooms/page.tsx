@@ -73,10 +73,10 @@ const RoomsPage = () => {
     }
   }, [apartments])
   const apartment: Apartment = apartments?.pages?.map((page) => {
-    return page?.data?.items.find(
+    return page?.data?.items?.find(
       (item) => item.id.toString() === apartmentChosen
     )
-  })[0]
+  })?.[0]
 
   const [floors, setFloors] = useState([])
   const handleGetRooms = async () => {

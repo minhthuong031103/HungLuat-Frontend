@@ -1,27 +1,27 @@
-import { useApiAxios } from '@/components/providers/ApiProvider'
-import { CreateCustomerProps } from '@/lib/interface'
-import { RETURNED_MESSAGES } from '@/lib/translate'
-import { GetQueryParamsProps, getBase64, getQueryParams } from '@/lib/utils'
-import { useReducer } from 'react'
-import toast from 'react-hot-toast'
+import { useApiAxios } from '@/components/providers/ApiProvider';
+import { CreateCustomerProps, GetCustomersOfRoomProps } from '@/lib/interface';
+import { RETURNED_MESSAGES } from '@/lib/translate';
+import { GetQueryParamsProps, getBase64, getQueryParams } from '@/lib/utils';
+import { useReducer } from 'react';
+import toast from 'react-hot-toast';
 
 interface CustomerProps {
-  id: string
-  name: string
-  email: string
-  phone: string
-  address: string
-  createdAt: string
-  updatedAt: string
-  dayOfBirth: Date
-  identityCard: string
-  issueDate: Date
-  roomId: string
-  provinceValue?: string
-  districtValue?: string
-  wardValue?: string
-  identityFrontUrl?: string
-  identityBackUrl?: string
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+  dayOfBirth: Date;
+  identityCard: string;
+  issueDate: Date;
+  roomId: string;
+  provinceValue?: string;
+  districtValue?: string;
+  wardValue?: string;
+  identityFrontUrl?: string;
+  identityBackUrl?: string;
 }
 
 const initCustomerState: CustomerProps = {
@@ -37,31 +37,31 @@ const initCustomerState: CustomerProps = {
   issueDate: new Date(),
   roomId: '',
   identityFrontUrl: '',
-  identityBackUrl: ''
-}
+  identityBackUrl: '',
+};
 
 const reducerContract = (state: CustomerProps, action) => {
   switch (action.type) {
     case 'SET_VALUES':
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload };
     case 'RESET':
-      return { ...initCustomerState }
+      return { ...initCustomerState };
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const useCustomer = () => {
-  const { requestApi } = useApiAxios()
+  const { requestApi } = useApiAxios();
   const [customerState, dispatchContract]: [CreateCustomerProps, any] =
-    useReducer(reducerContract, initCustomerState)
+    useReducer(reducerContract, initCustomerState);
 
   const handleSetCustomerValue = <K extends keyof CreateCustomerProps>(
     key: K,
     value: CreateCustomerProps[K]
   ) => {
-    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } })
-  }
+    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
+  };
   const createCustomer = async (
     data: CreateCustomerProps,
     onClose: () => void
@@ -70,22 +70,22 @@ export const useCustomer = () => {
       const res = await requestApi({
         endPoint: '/customer/create',
         method: 'POST',
-        body: data
-      })
+        body: data,
+      });
       if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.ENG) {
-        toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.VIE)
-        resetCustomerState()
-        onClose()
+        toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.VIE);
+        resetCustomerState();
+        onClose();
       } else if (
         res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.ENG
       ) {
-        toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.VIE)
+        toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.VIE);
       }
-      return res
+      return res;
     } catch (error) {
-      console.log('🚀 ~ createCustomer ~ error:', error)
+      console.log('🚀 ~ createCustomer ~ error:', error);
     }
-  }
+  };
 
   const getCustomers = async ({
     searchField = null,
@@ -93,19 +93,9 @@ export const useCustomer = () => {
     page,
     limit = 10,
     sortBy = 'createdAt',
-    sortDirection = 'asc'
+    sortDirection = 'asc',
   }: GetQueryParamsProps) => {
     try {
-      console.log(
-        getQueryParams({
-          searchField,
-          search,
-          page,
-          limit,
-          sortBy,
-          sortDirection
-        })
-      )
       const res = await requestApi({
         endPoint: `/customer/all?${getQueryParams({
           searchField,
@@ -113,33 +103,61 @@ export const useCustomer = () => {
           page,
           limit,
           sortBy,
-          sortDirection
+          sortDirection,
         })}`,
-        method: 'GET'
-      })
-      return res
+        method: 'GET',
+      });
+      return res;
     } catch (error) {
-      console.log('🚀 ~ getCustomer ~ error:', error)
+      console.log('🚀 ~ getCustomer ~ error:', error);
     }
-  }
+  };
+
+  const getCustomersByRoom = async ({
+    searchField = null,
+    search = null,
+    page,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortDirection = 'asc',
+    roomId,
+  }: GetCustomersOfRoomProps) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/customer/room/${roomId}?${getQueryParams({
+          searchField,
+          search,
+          page,
+          limit,
+          sortBy,
+          sortDirection,
+        })}`,
+        method: 'GET',
+      });
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ getCustomer ~ error:', error);
+    }
+  };
+
   const upLoadImage = async (data) => {
-    const formData = new FormData()
-    const base64 = (await getBase64(data)) as any
-    formData.append('file', base64)
+    const formData = new FormData();
+    const base64 = (await getBase64(data)) as any;
+    formData.append('file', base64);
     try {
       const res = await requestApi({
         endPoint: '/upload/base64',
         method: 'POST',
-        body: formData
-      })
-      return res
+        body: formData,
+      });
+      return res;
     } catch (error) {
-      console.log('🚀 ~ upLoadImage ~ error:', error)
+      console.log('🚀 ~ upLoadImage ~ error:', error);
     }
-  }
+  };
   const resetCustomerState = () => {
-    dispatchContract({ type: 'RESET' })
-  }
+    dispatchContract({ type: 'RESET' });
+  };
 
   return {
     createCustomer,
@@ -147,6 +165,7 @@ export const useCustomer = () => {
     getCustomers,
     customerState,
     handleSetCustomerValue,
-    resetCustomerState
-  }
-}
+    resetCustomerState,
+    getCustomersByRoom,
+  };
+};

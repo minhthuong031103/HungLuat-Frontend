@@ -1,119 +1,126 @@
-'use client'
+'use client';
 
-import { useModal } from '@/hooks/useModalStore'
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { useRoom } from '@/hooks/useRoom'
-import { DatePicker } from '../ui/date-picker'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle
-} from '@/components/ui/dialog'
-import { Button } from '@nextui-org/react'
-import { checkValueNumberInput } from '@/lib/utils'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { useCustomerByRoomScroll } from '@/hooks/useCustomerByRoomScroll';
+import { useModal } from '@/hooks/useModalStore';
+import { useRoom } from '@/hooks/useRoom';
+import { checkValueNumberInput } from '@/lib/utils';
+import { Customer } from '@/types';
+import { Autocomplete, AutocompleteItem, Button } from '@nextui-org/react';
+import { throttle } from 'lodash';
+import { useParams } from 'next/navigation';
+import ModalCus from '../modalCus/ModalCus';
+import { DatePicker } from '../ui/date-picker';
 const ContractRoomModal = () => {
-  const { isOpen, onClose, type, data } = useModal()
-  const { contractState, handleSetContract } = useRoom()
-  const isModalOpen = isOpen && type === 'contractRoom'
+  const { isOpen, onClose, type, data } = useModal();
+  const { roomId } = useParams();
+  const { contractState, handleSetContract } = useRoom();
+  console.log('🚀 ~ ContractRoomModal ~ contractState:', contractState);
+  const isModalOpen = isOpen && type === 'contractRoom';
   const resetState = () => {
     //
-  }
+  };
+  const {
+    customerChosen,
+    setCustomerChosen,
+    setCurrentPage,
+    customers,
+    setSearchValue,
+    isFetching,
+    setIsScrollOpen,
+    scrollerRef,
+  } = useCustomerByRoomScroll({ roomId });
+  console.log('🚀 ~ ContractRoomModal ~ customers:', customers);
+  console.log('🚀 ~ ContractRoomModal ~ customerChosen:', customerChosen);
   const handleCreateContract = () => {
-    resetState()
-    onClose()
-  }
+    resetState();
+    onClose();
+  };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-            Hợp đồng
-          </DialogTitle>
-          <DialogDescription className="space-y-4">
-            <div className="flex gap-[20px] w-full items-end">
-              <div className="w-[33%]">
-                <CustomInput
-                  label="Họ tên khách hàng"
-                  placeholder="Nhập tên khách hàng"
-                  value={contractState.customerName}
-                  setValue={(value) => handleSetContract('customerName', value)}
-                />
-              </div>
-              <div className="w-[33%]">
-                <CustomInput
-                  label="Số điện thoại"
-                  placeholder="Nhập SĐT khách hàng"
-                  value={contractState.phoneNumber}
-                  setValue={(value) => handleSetContract('phoneNumber', value)}
-                />
-              </div>
-              <div className="w-[33%]">
-                <DatePicker
-                  label="Ngày sinh"
-                  date={contractState.dayOfBirth}
-                  labelCustom="font-medium text-sm text-black"
-                  setDate={(value) => handleSetContract('dayOfBirth', value)}
-                />
-              </div>
-            </div>
-            <div className="flex gap-[20px] w-full items-end">
-              <div className="w-[33%]">
-                <DatePicker
-                  label="Ngày ký hợp đồng"
-                  date={contractState.dateContract}
-                  labelCustom="font-medium text-sm text-black"
-                  setDate={(value) => handleSetContract('dateContract', value)}
-                />
-              </div>
-              <div className="w-[33%]">
-                <DatePicker
-                  label="Ngày hết hạn hợp đồng"
-                  labelCustom="font-medium text-sm text-black"
-                  date={contractState.dateExpired}
-                  setDate={(value) => handleSetContract('dateExpired', value)}
-                />
-              </div>
-              <div className="w-[33%]">
-                <CustomInput
-                  label="CMND/CCCD"
-                  placeholder="Nhập CMND/CCCD"
-                  value={contractState.identityCard}
-                  setValue={(value) => {
-                    {
-                      checkValueNumberInput('identityCard', value) &&
-                        handleSetContract('identityCard', value)
-                    }
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex gap-[20px] w-full items-end">
-              <div className="w-[33%]">
-                <DatePicker
-                  label="Ngày cấp"
-                  date={contractState.issueDate}
-                  labelCustom="font-medium text-sm text-black"
-                  setDate={(value) => handleSetContract('issueDate', value)}
-                />
-              </div>
-            </div>
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
+    <ModalCus isModalOpen={isModalOpen} onClose={onClose} title={'HỢP ĐỒNG'}>
+      <div className="flex flex-col gap-y-5">
+        <div className="flex gap-[20px] w-full items-end">
+          <div className="w-[33%]">
+            <Autocomplete
+              labelPlacement="outside"
+              label="Khách hàng"
+              isRequired={true}
+              placeholder="Chọn khách hàng"
+              className="max-w-[100%]"
+              selectedKeys={customerChosen ? [customerChosen] : []}
+              isLoading={isFetching}
+              scrollRef={scrollerRef}
+              onOpenChange={setIsScrollOpen}
+              onSelectionChange={(e) => {
+                setCustomerChosen(e as any);
+              }}
+              onChange={(e) => {
+                console.log('🚀 ~ ContractRoomModal ~ e:', e);
+                setCustomerChosen(e.target.value);
+                setCurrentPage(1);
+              }}
+              onInputChange={(e) => {
+                setSearchValue(e);
+              }}
+            >
+              {customers ? (
+                customers?.pages?.map((page) =>
+                  page?.data?.items?.map((item: Customer) => (
+                    <AutocompleteItem key={item.id} value={item.id}>
+                      {item.name}
+                    </AutocompleteItem>
+                  ))
+                )
+              ) : (
+                <AutocompleteItem key={''}></AutocompleteItem>
+              )}
+            </Autocomplete>
+          </div>
+          <div className="w-[33%]">
+            <DatePicker
+              label="Ngày ký hợp đồng"
+              date={contractState.daySignContract}
+              labelCustom="font-medium text-sm text-black"
+              setDate={(value) => handleSetContract('dateContract', value)}
+            />
+          </div>
+          <div className="w-[33%]">
+            <DatePicker
+              label="Ngày hết hạn hợp đồng"
+              labelCustom="font-medium text-sm text-black"
+              date={contractState.dayEndContract}
+              setDate={(value) => handleSetContract('dateExpired', value)}
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-[20px] w-full items-end">
+          <div className="w-[50%]">
+            <CustomInput
+              label="Ghi chú"
+              placeholder="Nhập ghi chú"
+              value={contractState.note}
+              setValue={(value) => {
+                {
+                  handleSetContract('note', value);
+                }
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-end">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
             onPress={handleCreateContract}
           >
             Lưu
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
+        </div>
+      </div>
+    </ModalCus>
+  );
+};
 
-export default ContractRoomModal
+export default ContractRoomModal;
