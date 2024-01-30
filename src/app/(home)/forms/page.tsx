@@ -1,37 +1,37 @@
-'use client'
-import { CommonSvg } from '@/assets/CommonSvg'
+'use client';
+import { CommonSvg } from '@/assets/CommonSvg';
 
-import { useApartment } from '@/hooks/useApartment'
-import { queryKey } from '@/lib/constant'
-import { cn, getCurrentMonth } from '@/lib/utils'
-import { Apartment } from '@/types'
-import { Select, SelectItem, Spinner } from '@nextui-org/react'
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { ChevronDown } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
-import { CustomSelect } from '../(components)/home/custom-select'
-import { SearchBar } from '../(components)/home/searchbar'
-import ListBill from './ListBill'
+import { useApartment } from '@/hooks/useApartment';
+import { queryKey } from '@/lib/constant';
+import { cn, getCurrentMonth } from '@/lib/utils';
+import { Apartment } from '@/types';
+import { Select, SelectItem, Spinner } from '@nextui-org/react';
+import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { ChevronDown } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { CustomSelect } from '../(components)/home/custom-select';
+import { SearchBar } from '../(components)/home/searchbar';
+import ListBill from './ListBill';
 
 const FormsPage = () => {
-  const [searchAdvanced, setSearchAdvanced] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [electricityPrice, setElectricityPrice] = useState('')
-  const [statusRoom, setStatusRoom] = useState('')
-  const [statusPayment, setStatusPayment] = useState('')
-  const [apartmentChosen, setApartmentChosen] = useState('')
+  const [searchAdvanced, setSearchAdvanced] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [electricityPrice, setElectricityPrice] = useState('');
+  const [statusRoom, setStatusRoom] = useState('');
+  const [statusPayment, setStatusPayment] = useState('');
+  const [apartmentChosen, setApartmentChosen] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { getApartments } = useApartment()
+  const { getApartments } = useApartment();
   const {
     data: apartments,
     fetchNextPage,
     hasNextPage,
     refetch: refetchData,
     isFetching,
-    isFetchingNextPage
+    isFetchingNextPage,
   } = useInfiniteQuery(
     [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
     ({ pageParam = 0 }) =>
@@ -39,7 +39,7 @@ const FormsPage = () => {
         page: pageParam,
         limit: 10,
         search: searchValue,
-        searchField: 'name'
+        searchField: 'name',
       }),
     {
       staleTime: 1000 * 60 * 1,
@@ -50,40 +50,40 @@ const FormsPage = () => {
           lastPage?.data.currentPage === 1 &&
           pages?.length < lastPage?.data.totalPages
         )
-          return 2
-        if (pages?.length < lastPage?.data.totalPages) return pages?.length
-        else return undefined
-      }
-    }
-  )
+          return 2;
+        if (pages?.length < lastPage?.data.totalPages) return pages?.length;
+        else return undefined;
+      },
+    },
+  );
   useEffect(() => {
     if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
-      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString())
+      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
     }
-  }, [apartments])
-  const apartment: Apartment = apartments?.pages?.map((page) => {
+  }, [apartments]);
+  const apartment: Apartment = apartments?.pages?.map(page => {
     return page?.data?.items.find(
-      (item) => item.id.toString() === apartmentChosen
-    )
-  })[0]
+      item => item.id.toString() === apartmentChosen,
+    );
+  })[0];
 
-  const [month, setMonth] = useState('')
+  const [month, setMonth] = useState('');
   const handleSearch = () => {
     //
-  }
-  const classNameChosen = 'font-semibold text-sm text-white'
-  const classNameNotChosen = 'font-medium text-sm text-black'
+  };
+  const classNameChosen = 'font-semibold text-sm text-white';
+  const classNameNotChosen = 'font-medium text-sm text-black';
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [flag, setFlag] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [flag, setFlag] = useState(false);
   const [, scrollerRef] = useInfiniteScroll({
     isEnabled: isOpen,
     hasMore: hasNextPage,
     shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
     onLoadMore: () => {
-      fetchNextPage()
-    }
-  })
+      fetchNextPage();
+    },
+  });
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -103,7 +103,7 @@ const FormsPage = () => {
           <ChevronDown
             className={cn(
               'text-gray group-hover:font-semibold group-hover:scale-105',
-              searchAdvanced && 'transform rotate-180'
+              searchAdvanced && 'transform rotate-180',
             )}
             size={18}
           />
@@ -152,20 +152,20 @@ const FormsPage = () => {
               value:
                 'text-gray uppercase font-semibold text-lg group-data-[has-value=true]:text-gray',
               trigger:
-                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white'
+                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white',
             }}
-            onChange={(e) => {
-              setApartmentChosen(e.target.value)
-              setCurrentPage(1)
+            onChange={e => {
+              setApartmentChosen(e.target.value);
+              setCurrentPage(1);
             }}
           >
             {apartments ? (
-              apartments?.pages?.map((page) =>
+              apartments?.pages?.map(page =>
                 page?.data?.items?.map((item: Apartment) => (
                   <SelectItem key={item.id} value={item.id}>
                     {item.name}
                   </SelectItem>
-                ))
+                )),
               )
             ) : (
               <SelectItem key={''}></SelectItem>
@@ -187,7 +187,7 @@ const FormsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !flag && 'bg-gray pointer-events-none'
+                  !flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -198,7 +198,7 @@ const FormsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !!flag && 'bg-gray pointer-events-none'
+                  !!flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -224,7 +224,7 @@ const FormsPage = () => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default FormsPage
+export default FormsPage;

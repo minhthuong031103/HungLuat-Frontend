@@ -1,11 +1,11 @@
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { useRoom } from '@/hooks/useRoom'
-import { DatePicker } from '../ui/date-picker'
-import BillTable from './BillTable'
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { useRoom } from '@/hooks/useRoom';
+import { DatePicker } from '../ui/date-picker';
+import BillTable from './BillTable';
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
-  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom()
+  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
   return (
     <>
       {isLoading ? (

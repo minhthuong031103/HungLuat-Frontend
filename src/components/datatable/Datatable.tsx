@@ -175,7 +175,7 @@ export default function DataTable({
       </TableHeader>
 
       <TableBody emptyContent={'Không tìm thấy dữ liệu'} items={data}>
-        {(item) => {
+        {item => {
           return (
             <TableRow key={item.id}>
               {columnKey => (

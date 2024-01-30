@@ -1,25 +1,25 @@
-import { CommonSvg } from '@/assets/CommonSvg'
-import DataTable from '@/components/datatable/Datatable'
-import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon'
+import { CommonSvg } from '@/assets/CommonSvg';
+import DataTable from '@/components/datatable/Datatable';
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 
-import { queryKey } from '@/lib/constant'
+import { queryKey } from '@/lib/constant';
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger
-} from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
+  DropdownTrigger,
+} from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
 
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { exportBillProps, useRoom } from '@/hooks/useRoom'
+import { exportBillProps, useRoom } from '@/hooks/useRoom';
 
 interface ResponseProps {
-  items: exportBillProps[]
-  totalItems: number
-  totalPages: number
+  items: exportBillProps[];
+  totalItems: number;
+  totalPages: number;
 }
 
 const columnKeys = {
@@ -28,55 +28,55 @@ const columnKeys = {
   customer: 'customer',
   pdfUrl: 'pdfUrl',
   action: 'action',
-  endDate: 'endDate'
-}
+  endDate: 'endDate',
+};
 
 const columns = [
   {
     id: columnKeys.endDate,
     title: 'Ngày xuất phiếu',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.numberFloor,
     title: 'Tầng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.name,
     title: 'Tên phòng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.customer,
     title: 'Tên khách hàng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.pdfUrl,
     title: 'File đính kèm',
-    sortable: true
+    sortable: true,
   },
 
   {
     id: columnKeys.action,
     title: 'Thao tác',
-    sortable: false
-  }
-]
+    sortable: false,
+  },
+];
 
 const NormalRenderCell = ({ cellValue }) => {
   return (
     <div className="flex flex-col">
       <p className="text-bold text-small ">{cellValue}</p>
     </div>
-  )
-}
+  );
+};
 
 const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
-  const [limit, setLimit] = useState('10')
-  const [currentPage, setCurrentPage] = useState(1)
-  const { getAllBills } = useRoom()
+  const [limit, setLimit] = useState('10');
+  const [currentPage, setCurrentPage] = useState(1);
+  const { getAllBills } = useRoom();
   const { data: billsApartment, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.BILLAPARTMENT, { currentPage, limit, search }],
     queryFn: async () => {
@@ -85,28 +85,28 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
         page: currentPage,
         limit,
         search,
-        searchField
-      })
+        searchField,
+      });
       return {
         ...res?.data,
-        items: res?.data?.items.map((item) => ({
+        items: res?.data?.items.map(item => ({
           ...item,
           name: item.room.name,
           numberFloor: item.room.floor,
-          customer: item.room?.customer || 'Chưa có tên'
-        }))
-      }
-    }
-  })
+          customer: item.room?.customer || 'Chưa có tên',
+        })),
+      };
+    },
+  });
 
   const renderCell = React.useCallback(
     (bills: exportBillProps, columnKey: React.Key) => {
-      let cellValue = bills[columnKey]
-      const nameInvoice = bills[columnKeys.name]
+      let cellValue = bills[columnKey];
+      const nameInvoice = bills[columnKeys.name];
       if (columnKey === columnKeys.endDate) {
         cellValue = `Tháng ${new Date(cellValue).getMonth() + 1}/${new Date(
-          cellValue
-        ).getFullYear()}`
+          cellValue,
+        ).getFullYear()}`;
       }
       switch (columnKey) {
         case columnKeys.pdfUrl:
@@ -122,7 +122,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
                 Tệp tin
               </a>
             </div>
-          )
+          );
         case columnKeys.action:
           return (
             <div className="relative flex justify-start items-center gap-2 ml-2">
@@ -139,13 +139,13 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
                 </DropdownMenu>
               </Dropdown>
             </div>
-          )
+          );
         default:
-          return <NormalRenderCell cellValue={cellValue} />
+          return <NormalRenderCell cellValue={cellValue} />;
       }
     },
-    []
-  )
+    [],
+  );
   return (
     <>
       <div className="flex items-end justify-between mt-4">
@@ -169,7 +169,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ListBill
+export default ListBill;

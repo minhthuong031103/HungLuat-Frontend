@@ -8,18 +8,18 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Checkbox
-} from '@nextui-org/react'
-import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon'
-import { exportBillProps, useRoom } from '@/hooks/useRoom'
+  Checkbox,
+} from '@nextui-org/react';
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
+import { exportBillProps, useRoom } from '@/hooks/useRoom';
 
 interface BillTaleProps {
-  roomId: string
+  roomId: string;
 }
 interface ResponseProps {
-  items: exportBillProps[]
-  totalItems: number
-  totalPages: number
+  items: exportBillProps[];
+  totalItems: number;
+  totalPages: number;
 }
 
 const columnKeys = {
@@ -28,42 +28,42 @@ const columnKeys = {
   customer: 'customer',
   pdfUrl: 'pdfUrl',
   action: 'action',
-  endDate: 'endDate'
-}
+  endDate: 'endDate',
+};
 
 const columns = [
   {
     id: columnKeys.endDate,
     title: 'Ngày xuất phiếu',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.numberFloor,
     title: 'Tầng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.name,
     title: 'Tên phòng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.customer,
     title: 'Tên khách hàng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.pdfUrl,
     title: 'File đính kèm',
-    sortable: true
+    sortable: true,
   },
 
   {
     id: columnKeys.action,
     title: 'Thao tác',
-    sortable: false
-  }
-]
+    sortable: false,
+  },
+];
 
 const NormalRenderCell = ({ cellValue }) => {
   return (
@@ -74,11 +74,11 @@ const NormalRenderCell = ({ cellValue }) => {
 };
 
 const BillTable = ({ roomId }: BillTaleProps) => {
-  const [limit, setLimit] = useState('10')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState('')
+  const [limit, setLimit] = useState('10');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
 
-  const { getBills } = useRoom()
+  const { getBills } = useRoom();
   const { data: bills, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.BILL, { currentPage, limit, roomId }],
     queryFn: async () => {
@@ -87,28 +87,28 @@ const BillTable = ({ roomId }: BillTaleProps) => {
         search: search,
         searchField: 'name',
         page: currentPage,
-        limit: limit
-      })
+        limit: limit,
+      });
       return {
         ...res?.data,
-        items: res?.data?.items.map((item) => ({
+        items: res?.data?.items.map(item => ({
           ...item,
           name: item.room.name,
           numberFloor: item.room.floor,
-          customer: item.room?.customer || 'Chưa có tên'
-        }))
-      }
+          customer: item.room?.customer || 'Chưa có tên',
+        })),
+      };
     },
-    enabled: !!roomId && !!currentPage && !!limit
-  })
+    enabled: !!roomId && !!currentPage && !!limit,
+  });
   const renderCell = React.useCallback(
     (bills: exportBillProps, columnKey: React.Key) => {
-      let cellValue = bills[columnKey]
-      const nameInvoice = bills[columnKeys.name]
+      let cellValue = bills[columnKey];
+      const nameInvoice = bills[columnKeys.name];
       if (columnKey === columnKeys.endDate) {
         cellValue = `Tháng ${new Date(cellValue).getMonth() + 1}/${new Date(
-          cellValue
-        ).getFullYear()}`
+          cellValue,
+        ).getFullYear()}`;
       }
       switch (columnKey) {
         case columnKeys.pdfUrl:
@@ -124,7 +124,7 @@ const BillTable = ({ roomId }: BillTaleProps) => {
                 Tệp tin
               </a>
             </div>
-          )
+          );
         case columnKeys.action:
           return (
             <div className="relative flex justify-start items-center gap-2 ml-2">
@@ -141,9 +141,9 @@ const BillTable = ({ roomId }: BillTaleProps) => {
                 </DropdownMenu>
               </Dropdown>
             </div>
-          )
+          );
         default:
-          return <NormalRenderCell cellValue={cellValue} />
+          return <NormalRenderCell cellValue={cellValue} />;
       }
     },
     [],
