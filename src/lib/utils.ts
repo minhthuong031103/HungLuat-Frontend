@@ -150,7 +150,7 @@ export const checkValueNumberInput = (key, value) => {
   const countDots = (str: string) => str.split('.').length - 1;
   const temp = (str: string) => str.split('.');
   if (
-    key === 'newElectric' &&
+    (key === 'newElectric' || key === 'defaultElectric') &&
     countDots(value) <= 1 &&
     temp(value)?.[1]?.length <= 1
   ) {

@@ -78,6 +78,20 @@ export const RETURNED_MESSAGES = {
       ENG: 'Room updated',
       VIE: 'Cập nhật phòng thành công',
     },
+
+    CONTRACT_CREATED: {
+      ENG: 'Contract created',
+      VIE: 'Tạo hợp đồng thành công',
+    },
+    CONTRACT_NOT_FOUND: {
+      ENG: 'Contract not found',
+      VIE: 'Không tìm thấy hợp đồng',
+    },
+
+    CONTRACT_EXISTED: {
+      ENG: 'Contract is existed',
+      VIE: 'Hợp đồng đã tồn tại',
+    },
   },
 
   CUSTOMER: {
@@ -89,6 +103,25 @@ export const RETURNED_MESSAGES = {
     CUSTOMER_CREATED: {
       ENG: 'Customer created',
       VIE: 'Tạo khách hàng thành công',
+    },
+
+    CUSTOMER_NOT_FOUND: {
+      ENG: 'Customer not found',
+      VIE: 'Không tìm thấy khách hàng',
+    },
+  },
+  BILL: {
+    BILL_CREATED: {
+      ENG: 'Bill created',
+      VIE: 'Tạo hóa đơn thành công',
+    },
+    BILL_NOT_FOUND: {
+      ENG: 'Bill not found',
+      VIE: 'Không tìm thấy hóa đơn',
+    },
+    BILL_EXISTED: {
+      ENG: 'Bill is existed',
+      VIE: 'Hóa đơn đã tồn tại',
     },
   },
 };

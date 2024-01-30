@@ -41,7 +41,7 @@ const RoomDetailPage = () => {
     {
       content: 'Hợp đồng',
       action: () => {
-        onOpen('contractRoom');
+        onOpen('contractRoom', {}, refetch);
       },
     },
     {

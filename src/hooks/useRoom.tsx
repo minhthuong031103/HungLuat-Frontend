@@ -10,6 +10,7 @@ import {
 
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import toast from 'react-hot-toast';
+import { number } from 'zod';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_VALUES': {
@@ -82,7 +83,7 @@ const reducerContract = (state: StateContractProps, action) => {
 const initContractState: StateContractProps = {
   roomId: '',
   customerId: '',
-  phoneNumber: '',
+  defaultElectric: 0,
   daySignContract: new Date(),
   dayEndContract: new Date(),
   note: '',
@@ -100,15 +101,17 @@ interface IRoomContext {
   getBills: any;
   getAllBills: any;
   createRoom: any;
+  createContract: any;
   resetState: any;
   getDetailRoom: any;
   updateRoomStates: any;
   exportBill: any;
+  resetContractState: any;
 }
 interface StateContractProps {
   roomId: string;
   customerId: string;
-  phoneNumber: string;
+  defaultElectric: number;
   daySignContract: Date;
   dayEndContract: Date;
   note: string;
@@ -163,7 +166,23 @@ export const RoomProvider = ({ children }) => {
     }
   };
   const handleSetContract = (key, value) => {
-    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
+    if (
+      (key == 'defaultElectric' && checkValueNumberInput(key, value)) ||
+      key !== 'defaultElectric'
+    ) {
+      if (key == 'defaultElectric' && value === '') {
+        value = 0;
+      }
+      if (
+        key == 'defaultElectric' &&
+        value[0] == '0' &&
+        value[1] != '.' &&
+        value.length > 1
+      ) {
+        value = value.slice(1);
+      }
+      dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
+    }
   };
   useEffect(() => {
     const startDate = new Date(state.startDate);
@@ -457,6 +476,9 @@ export const RoomProvider = ({ children }) => {
   const resetState = () => {
     dispatch({ type: 'RESET' });
   };
+  const resetContractState = () => {
+    dispatchContract({ type: 'RESET' });
+  };
   const getDetailRoom = async ({ roomId }) => {
     try {
       const res = await requestApi({
@@ -626,6 +648,27 @@ export const RoomProvider = ({ children }) => {
       toast.error('Xuất hóa đơn thất bại');
     }
   };
+  const createContract = async ({ data, onClose }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/contract/create`,
+        method: 'POST',
+        body: data,
+      });
+      if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.VIE);
+        resetContractState();
+        onClose();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.VIE);
+      } else {
+        toast.error('Tạo hợp đồng thất bại');
+      }
+      return res;
+    } catch (error) {
+      toast.error('Tạo hợp đồng thất bại');
+    }
+  };
   return (
     <RoomContext.Provider
       value={{
@@ -643,7 +686,9 @@ export const RoomProvider = ({ children }) => {
         resetState,
         getDetailRoom,
         updateRoomStates,
+        createContract,
         exportBill,
+        resetContractState,
       }}
     >
       {children}
