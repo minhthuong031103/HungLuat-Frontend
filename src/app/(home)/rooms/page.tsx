@@ -62,7 +62,7 @@ const RoomsPage = () => {
         if (pages?.length < lastPage?.data.totalPages) return pages?.length;
         else return undefined;
       },
-    }
+    },
   );
   useEffect(() => {
     console.log(apartments);
@@ -70,9 +70,9 @@ const RoomsPage = () => {
       setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
     }
   }, [apartments]);
-  const apartment: Apartment = apartments?.pages?.map((page) => {
+  const apartment: Apartment = apartments?.pages?.map(page => {
     return page?.data?.items?.find(
-      (item) => item.id.toString() === apartmentChosen
+      item => item.id.toString() === apartmentChosen,
     );
   })?.[0];
 
@@ -129,7 +129,7 @@ const RoomsPage = () => {
           <ChevronDown
             className={cn(
               'text-gray group-hover:font-semibold group-hover:scale-105',
-              searchAdvanced && 'transform rotate-180'
+              searchAdvanced && 'transform rotate-180',
             )}
             size={18}
           />
@@ -180,18 +180,18 @@ const RoomsPage = () => {
               trigger:
                 'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white',
             }}
-            onChange={(e) => {
+            onChange={e => {
               setApartmentChosen(e.target.value);
               setCurrentPage(1);
             }}
           >
             {apartments ? (
-              apartments?.pages?.map((page) =>
+              apartments?.pages?.map(page =>
                 page?.data?.items?.map((item: Apartment) => (
                   <SelectItem key={item.id} value={item.id}>
                     {item.name}
                   </SelectItem>
-                ))
+                )),
               )
             ) : (
               <SelectItem key={''}></SelectItem>
@@ -213,7 +213,7 @@ const RoomsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !flag && 'bg-gray pointer-events-none'
+                  !flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -224,7 +224,7 @@ const RoomsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !!flag && 'bg-gray pointer-events-none'
+                  !!flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -243,7 +243,7 @@ const RoomsPage = () => {
                           numberFloor: apartment?.numberFloor,
                           apartmentId: Number(apartmentChosen),
                         },
-                        handleGetRooms
+                        handleGetRooms,
                       )
                     }
                   >

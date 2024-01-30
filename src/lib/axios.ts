@@ -1,81 +1,81 @@
 /** @format */
 
-import axios from 'axios'
-import { useKey } from '@hooks/useKey'
-import { KEY_CONTEXT } from './constant'
-import { useAuth } from '@/hooks/useAuth'
+import axios from 'axios';
+import { useKey } from '@hooks/useKey';
+import { KEY_CONTEXT } from './constant';
+import { useAuth } from '@/hooks/useAuth';
 
 const config = {
   baseURL: process.env.NEXT_PUBLIC_BACKEND_API_URL,
   headers: {
-    'Content-Type': 'application/json'
-  }
-}
+    'Content-Type': 'application/json',
+  },
+};
 
-const axiosClient = axios.create(config)
+const axiosClient = axios.create(config);
 
 axiosClient.interceptors.request.use(
   async (req: any) => {
-    const { getKey } = useKey()
-    const token = getKey(KEY_CONTEXT.TOKEN)
+    const { getKey } = useKey();
+    const token = getKey(KEY_CONTEXT.TOKEN);
     if (token) {
-      req.headers.Authorization = `Bearer ${token}`
+      req.headers.Authorization = `Bearer ${token}`;
     }
-    req.headers.Authorization = `Bearer ${token || ''}`
-    return req
+    req.headers.Authorization = `Bearer ${token || ''}`;
+    return req;
   },
-  (err: any) => Promise.reject(err)
-)
+  (err: any) => Promise.reject(err),
+);
 
 axiosClient.interceptors.response.use(
   (res: any) => Promise.resolve(res.data),
   async (err: any) => {
-    return Promise.reject(((err || {}).response || {}).data)
-  }
-)
+    return Promise.reject(((err || {}).response || {}).data);
+  },
+);
 
 /** @format */
 
 export interface RequestProps {
-  endPoint: string
-  method: string
-  body?: any
+  endPoint: string;
+  method: string;
+  body?: any;
 }
 const useApi = () => {
-  const { setKeySite, setUserLogin, removeKey, getKey } = useKey()
+  const { setKeySite, setUserLogin, removeKey, getKey } = useKey();
 
-  const { onLogout1 } = useAuth()
+  const { onLogout1 } = useAuth();
 
   async function requestApi({ endPoint, method, body }: RequestProps) {
     const headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    }
+      'Access-Control-Allow-Origin': '*',
+    };
 
-    const instance = axios.create({ headers })
+    const instance = axios.create({ headers });
 
     instance.interceptors.request.use(
-      (config) => {
-        const token = getKey(KEY_CONTEXT.TOKEN)
-        console.log('🚀 ~ requestApi ~ token:', token)
+      config => {
+        const token = getKey(KEY_CONTEXT.TOKEN);
+        console.log('🚀 ~ requestApi ~ token:', token);
         if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`
+          config.headers['Authorization'] = `Bearer ${token}`;
         }
-        return config
+        return config;
       },
-      (error) => {
-        return Promise.reject(error)
-      }
-    )
+      error => {
+        return Promise.reject(error);
+      },
+    );
 
     instance.interceptors.response.use(
-      (response) => {
-        return response
+      response => {
+        return response;
       },
-      async (error) => {
-        console.log('🚀 ~ requestApi ~ error:', error)
-        const originalConfig = error.config
+      async error => {
+        console.log('🚀 ~ requestApi ~ error:', error);
+        const originalConfig = error.config;
 
         if (
           error.response &&
@@ -83,39 +83,38 @@ const useApi = () => {
           error.response.data.message == 'Token expired'
         ) {
           try {
-            console.log('Access token expired')
+            console.log('Access token expired');
             // onLogout();
 
-            console.log('call refresh token api')
+            console.log('call refresh token api');
             if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
-              onLogout1()
+              onLogout1();
             }
             const res: any = await axiosClient.post('/auth/refresh-token', {
-              refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN)
-            })
-            console.log('🚀 ~ res:', res)
+              refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN),
+            });
+            console.log('🚀 ~ res:', res);
 
             if (
               res?.message == 'Forbidden resource' ||
               res?.statusCode == 403
             ) {
-              onLogout1()
+              onLogout1();
             }
             if (res?.data?.accessToken && res?.data?.refreshToken) {
               setKeySite({
                 token: res?.data?.accessToken,
-                refreshToken: res?.data?.refreshToken
-              })
-              originalConfig.headers[
-                'Authorization'
-              ] = `Bearer ${res?.data?.accessToken}`
+                refreshToken: res?.data?.refreshToken,
+              });
+              originalConfig.headers['Authorization'] =
+                `Bearer ${res?.data?.accessToken}`;
             }
 
-            return instance(originalConfig)
+            return instance(originalConfig);
           } catch (err) {
-            console.log('🚀 ~ requestApi ~ err:', err)
-            onLogout1()
-            return Promise.reject(err)
+            console.log('🚀 ~ requestApi ~ err:', err);
+            onLogout1();
+            return Promise.reject(err);
           }
         }
         if (
@@ -123,21 +122,21 @@ const useApi = () => {
           error.response.data.statusCode === 403 &&
           error.response.data.message == 'Forbidden resource'
         ) {
-          onLogout1()
+          onLogout1();
         }
-        return Promise.reject(error)
-      }
-    )
+        return Promise.reject(error);
+      },
+    );
 
     const res = await instance.request({
       method: method,
       url: `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${endPoint}`,
-      data: body
-    })
-    return res?.data
+      data: body,
+    });
+    return res?.data;
   }
   return {
-    requestApi
-  }
-}
-export { axiosClient, useApi }
+    requestApi,
+  };
+};
+export { axiosClient, useApi };

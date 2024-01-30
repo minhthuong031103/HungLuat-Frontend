@@ -59,7 +59,7 @@ const formSchema = z
       message: 'Vui lòng nhập lại mật khẩu',
     }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine(data => data.password === data.confirmPassword, {
     message: 'Mật khẩu xác nhận không khớp',
     path: ['confirmPassword'],
   });
@@ -141,12 +141,12 @@ const Register = ({
     }
     if (!isSelected) {
       toast.error(
-        'Vui lòng đọc điều khoản chính sách ở trang chủ và chấp thuận với chính sách của chúng tôi'
+        'Vui lòng đọc điều khoản chính sách ở trang chủ và chấp thuận với chính sách của chúng tôi',
       );
       return;
     }
     const formData = new FormData();
-    Object.keys(data).forEach((key) => {
+    Object.keys(data).forEach(key => {
       formData.append(key, data[key]);
     });
 
@@ -299,7 +299,7 @@ const Register = ({
                       type="text"
                       placeholder="Nhập mã số CMND"
                       value={maSoCmnd}
-                      onChange={(e) => setMaSoCmnd(e.target.value)}
+                      onChange={e => setMaSoCmnd(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-3 ">
@@ -309,7 +309,7 @@ const Register = ({
                       type="text"
                       placeholder="Nhập họ tên đại diện"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={e => setName(e.target.value)}
                     />
                   </div>
                   <div className="flex flex-col gap-3 ">

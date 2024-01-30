@@ -1,18 +1,18 @@
-import { cn } from '@/lib/utils'
-import { Select, SelectItem } from '@nextui-org/react'
+import { cn } from '@/lib/utils';
+import { Select, SelectItem } from '@nextui-org/react';
 
 interface CustomSelectProps {
-  label?: string
-  placeholder?: string
-  value: string
-  isRequired?: boolean
-  variant?: 'flat' | 'bordered' | 'underlined' | 'faded'
-  setValue: (e: string) => void
-  data: string[]
-  className?: string
-  classNames?: object
-  isLoading?: boolean
-  disabled?: boolean
+  label?: string;
+  placeholder?: string;
+  value: string;
+  isRequired?: boolean;
+  variant?: 'flat' | 'bordered' | 'underlined' | 'faded';
+  setValue: (e: string) => void;
+  data: string[];
+  className?: string;
+  classNames?: object;
+  isLoading?: boolean;
+  disabled?: boolean;
 }
 export const CustomSelect = ({
   label,
@@ -25,7 +25,7 @@ export const CustomSelect = ({
   data,
   className,
   disabled = false,
-  classNames
+  classNames,
 }: CustomSelectProps) => {
   return (
     <Select
@@ -39,15 +39,15 @@ export const CustomSelect = ({
       isLoading={isLoading}
       className={cn('max-w-xs', className)}
       disabled={disabled}
-      onSelectionChange={(e) => {
-        setValue(e as any)
+      onSelectionChange={e => {
+        setValue(e as any);
       }}
     >
-      {data.map((item) => (
+      {data.map(item => (
         <SelectItem key={item} value={item}>
           {item}
         </SelectItem>
       ))}
     </Select>
-  )
-}
+  );
+};

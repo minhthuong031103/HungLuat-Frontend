@@ -150,7 +150,7 @@ const CustomerTable = () => {
           return <NormalRenderCell cellValue={cellValue} />;
       }
     },
-    []
+    [],
   );
   return (
     <>

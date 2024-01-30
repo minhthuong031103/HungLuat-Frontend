@@ -154,7 +154,7 @@ const NavigationMenuDemo = ({ session }) => {
             <div className="w-full h-full">
               <Dropdown
                 shouldBlockScroll={true}
-                onOpenChange={(open) => {
+                onOpenChange={open => {
                   setIsUserOpen(open);
                 }}
                 closeOnSelect={true}

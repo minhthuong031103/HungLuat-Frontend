@@ -52,25 +52,25 @@ const ContractRoomModal = () => {
               isLoading={isFetching}
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
-              onSelectionChange={(e) => {
+              onSelectionChange={e => {
                 setCustomerChosen(e as any);
               }}
-              onChange={(e) => {
+              onChange={e => {
                 console.log('🚀 ~ ContractRoomModal ~ e:', e);
                 setCustomerChosen(e.target.value);
                 setCurrentPage(1);
               }}
-              onInputChange={(e) => {
+              onInputChange={e => {
                 setSearchValue(e);
               }}
             >
               {customers ? (
-                customers?.pages?.map((page) =>
+                customers?.pages?.map(page =>
                   page?.data?.items?.map((item: Customer) => (
                     <AutocompleteItem key={item.id} value={item.id}>
                       {item.name}
                     </AutocompleteItem>
-                  ))
+                  )),
                 )
               ) : (
                 <AutocompleteItem key={''}></AutocompleteItem>
@@ -82,7 +82,7 @@ const ContractRoomModal = () => {
               label="Ngày ký hợp đồng"
               date={contractState.daySignContract}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetContract('dateContract', value)}
+              setDate={value => handleSetContract('dateContract', value)}
             />
           </div>
           <div className="w-[33%]">
@@ -90,7 +90,7 @@ const ContractRoomModal = () => {
               label="Ngày hết hạn hợp đồng"
               labelCustom="font-medium text-sm text-black"
               date={contractState.dayEndContract}
-              setDate={(value) => handleSetContract('dateExpired', value)}
+              setDate={value => handleSetContract('dateExpired', value)}
             />
           </div>
         </div>
@@ -101,7 +101,7 @@ const ContractRoomModal = () => {
               label="Ghi chú"
               placeholder="Nhập ghi chú"
               value={contractState.note}
-              setValue={(value) => {
+              setValue={value => {
                 {
                   handleSetContract('note', value);
                 }

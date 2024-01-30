@@ -177,7 +177,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền cọc',
           isRequired: true,
           value: state.depositPrice,
-          setValue: (value) => handleSetValue('depositPrice', value),
+          setValue: value => handleSetValue('depositPrice', value),
         },
         {
           label: 'Số ngày ở trong tháng',
@@ -186,7 +186,7 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.dayStayed,
-          setValue: (value) => handleSetValue('dayStayed', value),
+          setValue: value => handleSetValue('dayStayed', value),
         },
       ],
     },
@@ -199,7 +199,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền nợ cũ',
           isRequired: true,
           value: state.oldDebt,
-          setValue: (value) => handleSetValue('oldDebt', value),
+          setValue: value => handleSetValue('oldDebt', value),
         },
         {
           label: 'Nợ mới',
@@ -207,7 +207,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số ngày ở trong tháng',
           isRequired: true,
           value: state.newDebt,
-          setValue: (value) => handleSetValue('newDebt', value),
+          setValue: value => handleSetValue('newDebt', value),
         },
       ],
     },
@@ -220,7 +220,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền phụ thu',
           isRequired: true,
           value: state.surcharge,
-          setValue: (value) => handleSetValue('surcharge', value),
+          setValue: value => handleSetValue('surcharge', value),
         },
         {
           label: 'Số lượng người ở thực tế',
@@ -228,7 +228,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số lượng người ở thực tế',
           isRequired: true,
           value: state.peopleRealStayed,
-          setValue: (value) => handleSetValue('peopleRealStayed', value),
+          setValue: value => handleSetValue('peopleRealStayed', value),
         },
       ],
     },
@@ -242,7 +242,7 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.defaultElectric,
-          setValue: (value) => handleSetValue('defaultElectric', value),
+          setValue: value => handleSetValue('defaultElectric', value),
         },
         {
           label: 'Chỉ số điện cũ (KWh)',
@@ -251,7 +251,7 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.oldElectric,
-          setValue: (value) => handleSetValue('oldElectric', value),
+          setValue: value => handleSetValue('oldElectric', value),
         },
       ],
     },
@@ -264,7 +264,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Giá điện',
           isRequired: true,
           value: state.electricPrice,
-          setValue: (value) => handleSetValue('electricPrice', value),
+          setValue: value => handleSetValue('electricPrice', value),
         },
 
         {
@@ -273,7 +273,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập chỉ số điện mới',
           isRequired: true,
           value: state.newElectric,
-          setValue: (value) => handleSetValue('newElectric', value),
+          setValue: value => handleSetValue('newElectric', value),
         },
       ],
     },
@@ -286,7 +286,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số lượng',
           isRequired: true,
           value: state.peopleAmount,
-          setValue: (value) => handleSetValue('peopleAmount', value),
+          setValue: value => handleSetValue('peopleAmount', value),
         },
         {
           label: 'Tiền nước (VND / người)',
@@ -294,7 +294,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền nước',
           isRequired: true,
           value: state.waterPrice,
-          setValue: (value) => handleSetValue('waterPrice', value),
+          setValue: value => handleSetValue('waterPrice', value),
         },
       ],
     },
@@ -307,14 +307,14 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền thang máy',
           isRequired: true,
           value: state.elevatorPrice,
-          setValue: (value) => handleSetValue('elevatorPrice', value),
+          setValue: value => handleSetValue('elevatorPrice', value),
         },
         {
           label: 'Chi phí phát sinh khác',
           type: 'text',
           placeholder: 'Nhập chi phí phát sinh',
           value: state.otherPrice,
-          setValue: (value) => handleSetValue('otherPrice', value),
+          setValue: value => handleSetValue('otherPrice', value),
         },
       ],
     },
@@ -327,7 +327,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền Internet',
           isRequired: true,
           value: state.internetPrice,
-          setValue: (value) => handleSetValue('internetPrice', value),
+          setValue: value => handleSetValue('internetPrice', value),
         },
         {
           label: 'Tiền dịch vụ (VND / phòng)',
@@ -335,7 +335,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền dịch vụ',
           isRequired: true,
           value: state.servicePrice,
-          setValue: (value) => handleSetValue('servicePrice', value),
+          setValue: value => handleSetValue('servicePrice', value),
         },
       ],
     },
@@ -348,7 +348,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số xe',
           isRequired: true,
           value: state.vehicleAmount,
-          setValue: (value) => handleSetValue('vehicleAmount', value),
+          setValue: value => handleSetValue('vehicleAmount', value),
         },
         {
           label: 'Tiền gửi xe (VND / xe)',
@@ -356,7 +356,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền gửi xe',
           isRequired: true,
           value: state.parkingPrice,
-          setValue: (value) => handleSetValue('parkingPrice', value),
+          setValue: value => handleSetValue('parkingPrice', value),
         },
       ],
     },
@@ -464,10 +464,10 @@ export const RoomProvider = ({ children }) => {
         ? 0
         : Math.floor(
             (Math.floor(
-              (Number(state.newElectric) - Number(state.oldElectric)) * 10
+              (Number(state.newElectric) - Number(state.oldElectric)) * 10,
             ) /
               10) *
-              Number(state.electricPrice)
+              Number(state.electricPrice),
           );
     const WP = Number(state.waterPrice) * Number(state.peopleAmount);
     const PP = Number(state.parkingPrice) * Number(state.vehicleAmount);
@@ -480,8 +480,8 @@ export const RoomProvider = ({ children }) => {
       (Number(state.roomPrice) * Number(state.dayStayed)) /
         getDaysAmountInMonth(
           new Date().getMonth() + 1,
-          new Date().getFullYear()
-        )
+          new Date().getFullYear(),
+        ),
     );
     const NC =
       EP +

@@ -33,7 +33,7 @@ type FileWithPreview = FileWithPath & {
 
 interface FileDialogProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends React.HTMLAttributes<HTMLDivElement> {
   name: TName;
   setValue?: UseFormSetValue<TFieldValues>;
@@ -68,17 +68,17 @@ export function VideoDialog<TFieldValues extends FieldValues>({
         toast.error(`You can only upload up to ${maxFiles} files`);
         return;
       } else {
-        acceptedFiles.forEach((file) => {
+        acceptedFiles.forEach(file => {
           const fileWithPreview = Object.assign(file, {
             preview: URL.createObjectURL(file),
           });
-          setFiles((prev) => [...(prev ?? []), fileWithPreview]);
+          setFiles(prev => [...(prev ?? []), fileWithPreview]);
         });
         if (rejectedFiles.length > 0) {
           rejectedFiles.forEach(({ errors }) => {
             if (errors[0]?.code === 'file-too-large') {
               toast.error(
-                `File is too large. Max size is ${formatBytes(maxSize)}`
+                `File is too large. Max size is ${formatBytes(maxSize)}`,
               );
               return;
             }
@@ -88,7 +88,7 @@ export function VideoDialog<TFieldValues extends FieldValues>({
       }
     },
 
-    [maxSize, setFiles, files]
+    [maxSize, setFiles, files],
   );
 
   // Register files to react-hook-form
@@ -109,10 +109,10 @@ export function VideoDialog<TFieldValues extends FieldValues>({
   React.useEffect(() => {
     return () => {
       if (!files) return;
-      files.forEach((file) =>
+      files.forEach(file =>
         URL.revokeObjectURL(
-          file?.preview || `${import.meta.env.VITE_IMAGE_HOST}${file}`
-        )
+          file?.preview || `${import.meta.env.VITE_IMAGE_HOST}${file}`,
+        ),
       );
     };
   }, []);
@@ -140,7 +140,7 @@ export function VideoDialog<TFieldValues extends FieldValues>({
                 'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 isDragActive && 'border-muted-foreground/50',
                 disabled && 'pointer-events-none opacity-60',
-                className
+                className,
               )}
               {...props}
             >
@@ -226,7 +226,7 @@ function FileCard({ i, file, files, setFiles }: FileCardProps) {
     const croppedCanvas = cropperRef.current?.cropper.getCroppedCanvas();
     setCropData(croppedCanvas.toDataURL());
 
-    croppedCanvas.toBlob((blob) => {
+    croppedCanvas.toBlob(blob => {
       if (!blob) {
         console.error('Blob creation failed');
         return;
@@ -242,7 +242,7 @@ function FileCard({ i, file, files, setFiles }: FileCardProps) {
       }) satisfies FileWithPreview;
 
       const newFiles = files.map((file, j) =>
-        j === i ? croppedFileWithPathAndPreview : file
+        j === i ? croppedFileWithPathAndPreview : file,
       );
       setFiles(newFiles);
     });

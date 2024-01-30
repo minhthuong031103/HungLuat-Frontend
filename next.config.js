@@ -15,12 +15,12 @@ const nextConfig = {
           { key: 'Access-Control-Allow-Origin', value: '*' }, // replace this your actual origin
           {
             key: 'Access-Control-Allow-Methods',
-            value: 'GET,DELETE,PATCH,POST,PUT'
+            value: 'GET,DELETE,PATCH,POST,PUT',
           },
-          { key: 'Access-Control-Allow-Headers', value: '*' }
-        ]
-      }
-    ]
+          { key: 'Access-Control-Allow-Headers', value: '*' },
+        ],
+      },
+    ];
   },
   webpack(config) {
     config.resolve.fallback = {
@@ -28,10 +28,10 @@ const nextConfig = {
       // by next.js will be dropped.
       ...config.resolve.fallback,
 
-      fs: false // the solution
-    }
+      fs: false, // the solution
+    };
 
-    return config
+    return config;
   },
 
   typescript: {
@@ -39,63 +39,63 @@ const nextConfig = {
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.
     // !! WARN !!
-    ignoreBuildErrors: true
+    ignoreBuildErrors: true,
   },
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'images.lifestyleasia.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'utfs.io',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'wallpapers.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'plus.unsplash.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'http',
         hostname: 'res.cloudinary.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'upload.wikimedia.org',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'upload.wikimedia.org',
-        port: ''
+        port: '',
       },
       {
         protocol: 'https',
         hostname: 'upload.wikimedia.org',
-        port: ''
-      }
-    ]
+        port: '',
+      },
+    ],
   },
-  reactStrictMode: false
-}
+  reactStrictMode: false,
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

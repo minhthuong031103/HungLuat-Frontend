@@ -1,5 +1,5 @@
 import React from 'react';
-export const AddNoteIcon = (props) => (
+export const AddNoteIcon = props => (
   <svg
     aria-hidden="true"
     fill="none"

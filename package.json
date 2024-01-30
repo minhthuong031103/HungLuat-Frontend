@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -62,6 +64,7 @@
     "pino": "^8.15.1",
     "pino-pretty": "^10.2.0",
     "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-cropper": "^2.3.3",

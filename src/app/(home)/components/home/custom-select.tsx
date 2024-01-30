@@ -85,21 +85,21 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
     const valuesArrayProvince = Array.from(selectedProvince);
     const provinceCode = valuesArrayProvince[0];
     const provinceValue = provinces.find(
-      (province) => province.code == provinceCode
+      province => province.code == provinceCode,
     )?.name;
 
     const valuesArrayDistrict = Array.from(selectedDistrict);
     const districtCode = valuesArrayDistrict[0];
     const districtValue = districts.find(
-      (district) => district.code == districtCode
+      district => district.code == districtCode,
     )?.name;
 
     const valuesArrayWard = Array.from(selectedWard);
     const wardCode = valuesArrayWard[0];
-    const wardValue = wards.find((ward) => ward.code == wardCode)?.name;
+    const wardValue = wards.find(ward => ward.code == wardCode)?.name;
 
     setAddressValue(
-      `Số nhà ${houseNumberValue}, đường ${streetValue}, ${wardValue}, ${districtValue}, ${provinceValue}`
+      `Số nhà ${houseNumberValue}, đường ${streetValue}, ${wardValue}, ${districtValue}, ${provinceValue}`,
     );
     setIsModalOpen(false);
   };
@@ -135,7 +135,7 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
               className="w-full "
               onClose={() => setProvinceTouched(true)}
             >
-              {provinces?.map((province) => (
+              {provinces?.map(province => (
                 <SelectItem key={province.code} value={province.code}>
                   {province.name}
                 </SelectItem>
@@ -159,7 +159,7 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
               className="w-full "
               onClose={() => setDistrictTouched(true)}
             >
-              {districts?.map((district) => (
+              {districts?.map(district => (
                 <SelectItem key={district.code} value={district.code}>
                   {district.name}
                 </SelectItem>
@@ -181,7 +181,7 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
               className="w-full "
               onClose={() => setWardTouched(true)}
             >
-              {wards?.map((ward) => (
+              {wards?.map(ward => (
                 <SelectItem key={ward.code} value={ward.code}>
                   {ward.name}
                 </SelectItem>
@@ -190,7 +190,7 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
 
             <Input
               value={streetValue}
-              onChange={(e) => {
+              onChange={e => {
                 setStreetValue(e.target.value);
               }}
               className="w-full "
@@ -198,7 +198,7 @@ export const CustomSelect = ({ addressValue, setAddressValue }) => {
             />
             <Input
               value={houseNumberValue}
-              onChange={(e) => {
+              onChange={e => {
                 setHouseNumberValue(e.target.value);
               }}
               className="w-full "

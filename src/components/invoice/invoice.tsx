@@ -1,42 +1,42 @@
 import {
   addDaysToDateString,
   convertPriceNotVND,
-  getDaysAmountInMonth
-} from '@/lib/utils'
+  getDaysAmountInMonth,
+} from '@/lib/utils';
 import {
   Text,
   View,
   Page,
   Document,
   StyleSheet,
-  Font
-} from '@react-pdf/renderer'
-import { getDaysInMonth } from 'date-fns'
-import { Fragment } from 'react'
-import { getText } from 'number-to-text-vietnamese'
+  Font,
+} from '@react-pdf/renderer';
+import { getDaysInMonth } from 'date-fns';
+import { Fragment } from 'react';
+import { getText } from 'number-to-text-vietnamese';
 
 const Invoice = ({ data }) => {
   Font.register({
     family: 'Times New Roman',
     fonts: [
       {
-        src: '/fonts/SVN-TimesNewRoman2.ttf'
+        src: '/fonts/SVN-TimesNewRoman2.ttf',
       },
       {
         src: '/fonts//SVN-TimesNewRoman2bold.ttf',
-        fontWeight: 700
+        fontWeight: 700,
       },
       {
         src: '/fonts//SVN-TimesNewRoman2italic.ttf',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
       },
       {
         src: '/fonts//SVN-TimesNewRoman2bolditalic.ttf',
         fontStyle: 'italic',
-        fontWeight: 700
-      }
-    ]
-  })
+        fontWeight: 700,
+      },
+    ],
+  });
   const styles = StyleSheet.create({
     page: {
       fontSize: 11,
@@ -45,7 +45,7 @@ const Invoice = ({ data }) => {
       paddingRight: 40,
       lineHeight: 1.5,
       fontFamily: 'Times New Roman',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
 
     spaceBetween: {
@@ -53,7 +53,7 @@ const Invoice = ({ data }) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      color: '#3E3E3E'
+      color: '#3E3E3E',
     },
 
     titleContainer: { flexDirection: 'row', marginTop: 24 },
@@ -85,7 +85,7 @@ const Invoice = ({ data }) => {
       borderBottomWidth: 1,
       borderTopWidth: 1,
       flexDirection: 'row',
-      justifyContent: 'center'
+      justifyContent: 'center',
     },
 
     theader2: { flex: 2, borderRightWidth: 1, borderBottomWidth: 1 },
@@ -93,7 +93,7 @@ const Invoice = ({ data }) => {
       flex: 0.5,
       borderRightWidth: 1,
       borderBottomWidth: 1,
-      borderLeftWidth: 1
+      borderLeftWidth: 1,
     },
 
     tbody: {
@@ -105,7 +105,7 @@ const Invoice = ({ data }) => {
       flex: 1,
       borderColor: 'black',
       borderRightWidth: 1,
-      borderBottomWidth: 1
+      borderBottomWidth: 1,
     },
 
     total: {
@@ -122,16 +122,16 @@ const Invoice = ({ data }) => {
       borderRightWidth: 1,
       flexDirection: 'row',
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
 
     tbody2: { flex: 2, borderRightWidth: 1 },
     tbody3: {
       flex: 0.5,
       borderRightWidth: 1,
-      borderLeftWidth: 1
-    }
-  })
+      borderLeftWidth: 1,
+    },
+  });
 
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
@@ -142,7 +142,7 @@ const Invoice = ({ data }) => {
               style={{
                 fontSize: 12,
                 fontWeight: 700,
-                textDecoration: 'underline'
+                textDecoration: 'underline',
               }}
             >
               HÙNG LUẬT GROUP
@@ -151,7 +151,7 @@ const Invoice = ({ data }) => {
           <View>
             <Text
               style={{
-                fontSize: 10
+                fontSize: 10,
               }}
             >
               Địa chỉ: 123, Mai Phú Thọ, Q.2, TPHCM.
@@ -160,7 +160,7 @@ const Invoice = ({ data }) => {
           <View>
             <Text
               style={{
-                fontSize: 9
+                fontSize: 9,
               }}
             >
               Điện thoại:{' '}
@@ -172,7 +172,7 @@ const Invoice = ({ data }) => {
           style={{
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
           }}
         >
           <Text style={styles.reportTitle}>PHÒNG</Text>
@@ -182,7 +182,7 @@ const Invoice = ({ data }) => {
               paddingVertical: 7,
               border: '1px solid black',
               borderRadius: '50%',
-              marginTop: 7
+              marginTop: 7,
             }}
           >
             <Text style={{ fontSize: 14, color: 'blue', fontWeight: 700 }}>
@@ -192,7 +192,7 @@ const Invoice = ({ data }) => {
         </View>
       </View>
     </View>
-  )
+  );
 
   const Information = () => (
     <View
@@ -201,7 +201,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 20,
       }}
     >
       <Text style={{ fontSize: 14, fontWeight: 700 }}>
@@ -212,7 +212,7 @@ const Invoice = ({ data }) => {
         (Từ ngày {data.startDate} đến {data.endDate})
       </Text>
     </View>
-  )
+  );
   const CustomerInfo = () => (
     <View
       style={{
@@ -220,7 +220,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 20
+        marginTop: 20,
       }}
     >
       <View>
@@ -244,7 +244,7 @@ const Invoice = ({ data }) => {
         </Text>
       </View>
     </View>
-  )
+  );
   const TableHead = () => (
     <View style={{ width: '100%', flexDirection: 'row', marginTop: 10 }}>
       <View style={[styles.theader, styles.theader3]}>
@@ -262,7 +262,7 @@ const Invoice = ({ data }) => {
         <Text style={{ fontWeight: 700, fontSize: 11 }}>Thành tiền</Text>
       </View>
     </View>
-  )
+  );
   const tableData = [
     {
       id: 1,
@@ -277,10 +277,10 @@ const Invoice = ({ data }) => {
           (Number(data.roomPrice) * Number(data.dayStayed)) /
             getDaysAmountInMonth(
               new Date().getMonth() + 1,
-              new Date().getFullYear()
-            )
-        )
-      )
+              new Date().getFullYear(),
+            ),
+        ),
+      ),
     },
     {
       id: 2,
@@ -289,27 +289,27 @@ const Invoice = ({ data }) => {
         Number(data.oldElectric) >= Number(data.newElectric)
           ? 0
           : Math.floor(
-              (Number(data.newElectric) - Number(data.oldElectric)) * 10
+              (Number(data.newElectric) - Number(data.oldElectric)) * 10,
             ) / 10
       } (mới ${Math.floor(data.newElectric * 10) / 10} - cũ ${
         data.oldElectric
       })`,
       price: `${convertPriceNotVND(data.electricPrice)}đ/KWh`,
-      total: convertPriceNotVND(data.totalElectricPrice)
+      total: convertPriceNotVND(data.totalElectricPrice),
     },
     {
       id: 3,
       name: 'Nước',
       unit: `${data.peopleAmount} người`,
       price: `${convertPriceNotVND(data.waterPrice)}đ/người`,
-      total: convertPriceNotVND(data.totalWaterPrice)
+      total: convertPriceNotVND(data.totalWaterPrice),
     },
     {
       id: 4,
       name: 'Tiền thang máy',
       unit: `${data.peopleAmount} người`,
       price: `${convertPriceNotVND(data.elevatorPrice)}đ/người`,
-      total: convertPriceNotVND(data.totalElevatorPrice)
+      total: convertPriceNotVND(data.totalElevatorPrice),
     },
 
     {
@@ -317,14 +317,14 @@ const Invoice = ({ data }) => {
       name: 'Tiền internet',
       unit: '1 phòng',
       price: `${convertPriceNotVND(data.internetPrice)}đ/phòng`,
-      total: convertPriceNotVND(data.internetPrice)
+      total: convertPriceNotVND(data.internetPrice),
     },
     {
       id: 6,
       name: 'Tiền dịch vụ',
       unit: '1 phòng',
       price: `${convertPriceNotVND(data.servicePrice)}đ/phòng`,
-      total: convertPriceNotVND(data.servicePrice)
+      total: convertPriceNotVND(data.servicePrice),
     },
     {
       id: 7,
@@ -334,40 +334,40 @@ const Invoice = ({ data }) => {
       total: convertPriceNotVND(
         Number(data.peopleRealStayed) - 4 > 0
           ? (Number(data.peopleRealStayed) - 4) * Number(data.surcharge)
-          : 0
-      )
+          : 0,
+      ),
     },
     {
       id: 8,
       name: 'Tiền giữ xe',
       unit: `${data.vehicleAmount} xe`,
       price: `${convertPriceNotVND(data.parkingPrice)}đ/xe`,
-      total: convertPriceNotVND(data.totalParkingPrice)
+      total: convertPriceNotVND(data.totalParkingPrice),
     },
     {
       id: 9,
       name: 'Tiền nợ cũ',
 
       price: `${convertPriceNotVND(data.oldDebt)}đ`,
-      total: convertPriceNotVND(data.oldDebt)
+      total: convertPriceNotVND(data.oldDebt),
     },
     {
       id: 10,
       name: 'Tiền nợ mới',
 
       price: `${convertPriceNotVND(data.newDebt)}đ`,
-      total: `- ${convertPriceNotVND(data.newDebt)}`
+      total: `- ${convertPriceNotVND(data.newDebt)}`,
     },
     {
       id: 11,
       name: 'Chi phí phát sinh khác',
 
       price: `${convertPriceNotVND(data.otherPrice)}đ`,
-      total: convertPriceNotVND(data.otherPrice)
-    }
-  ]
+      total: convertPriceNotVND(data.otherPrice),
+    },
+  ];
   const TableBody = () =>
-    tableData.map((item) => (
+    tableData.map(item => (
       <Fragment key={item.id}>
         <View style={{ width: '100%', flexDirection: 'row' }}>
           <View style={[styles.tbody, styles.tbody3]}>
@@ -385,14 +385,14 @@ const Invoice = ({ data }) => {
           <View
             style={[
               styles.tbody,
-              { flexDirection: 'row', justifyContent: 'flex-end' }
+              { flexDirection: 'row', justifyContent: 'flex-end' },
             ]}
           >
             <Text style={{ fontSize: 11 }}>{item.total}</Text>
           </View>
         </View>
       </Fragment>
-    ))
+    ));
   const TableTotal = () => (
     <View style={{ width: '100%', flexDirection: 'row' }}>
       <View style={styles.total}>
@@ -401,7 +401,7 @@ const Invoice = ({ data }) => {
       <View
         style={[
           styles.tbody,
-          { flexDirection: 'row', justifyContent: 'flex-end' }
+          { flexDirection: 'row', justifyContent: 'flex-end' },
         ]}
       >
         <Text style={{ fontWeight: 700, color: 'blue', fontSize: 12 }}>
@@ -409,14 +409,14 @@ const Invoice = ({ data }) => {
         </Text>
       </View>
     </View>
-  )
+  );
   const TotalText = () => (
     <View
       style={{
         flexDirection: 'column',
         alignItems: 'center',
         fontSize: 11,
-        marginTop: 5
+        marginTop: 5,
       }}
     >
       <Text>
@@ -432,7 +432,7 @@ const Invoice = ({ data }) => {
         (<Text style={{ textDecoration: 'underline' }}>Ghi chú</Text>: )
       </Text>
     </View>
-  )
+  );
   const Payment = () => (
     <View
       style={{
@@ -442,7 +442,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         marginTop: 20,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       <Text style={{ fontSize: 10 }}>
@@ -459,14 +459,14 @@ const Invoice = ({ data }) => {
         </Text>
       </Text>
     </View>
-  )
+  );
   const Note = () => (
     <View
       style={{
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 20,
       }}
     >
       <Text style={{ fontSize: 15, fontWeight: 700, color: 'blue' }}>
@@ -474,7 +474,7 @@ const Invoice = ({ data }) => {
           style={{
             fontSize: 15,
             fontWeight: 700,
-            color: 'black'
+            color: 'black',
           }}
         >
           *{' '}
@@ -484,7 +484,7 @@ const Invoice = ({ data }) => {
             fontSize: 15,
             fontWeight: 700,
             textDecoration: 'underline',
-            color: 'black'
+            color: 'black',
           }}
         >
           Lưu ý
@@ -493,7 +493,7 @@ const Invoice = ({ data }) => {
           style={{
             fontSize: 15,
             fontWeight: 700,
-            color: 'black'
+            color: 'black',
           }}
         >
           :{' '}
@@ -509,20 +509,20 @@ const Invoice = ({ data }) => {
         Trân trọng cảm ơn sự hợp tác của quý khách!
       </Text>
     </View>
-  )
+  );
   const Sign = () => (
     <View
       style={{
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        marginTop: 15
+        marginTop: 15,
       }}
     >
       <View
         style={{
           flexDirection: 'column',
           alignItems: 'center',
-          marginRight: 30
+          marginRight: 30,
         }}
       >
         <Text style={{ fontSize: 12, fontWeight: 700 }}>Ban Quản lý</Text>
@@ -531,14 +531,14 @@ const Invoice = ({ data }) => {
             fontSize: 12,
             fontStyle: 'italic',
             fontWeight: 700,
-            marginTop: 5
+            marginTop: 5,
           }}
         >
           Chữ ký, ghi rõ họ tên
         </Text>
       </View>
     </View>
-  )
+  );
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -554,6 +554,6 @@ const Invoice = ({ data }) => {
         <Sign />
       </Page>
     </Document>
-  )
-}
-export default Invoice
+  );
+};
+export default Invoice;

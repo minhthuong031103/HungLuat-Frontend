@@ -12,7 +12,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (
     { className, type, renderRight, isInvalid, errorMessage, ...props },
-    ref
+    ref,
   ) => {
     return (
       <div className="flex flex-col">
@@ -25,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
              file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground 
              focus-visible:outline-none focus-visible:ring-1
              focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50`,
-              className
+              className,
             )}
             ref={ref}
             {...props}
@@ -41,7 +41,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ) : null}
       </div>
     );
-  }
+  },
 );
 Input.displayName = 'Input';
 

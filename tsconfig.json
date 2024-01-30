@@ -17,8 +17,8 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "paths": {
       "@/*": ["./src/*"],
@@ -26,9 +26,9 @@
       "@services/*": ["./src/services/*"],
       "@endpoints/*": ["./src/endpoints/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@actions/*": ["./src/actions/*"]
+      "@actions/*": ["./src/actions/*"],
     },
-    "strictNullChecks": true
+    "strictNullChecks": true,
   },
   "include": [
     "next-env.d.ts",
@@ -36,7 +36,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/header/Header.jsx",
-    "src/app/page.jsx"
+    "src/app/page.jsx",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }

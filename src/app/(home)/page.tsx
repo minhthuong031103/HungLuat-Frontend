@@ -1,45 +1,45 @@
-'use client'
+'use client';
 
-import { SearchBar } from './(components)/home/searchbar'
-import ListApartment from './(components)/home/list-apartment'
-import { useEffect, useState } from 'react'
-import { useApartment } from '@/hooks/useApartment'
-import { ChevronDown } from 'lucide-react'
-import { Pagination, Spinner } from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
-import { queryKey } from '@/lib/constant'
-import { Apartment } from '@/types'
-import Loader from '@/components/Loader'
+import { SearchBar } from './(components)/home/searchbar';
+import ListApartment from './(components)/home/list-apartment';
+import { useEffect, useState } from 'react';
+import { useApartment } from '@/hooks/useApartment';
+import { ChevronDown } from 'lucide-react';
+import { Pagination, Spinner } from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
+import { queryKey } from '@/lib/constant';
+import { Apartment } from '@/types';
+import Loader from '@/components/Loader';
 interface ResponseProps {
-  items: Apartment[]
-  totalItems: number
-  totalPages: number
+  items: Apartment[];
+  totalItems: number;
+  totalPages: number;
 }
 const page = () => {
-  const [searchValue, setSearchValue] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
+  const [searchValue, setSearchValue] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { getApartments } = useApartment()
+  const { getApartments } = useApartment();
 
   const {
     data: apartments,
     isLoading,
-    refetch
+    refetch,
   } = useQuery<ResponseProps>({
     queryKey: [
       queryKey.APARTMENTS,
-      { currentPage, limit: 10, searchValue, searchField: 'name' }
+      { currentPage, limit: 10, searchValue, searchField: 'name' },
     ],
     queryFn: async () => {
       const res = await getApartments({
         page: currentPage,
         limit: 10,
         search: searchValue,
-        searchField: 'name'
-      })
-      return res?.data
-    }
-  })
+        searchField: 'name',
+      });
+      return res?.data;
+    },
+  });
 
   return (
     <>
@@ -90,7 +90,7 @@ const page = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

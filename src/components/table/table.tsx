@@ -18,7 +18,7 @@ export const TableWrapper = () => {
     <div className=" w-full flex flex-col gap-4">
       <Table aria-label="Example table with custom cells">
         <TableHeader columns={columns}>
-          {(column) => (
+          {column => (
             <TableColumn
               key={column.uid}
               hideHeader={column.uid === 'actions'}
@@ -29,9 +29,9 @@ export const TableWrapper = () => {
           )}
         </TableHeader>
         <TableBody items={users}>
-          {(item) => (
+          {item => (
             <TableRow>
-              {(columnKey) => (
+              {columnKey => (
                 <TableCell>
                   {RenderCell({ user: item, columnKey: columnKey })}
                 </TableCell>

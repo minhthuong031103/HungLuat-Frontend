@@ -47,7 +47,7 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
         if (pages.length < lastPage?.data.totalPages) return pages.length;
         else return undefined;
       },
-    }
+    },
   );
   const [isScrollOpen, setIsScrollOpen] = useState(false);
   const [flag, setFlag] = useState(false);

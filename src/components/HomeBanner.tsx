@@ -1,9 +1,9 @@
-'use client'
-import React from 'react'
-import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
-import { Carousel } from 'react-responsive-carousel'
-import Image from 'next/image'
-import { Button } from './ui/button'
+'use client';
+import React from 'react';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import Image from 'next/image';
+import { Button } from './ui/button';
 function HomeBanner() {
   return (
     <div
@@ -100,7 +100,7 @@ function HomeBanner() {
         </div>
       </Carousel>
     </div>
-  )
+  );
 }
 
-export default HomeBanner
+export default HomeBanner;

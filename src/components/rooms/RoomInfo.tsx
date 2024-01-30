@@ -1,14 +1,14 @@
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
-import { useRoom } from '@/hooks/useRoom'
-import { DatePicker } from '../ui/date-picker'
-import BillTable from './BillTable'
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
-import { queryKey } from '@/lib/constant'
-import { useQuery } from '@tanstack/react-query'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { CustomSelect } from '@/app/(home)/(components)/home/custom-select';
+import { useRoom } from '@/hooks/useRoom';
+import { DatePicker } from '../ui/date-picker';
+import BillTable from './BillTable';
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { queryKey } from '@/lib/constant';
+import { useQuery } from '@tanstack/react-query';
 
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
-  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom()
+  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
 
   return (
     <>
@@ -31,11 +31,11 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   className="max-w-[50%]"
                   disallowEmptySelection
                   selectedKeys={state.roomStatus ? [state.roomStatus] : []}
-                  onChange={(e) => {
-                    handleSetValue('roomStatus', e.target.value)
+                  onChange={e => {
+                    handleSetValue('roomStatus', e.target.value);
                   }}
                 >
-                  {['Đang trống', 'Đã thuê', 'Đang sửa chữa'].map((item) => (
+                  {['Đang trống', 'Đã thuê', 'Đang sửa chữa'].map(item => (
                     <SelectItem key={item} value={item}>
                       {item}
                     </SelectItem>
@@ -47,12 +47,12 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   placeholder="Nhập giá phòng"
                   isRequired
                   value={state.roomPrice}
-                  setValue={(value) => handleSetValue('roomPrice', value)}
+                  setValue={value => handleSetValue('roomPrice', value)}
                 />
               </div>
-              {roomInfo.slice(0, 3).map((item) => (
+              {roomInfo.slice(0, 3).map(item => (
                 <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map((content) => (
+                  {item.contents.map(content => (
                     <div
                       className="flex w-full items-center gap-3"
                       key={content.label}
@@ -79,9 +79,9 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
             </div>
             <div className="w-full space-y-5">
               <p className="text-gray text-base font-medium">Tiền dịch vụ</p>
-              {roomInfo.slice(3).map((item) => (
+              {roomInfo.slice(3).map(item => (
                 <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map((content) => (
+                  {item.contents.map(content => (
                     <CustomInput
                       key={content.label}
                       label={content.label}
@@ -100,14 +100,14 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   label="Chọn ngày bắt đầu"
                   date={state.startDate}
                   labelCustom="font-medium text-sm"
-                  setDate={(date) => handleSetValue('startDate', date)}
+                  setDate={date => handleSetValue('startDate', date)}
                 />
                 <span className="flex mt-8 h-[1px] w-[15px] bg-gray rounded-full"></span>
                 <DatePicker
                   label="Chọn ngày thanh toán"
                   labelCustom="font-medium text-sm"
                   date={state.endDate}
-                  setDate={(date) => handleSetValue('endDate', date)}
+                  setDate={date => handleSetValue('endDate', date)}
                 />
               </div>
               <div className="flex justify-end w-full">
@@ -134,6 +134,6 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
         </div>
       )}
     </>
-  )
-}
-export default RoomInfo
+  );
+};
+export default RoomInfo;
