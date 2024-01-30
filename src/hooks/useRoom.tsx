@@ -407,7 +407,7 @@ export const RoomProvider = ({ children }) => {
     page,
     limit = 10,
     sortBy = 'createdAt',
-    sortDirection = 'asc',
+    sortDirection = 'asc' as 'asc' | 'desc' | undefined,
   }) => {
     try {
       const res = await requestApi({
@@ -433,7 +433,7 @@ export const RoomProvider = ({ children }) => {
     page,
     limit = 10,
     sortBy = 'createdAt',
-    sortDirection = 'asc',
+    sortDirection = 'asc' as 'asc' | 'desc' | undefined,
   }) => {
     try {
       const res = await requestApi({

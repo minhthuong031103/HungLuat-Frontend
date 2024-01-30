@@ -51,7 +51,7 @@ const ContractRoomModal = () => {
               isRequired={true}
               placeholder="Chọn khách hàng"
               className="max-w-[100%]"
-              selectedKeys={customerChosen ? [customerChosen] : []}
+              selectedKey={customerChosen ? [customerChosen] : []}
               isLoading={isFetching}
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
