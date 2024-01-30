@@ -12,7 +12,7 @@ import { EModalType } from '@/lib/constant'
 import { checkValueNumberInput } from '@/lib/utils'
 import { Apartment, Room } from '@/types'
 import { Modal } from '@mantine/core'
-import { Button, Select, SelectItem } from '@nextui-org/react'
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
 import { useState } from 'react'
 import IndentityModal from './AddIndentityModal'
 
@@ -24,11 +24,12 @@ const CustomerAddModal = () => {
   const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE
   const [cmndMatTruoc, setCmndMatTruoc] = useState([])
   const [cmndMatSau, setCmndMatSau] = useState([])
-
+  const [isLoading, setIsLoading] = useState(false)
   const { handleSetCustomerValue, customerState, createCustomer } =
     useCustomer()
   const handleAddCustomer = async () => {
     // resetCustomerState()
+    setIsLoading(true)
     const data = {
       name: customerState.name,
       phone: customerState.phone,
@@ -41,6 +42,7 @@ const CustomerAddModal = () => {
       roomId: Number(customerState.roomId)
     }
     await createCustomer(data, onClose)
+    setIsLoading(false)
   }
 
   const {
@@ -204,7 +206,9 @@ const CustomerAddModal = () => {
                 <img
                   src={cmndMatTruoc[0]?.preview}
                   alt={cmndMatTruoc[0]?.name}
-                  className={`h-36 w-56  border-2 rounded-md object-cover object-center`}
+                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                    cmndMatTruoc?.length === 0 && 'pointer-events-none'
+                  }`}
                 />
               </Zoom>
               <div className="w-full flex justify-center mt-2">
@@ -240,7 +244,9 @@ const CustomerAddModal = () => {
                 <img
                   src={cmndMatSau[0]?.preview}
                   alt={cmndMatSau[0]?.name}
-                  className={`h-36 w-56  border-2 rounded-md object-cover object-center`}
+                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                    cmndMatSau?.length === 0 && 'pointer-events-none'
+                  }`}
                 />
               </Zoom>
               <div className="w-full flex justify-center mt-2">
@@ -273,8 +279,9 @@ const CustomerAddModal = () => {
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
             onPress={handleAddCustomer}
+            isDisabled={isLoading}
           >
-            Lưu
+            {isLoading ? <Spinner size="sm" color="white" /> : 'Lưu'}
           </Button>
         </div>
       </div>
