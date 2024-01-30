@@ -25,6 +25,7 @@ import { ImageCus } from '@/components/ui/ImageCus'
 import { Modal } from '@mantine/core'
 import React from 'react'
 import { useCustomer } from '@/hooks/useCustomer'
+import { Spinner } from '@nextui-org/react'
 type FileWithPreview = FileWithPath & {
   preview: string
 }
@@ -117,8 +118,11 @@ function IndentityModal<TFieldValues extends FieldValues>({
     }
   }, [])
   const { upLoadImage, handleSetCustomerValue } = useCustomer()
+  const [isLoading, setIsLoading] = React.useState(false)
   const handleUpload = async () => {
+    setIsLoading(true)
     const res = await upLoadImage(files?.[0])
+    setIsLoading(false)
     setImageUrl(res?.data?.url)
     onClose()
   }
@@ -198,17 +202,25 @@ function IndentityModal<TFieldValues extends FieldValues>({
           </div>
         ) : null}
       </ScrollArea>
+
       {files?.length ? (
         <Button
           type="button"
           variant="outline"
           size="sm"
+          disabled={isLoading}
           className="mt-2.5 w-full"
           onClick={handleUpload}
         >
-          <Icons.upload className="mr-2 h-4 w-4 text-primary" />
-          Tải ảnh lên
-          <span className="sr-only">Tải ảnh lên</span>
+          {isLoading ? (
+            <Spinner color="primary" size="sm" />
+          ) : (
+            <>
+              <Icons.upload className="mr-2 h-4 w-4 text-primary" />
+              Tải ảnh lên
+              <span className="sr-only">Tải ảnh lên</span>
+            </>
+          )}
         </Button>
       ) : null}
     </Modal>
