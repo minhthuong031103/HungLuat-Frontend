@@ -1,14 +1,15 @@
-'use client';
-import { useApiAxios } from '@/components/providers/ApiProvider';
-import { RETURNED_MESSAGES } from '@/lib/translate';
+'use client'
+import { useApiAxios } from '@/components/providers/ApiProvider'
+import { RETURNED_MESSAGES } from '@/lib/translate'
 import {
   blobToBase64,
   checkValueNumberInput,
-  getDaysAmountInMonth,
+  getDaysAmountInMonth,,
+  getQueryParams
 } from '@/lib/utils';
 
-import { createContext, useContext, useEffect, useReducer } from 'react';
-import toast from 'react-hot-toast';
+import { createContext, useContext, useEffect, useReducer } from 'react'
+import toast from 'react-hot-toast'
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_VALUES': {
@@ -18,17 +19,18 @@ const reducer = (state, action) => {
       // if (action.payload.endDate) {
       //   action.payload.endDate = new Date(action.payload.endDate)
       // }
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
     }
     case 'RESET': {
-      const { dayStayed, ...partialInitialState } = initialState;
-      return { ...partialInitialState, dayStayed: state.dayStayed };
+      const { dayStayed, ...partialInitialState } = initialState
+      return { ...partialInitialState, dayStayed: state.dayStayed }
     }
     default:
-      return state;
+      return state
   }
-};
+}
 const initialState = {
+  apartmentId: '',
   name: '',
   roomStatus: '',
   roomPrice: 0,
@@ -65,26 +67,26 @@ const initialState = {
   suspenseMoney: 0,
 
   startDate: new Date(new Date().setDate(1)),
-  endDate: new Date(),
-};
+  endDate: new Date()
+}
 const reducerContract = (state: StateContractProps, action) => {
   switch (action.type) {
     case 'SET_VALUES':
-      return { ...state, ...action.payload };
+      return { ...state, ...action.payload }
     case 'RESET':
-      return { ...initContractState };
+      return { ...initContractState }
     default:
-      return state;
+      return state
   }
-};
+}
 const initContractState: StateContractProps = {
   roomId: '',
   customerId: '',
   phoneNumber: '',
   daySignContract: new Date(),
   dayEndContract: new Date(),
-  note: '',
-};
+  note: ''
+}
 
 interface IRoomContext {
   state: any;
@@ -96,6 +98,7 @@ interface IRoomContext {
   roomInfo: any;
   getRooms: any;
   getBills: any;
+  getAllBills: any
   createRoom: any;
   resetState: any;
   getDetailRoom: any;
@@ -103,15 +106,16 @@ interface IRoomContext {
   exportBill: any;
 }
 interface StateContractProps {
-  roomId: string;
-  customerId: string;
-  phoneNumber: string;
-  daySignContract: Date;
-  dayEndContract: Date;
-  note: string;
+  roomId: string
+  customerId: string
+  phoneNumber: string
+  daySignContract: Date
+  dayEndContract: Date
+  note: string
 }
-interface exportBillProps {
+export interface exportBillProps {
   roomId: string;
+  apartmentId: string
   customerId: string;
   endDate: Date;
   roomPrice: number;
@@ -129,14 +133,15 @@ interface exportBillProps {
   newElectric: number;
   oldElectric: number;
   files: any[];
+  fileName: string
 }
-const RoomContext = createContext<any>(null);
+const RoomContext = createContext<any>(null)
 
 export const RoomProvider = ({ children }) => {
-  const { requestApi } = useApiAxios();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { requestApi } = useApiAxios()
+  const [state, dispatch] = useReducer(reducer, initialState)
   const [contractState, dispatchContract]: [StateContractProps, any] =
-    useReducer(reducerContract, initContractState);
+    useReducer(reducerContract, initContractState)
 
   const handleSetValue = async (key, value) => {
     if (
@@ -149,24 +154,24 @@ export const RoomProvider = ({ children }) => {
         checkValueNumberInput(key, value))
     ) {
       if (value === '') {
-        value = 0;
+        value = 0
       }
       if (value[0] == '0' && value[1] != '.' && value.length > 1) {
-        value = value.slice(1);
+        value = value.slice(1)
       }
-      dispatch({ type: 'SET_VALUES', payload: { [key]: value } });
+      dispatch({ type: 'SET_VALUES', payload: { [key]: value } })
     }
-  };
+  }
   const handleSetContract = (key, value) => {
-    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
-  };
+    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } })
+  }
   useEffect(() => {
-    const startDate = new Date(state.startDate);
-    const endDate = new Date(state.endDate);
-    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    handleSetValue('dayStayed', diffDays);
-  }, [state.startDate, state.endDate]);
+    const startDate = new Date(state.startDate)
+    const endDate = new Date(state.endDate)
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    handleSetValue('dayStayed', diffDays)
+  }, [state.startDate, state.endDate])
   const roomInfo = [
     {
       id: 1,
@@ -177,7 +182,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền cọc',
           isRequired: true,
           value: state.depositPrice,
-          setValue: value => handleSetValue('depositPrice', value),
+          setValue: (value) => handleSetValue('depositPrice', value)
         },
         {
           label: 'Số ngày ở trong tháng',
@@ -186,9 +191,9 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.dayStayed,
-          setValue: value => handleSetValue('dayStayed', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('dayStayed', value)
+        }
+      ]
     },
     {
       id: 2,
@@ -199,7 +204,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền nợ cũ',
           isRequired: true,
           value: state.oldDebt,
-          setValue: value => handleSetValue('oldDebt', value),
+          setValue: (value) => handleSetValue('oldDebt', value)
         },
         {
           label: 'Nợ mới',
@@ -207,9 +212,9 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số ngày ở trong tháng',
           isRequired: true,
           value: state.newDebt,
-          setValue: value => handleSetValue('newDebt', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('newDebt', value)
+        }
+      ]
     },
     {
       id: 3,
@@ -220,7 +225,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền phụ thu',
           isRequired: true,
           value: state.surcharge,
-          setValue: value => handleSetValue('surcharge', value),
+          setValue: (value) => handleSetValue('surcharge', value)
         },
         {
           label: 'Số lượng người ở thực tế',
@@ -228,9 +233,9 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số lượng người ở thực tế',
           isRequired: true,
           value: state.peopleRealStayed,
-          setValue: value => handleSetValue('peopleRealStayed', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('peopleRealStayed', value)
+        }
+      ]
     },
     {
       id: 4,
@@ -242,7 +247,7 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.defaultElectric,
-          setValue: value => handleSetValue('defaultElectric', value),
+          setValue: (value) => handleSetValue('defaultElectric', value)
         },
         {
           label: 'Chỉ số điện cũ (KWh)',
@@ -251,9 +256,9 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           isDisabled: true,
           value: state.oldElectric,
-          setValue: value => handleSetValue('oldElectric', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('oldElectric', value)
+        }
+      ]
     },
     {
       id: 5,
@@ -264,7 +269,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Giá điện',
           isRequired: true,
           value: state.electricPrice,
-          setValue: value => handleSetValue('electricPrice', value),
+          setValue: (value) => handleSetValue('electricPrice', value)
         },
 
         {
@@ -273,9 +278,9 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập chỉ số điện mới',
           isRequired: true,
           value: state.newElectric,
-          setValue: value => handleSetValue('newElectric', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('newElectric', value)
+        }
+      ]
     },
     {
       id: 6,
@@ -286,7 +291,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số lượng',
           isRequired: true,
           value: state.peopleAmount,
-          setValue: value => handleSetValue('peopleAmount', value),
+          setValue: (value) => handleSetValue('peopleAmount', value)
         },
         {
           label: 'Tiền nước (VND / người)',
@@ -294,9 +299,9 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền nước',
           isRequired: true,
           value: state.waterPrice,
-          setValue: value => handleSetValue('waterPrice', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('waterPrice', value)
+        }
+      ]
     },
     {
       id: 7,
@@ -307,16 +312,16 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền thang máy',
           isRequired: true,
           value: state.elevatorPrice,
-          setValue: value => handleSetValue('elevatorPrice', value),
+          setValue: (value) => handleSetValue('elevatorPrice', value)
         },
         {
           label: 'Chi phí phát sinh khác',
           type: 'text',
           placeholder: 'Nhập chi phí phát sinh',
           value: state.otherPrice,
-          setValue: value => handleSetValue('otherPrice', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('otherPrice', value)
+        }
+      ]
     },
     {
       id: 8,
@@ -327,7 +332,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền Internet',
           isRequired: true,
           value: state.internetPrice,
-          setValue: value => handleSetValue('internetPrice', value),
+          setValue: (value) => handleSetValue('internetPrice', value)
         },
         {
           label: 'Tiền dịch vụ (VND / phòng)',
@@ -335,9 +340,9 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền dịch vụ',
           isRequired: true,
           value: state.servicePrice,
-          setValue: value => handleSetValue('servicePrice', value),
-        },
-      ],
+          setValue: (value) => handleSetValue('servicePrice', value)
+        }
+      ]
     },
     {
       id: 9,
@@ -348,7 +353,7 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập số xe',
           isRequired: true,
           value: state.vehicleAmount,
-          setValue: value => handleSetValue('vehicleAmount', value),
+          setValue: (value) => handleSetValue('vehicleAmount', value)
         },
         {
           label: 'Tiền gửi xe (VND / xe)',
@@ -356,80 +361,113 @@ export const RoomProvider = ({ children }) => {
           placeholder: 'Nhập tiền gửi xe',
           isRequired: true,
           value: state.parkingPrice,
-          setValue: value => handleSetValue('parkingPrice', value),
-        },
-      ],
-    },
-  ];
+          setValue: (value) => handleSetValue('parkingPrice', value)
+        }
+      ]
+    }
+  ]
   const getRooms = async ({
     apartmentId,
     search = '',
-    searchField = 'name',
+    searchField = 'name'
   }) => {
     try {
       const res = await requestApi({
         endPoint: `/room/apartment/${apartmentId}?search=${search}&searchField=${searchField}`,
-        method: 'GET',
-      });
-      return res;
+        method: 'GET'
+      })
+      return res
     } catch (error) {
-      console.log('🚀 ~ getRooms ~ error:', error);
+      console.log('🚀 ~ getRooms ~ error:', error)
     }
-  };
-  const getBills = async ({ roomId }) => {
+  }
+  const getBills = async ({
+    roomId,
+    searchField = null,
+    search = null,
+    page,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortDirection = 'asc'
+  }) => {
     try {
-      return {
-        data: {
-          items: [
-            { id: 1, date: '02/2021', name: 'Hóa đơn tháng 2' },
-            { id: 2, date: '03/2021', name: 'Hóa đơn tháng 3' },
-            { id: 3, date: '04/2021', name: 'Hóa đơn tháng 4' },
-            { id: 4, date: '05/2021', name: 'Hóa đơn tháng 5' },
-            { id: 5, date: '06/2021', name: 'Hóa đơn tháng 6' },
-          ],
-          totalPages: 1,
-          totalItems: 5,
-        },
-      };
+      const res = await requestApi({
+        endPoint: `/bill/room/${roomId}?${getQueryParams({
+          searchField,
+          search,
+          page,
+          limit,
+          sortBy,
+          sortDirection
+        })}`,
+        method: 'GET'
+      })
+      return res
     } catch (error) {
-      console.log('🚀 ~ getRooms ~ error:', error);
+      console.log('🚀 ~ getRooms ~ error:', error)
     }
-  };
+  }
+  const getAllBills = async ({
+    apartmentId,
+    searchField = null,
+    search = null,
+    page,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortDirection = 'asc'
+  }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/bill/apartment/${apartmentId}?${getQueryParams({
+          searchField,
+          search,
+          page,
+          limit,
+          sortBy,
+          sortDirection
+        })}`,
+        method: 'GET'
+      })
+      return res
+    } catch (error) {
+      console.log('🚀 ~ getRooms ~ error:', error)
+    }
+  }
   const createRoom = async ({ data, resetState: rsState, onClose }) => {
     try {
       const res = await requestApi({
         endPoint: `/room/create`,
         method: 'POST',
-        body: data,
-      });
+        body: data
+      })
       if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_CREATED.ENG) {
-        toast.success(RETURNED_MESSAGES.ROOM.ROOM_CREATED.VIE);
-        rsState();
-        onClose();
+        toast.success(RETURNED_MESSAGES.ROOM.ROOM_CREATED.VIE)
+        rsState()
+        onClose()
       } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_EXISTED.ENG) {
-        toast.error(RETURNED_MESSAGES.ROOM.ROOM_EXISTED.VIE);
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_EXISTED.VIE)
       } else {
-        toast.error('Tạo phòng thất bại');
+        toast.error('Tạo phòng thất bại')
       }
-      return res;
+      return res
     } catch (error) {
-      toast.error('Tạo phòng thất bại');
+      toast.error('Tạo phòng thất bại')
     }
-  };
+  }
   const resetState = () => {
-    dispatch({ type: 'RESET' });
-  };
+    dispatch({ type: 'RESET' })
+  }
   const getDetailRoom = async ({ roomId }) => {
     try {
       const res = await requestApi({
         endPoint: `/room/${roomId}`,
-        method: 'GET',
-      });
-      return res;
+        method: 'GET'
+      })
+      return res
     } catch (error) {
-      console.log('🚀 ~ getDetailRoom ~ error:', error);
+      console.log('🚀 ~ getDetailRoom ~ error:', error)
     }
-  };
+  }
   const checkUpdateState = () => {
     if (
       state.roomStatus &&
@@ -452,12 +490,12 @@ export const RoomProvider = ({ children }) => {
       state.parkingPrice >= 0
     ) {
       if (state.oldElectric > state.newElectric) {
-        return false;
+        return false
       }
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   useEffect(() => {
     const EP =
       Number(state.oldElectric) >= Number(state.newElectric)
@@ -467,22 +505,22 @@ export const RoomProvider = ({ children }) => {
               (Number(state.newElectric) - Number(state.oldElectric)) * 10,
             ) /
               10) *
-              Number(state.electricPrice),
-          );
-    const WP = Number(state.waterPrice) * Number(state.peopleAmount);
-    const PP = Number(state.parkingPrice) * Number(state.vehicleAmount);
-    const EPV = Number(state.elevatorPrice) * Number(state.peopleAmount);
+              Number(state.electricPrice)
+          )
+    const WP = Number(state.waterPrice) * Number(state.peopleAmount)
+    const PP = Number(state.parkingPrice) * Number(state.vehicleAmount)
+    const EPV = Number(state.elevatorPrice) * Number(state.peopleAmount)
     const SC =
       Number(state.peopleRealStayed) - 4 > 0
         ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
-        : 0;
+        : 0
     const RC = Math.floor(
       (Number(state.roomPrice) * Number(state.dayStayed)) /
         getDaysAmountInMonth(
           new Date().getMonth() + 1,
-          new Date().getFullYear(),
-        ),
-    );
+          new Date().getFullYear()
+        )
+    )
     const NC =
       EP +
       WP +
@@ -493,14 +531,14 @@ export const RoomProvider = ({ children }) => {
       Number(state.servicePrice) +
       Number(state.internetPrice) +
       Number(state.oldDebt) +
-      RC;
-    handleSetValue('totalElectricPrice', EP);
-    handleSetValue('totalWaterPrice', WP);
-    handleSetValue('totalParkingPrice', PP);
-    handleSetValue('totalElevatorPrice', EPV);
-    handleSetValue('netProceeds', NC);
-    handleSetValue('suspenseMoney', NC - Number(state.newDebt));
-  }, Object.values(state));
+      RC
+    handleSetValue('totalElectricPrice', EP)
+    handleSetValue('totalWaterPrice', WP)
+    handleSetValue('totalParkingPrice', PP)
+    handleSetValue('totalElevatorPrice', EPV)
+    handleSetValue('netProceeds', NC)
+    handleSetValue('suspenseMoney', NC - Number(state.newDebt))
+  }, Object.values(state))
   const updateRoomStates = async ({ roomId, refetch }) => {
     if (checkUpdateState()) {
       const data = {
@@ -532,62 +570,62 @@ export const RoomProvider = ({ children }) => {
         totalWaterPrice: Number(state.totalWaterPrice),
         totalElevatorPrice: Number(state.totalElevatorPrice),
         startDate: state.startDate,
-        endDate: state.endDate,
-      };
+        endDate: state.endDate
+      }
       try {
         const res = await requestApi({
           endPoint: `/room/info/update`,
           method: 'PUT',
-          body: data,
-        });
+          body: data
+        })
         if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
-          toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE);
-          refetch();
+          toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE)
+          refetch()
         } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
-          toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+          toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE)
         } else {
-          toast.error('Cập nhật phòng thất bại');
+          toast.error('Cập nhật phòng thất bại')
         }
       } catch (error) {
-        toast.error('Cập nhật phòng thất bại');
+        toast.error('Cập nhật phòng thất bại')
       }
     } else {
       if (state.newElectric < state.oldElectric) {
-        toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
-        return;
+        toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ')
+        return
       }
-      toast.error('Vui lòng nhập đầy đủ thông tin');
-      return;
+      toast.error('Vui lòng nhập đầy đủ thông tin')
+      return
     }
-  };
+  }
 
   const exportBill = async (data: exportBillProps, refetch: () => void) => {
-    const formData = new FormData();
-    const dataKey = Object.keys(data);
+    const formData = new FormData()
+    const dataKey = Object.keys(data)
     for (let i = 0; i < dataKey.length; i++) {
-      formData.append(dataKey[i], data[dataKey[i]]);
+      formData.append(dataKey[i], data[dataKey[i]])
     }
-    const base64 = (await blobToBase64(data.files[0])) as string;
-    formData.append('files', base64);
+    const base64 = (await blobToBase64(data.files[0])) as string
+    formData.append('files', base64)
 
     try {
       const res = await requestApi({
         endPoint: `/bill/export`,
         method: 'POST',
-        body: formData,
-      });
+        body: formData
+      })
       if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
-        toast.success('Xuất hóa đơn thành công');
-        refetch();
+        toast.success('Xuất hóa đơn thành công')
+        refetch()
       } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
-        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE)
       } else {
-        toast.error('Xuất hóa đơn thất bại');
+        toast.error('Xuất hóa đơn thất bại')
       }
     } catch (error) {
-      toast.error('Xuất hóa đơn thất bại');
+      toast.error('Xuất hóa đơn thất bại')
     }
-  };
+  }
   return (
     <RoomContext.Provider
       value={{
@@ -599,19 +637,20 @@ export const RoomProvider = ({ children }) => {
         handleSetContract,
         roomInfo,
         getRooms,
+        getAllBills,
         getBills,
         createRoom,
         resetState,
         getDetailRoom,
         updateRoomStates,
-        exportBill,
+        exportBill
       }}
     >
       {children}
     </RoomContext.Provider>
-  );
-};
+  )
+}
 
 export const useRoom = (): IRoomContext => {
-  return useContext(RoomContext);
-};
+  return useContext(RoomContext)
+}

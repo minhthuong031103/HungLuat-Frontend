@@ -23,6 +23,8 @@ const ExportBillModal = () => {
   const handleExportBill = async blob => {
     setIsLoading(true);
     const data = {
+      fileName: state.name,
+      apartmentId: state.apartmentId,
       roomId: roomId,
       customerId: '1',
       endDate: state.endDate,
