@@ -12,14 +12,11 @@ import { useParams } from 'next/navigation';
 import ModalCus from '../modalCus/ModalCus';
 import { DatePicker } from '../ui/date-picker';
 const ContractRoomModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, onAction } = useModal();
   const { roomId } = useParams();
   const { contractState, handleSetContract } = useRoom();
-  console.log('🚀 ~ ContractRoomModal ~ contractState:', contractState);
   const isModalOpen = isOpen && type === 'contractRoom';
-  const resetState = () => {
-    //
-  };
+
   const {
     customerChosen,
     setCustomerChosen,
@@ -30,11 +27,17 @@ const ContractRoomModal = () => {
     setIsScrollOpen,
     scrollerRef,
   } = useCustomerByRoomScroll({ roomId });
-  console.log('🚀 ~ ContractRoomModal ~ customers:', customers);
-  console.log('🚀 ~ ContractRoomModal ~ customerChosen:', customerChosen);
-  const handleCreateContract = () => {
-    resetState();
-    onClose();
+  const { createContract } = useRoom();
+  const handleCreateContract = async () => {
+    const data = {
+      ...contractState,
+      defaultElectric: Number(contractState.defaultElectric),
+      customerId: Number(customerChosen),
+      roomId: Number(roomId),
+    };
+    await createContract({ data, onClose });
+    onAction();
+    setCustomerChosen('');
   };
 
   return (
@@ -104,6 +107,18 @@ const ContractRoomModal = () => {
               setValue={value => {
                 {
                   handleSetContract('note', value);
+                }
+              }}
+            />
+          </div>
+          <div className="w-[50%]">
+            <CustomInput
+              label="Chỉ số điện bàn giao"
+              placeholder="Nhập chỉ số điện"
+              value={contractState.defaultElectric}
+              setValue={value => {
+                {
+                  handleSetContract('defaultElectric', value);
                 }
               }}
             />
