@@ -1,7 +1,7 @@
 import { useApiAxios } from '@/components/providers/ApiProvider'
 import { CreateCustomerProps } from '@/lib/interface'
 import { RETURNED_MESSAGES } from '@/lib/translate'
-import { GetQueryParamsProps, getQueryParams } from '@/lib/utils'
+import { GetQueryParamsProps, getBase64, getQueryParams } from '@/lib/utils'
 import { useReducer } from 'react'
 import toast from 'react-hot-toast'
 
@@ -20,6 +20,8 @@ interface CustomerProps {
   provinceValue?: string
   districtValue?: string
   wardValue?: string
+  identityFrontUrl?: string
+  identityBackUrl?: string
 }
 
 const initCustomerState: CustomerProps = {
@@ -33,7 +35,9 @@ const initCustomerState: CustomerProps = {
   dayOfBirth: new Date(),
   identityCard: '',
   issueDate: new Date(),
-  roomId: ''
+  roomId: '',
+  identityFrontUrl: '',
+  identityBackUrl: ''
 }
 
 const reducerContract = (state: CustomerProps, action) => {
@@ -49,20 +53,17 @@ const reducerContract = (state: CustomerProps, action) => {
 
 export const useCustomer = () => {
   const { requestApi } = useApiAxios()
-  const [customerState, dispatchContract]: [CustomerProps, any] = useReducer(
-    reducerContract,
-    initCustomerState
-  )
+  const [customerState, dispatchContract]: [CreateCustomerProps, any] =
+    useReducer(reducerContract, initCustomerState)
 
-  const handleSetCustomerValue = <K extends keyof CustomerProps>(
+  const handleSetCustomerValue = <K extends keyof CreateCustomerProps>(
     key: K,
-    value: CustomerProps[K]
+    value: CreateCustomerProps[K]
   ) => {
     dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } })
   }
   const createCustomer = async (
     data: CreateCustomerProps,
-    resetState: () => void,
     onClose: () => void
   ) => {
     try {
@@ -73,7 +74,7 @@ export const useCustomer = () => {
       })
       if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.ENG) {
         toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.VIE)
-        resetState()
+        resetCustomerState()
         onClose()
       } else if (
         res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.ENG
@@ -121,13 +122,28 @@ export const useCustomer = () => {
       console.log('🚀 ~ getCustomer ~ error:', error)
     }
   }
-
+  const upLoadImage = async (data) => {
+    const formData = new FormData()
+    const base64 = (await getBase64(data)) as any
+    formData.append('file', base64)
+    try {
+      const res = await requestApi({
+        endPoint: '/upload/base64',
+        method: 'POST',
+        body: formData
+      })
+      return res
+    } catch (error) {
+      console.log('🚀 ~ upLoadImage ~ error:', error)
+    }
+  }
   const resetCustomerState = () => {
     dispatchContract({ type: 'RESET' })
   }
 
   return {
     createCustomer,
+    upLoadImage,
     getCustomers,
     customerState,
     handleSetCustomerValue,

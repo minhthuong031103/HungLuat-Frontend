@@ -126,7 +126,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
           </div>
 
           <div className="w-full flex flex-col space-y-5">
-            <p className="text-gray text-lg font-medium">
+            <p className="text-gray text-lg font-bold">
               Thông tin hóa đơn tháng trước
               <BillTable apartmentId="1" roomId="1" />
             </p>

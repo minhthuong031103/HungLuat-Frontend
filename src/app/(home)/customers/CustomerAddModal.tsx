@@ -1,7 +1,10 @@
 'use client'
 
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
+import { FileDialog } from '@/components/ui/FileDialog'
 import { DatePicker } from '@/components/ui/date-picker'
+import { Label } from '@/components/ui/label'
+import { Zoom } from '@/components/ui/zoom-image'
 import { useApartmentScroll } from '@/hooks/useApartmentScroll'
 import { useCustomer } from '@/hooks/useCustomer'
 import { useModal } from '@/hooks/useModalStore'
@@ -9,18 +12,37 @@ import { EModalType } from '@/lib/constant'
 import { checkValueNumberInput } from '@/lib/utils'
 import { Apartment, Room } from '@/types'
 import { Modal } from '@mantine/core'
-import { Button, Select, SelectItem } from '@nextui-org/react'
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
+import { useState } from 'react'
+import IndentityModal from './AddIndentityModal'
 
 const CustomerAddModal = () => {
-  const { isOpen, onClose, type } = useModal()
-  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE
+  const { isOpen, onClose, type, onOpen } = useModal()
+  const [identityModal, setIdentityModal] = useState(false)
+  const [identityBackModal, setIdentityBackModal] = useState(false)
 
-  const { handleSetCustomerValue, customerState, resetCustomerState } =
+  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE
+  const [cmndMatTruoc, setCmndMatTruoc] = useState([])
+  const [cmndMatSau, setCmndMatSau] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const { handleSetCustomerValue, customerState, createCustomer } =
     useCustomer()
-  const handleAddCustomer = () => {
+  const handleAddCustomer = async () => {
     // resetCustomerState()
-    console.log(customerState)
-    onClose()
+    setIsLoading(true)
+    const data = {
+      name: customerState.name,
+      phone: customerState.phone,
+      dayOfBirth: new Date(customerState.dayOfBirth),
+      identityCard: customerState.identityCard,
+      issuedDate: new Date(customerState.issuedDate),
+      address: customerState.address,
+      identityFrontUrl: customerState.identityFrontUrl,
+      identityBackUrl: customerState.identityBackUrl,
+      roomId: Number(customerState.roomId)
+    }
+    await createCustomer(data, onClose)
+    setIsLoading(false)
   }
 
   const {
@@ -51,7 +73,7 @@ const CustomerAddModal = () => {
       radius={15}
       removeScrollProps={{ allowPinchZoom: true }}
     >
-      <div className="flex flex-col gap-y-5">
+      <div className="flex flex-col gap-y-[10px]">
         <div className="flex gap-[20px] w-full items-end">
           <div className="w-[33%]">
             <CustomInput
@@ -98,9 +120,9 @@ const CustomerAddModal = () => {
           <div className="w-[50%]">
             <DatePicker
               label="Ngày cấp"
-              date={customerState.issueDate}
+              date={customerState.issuedDate}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetCustomerValue('issueDate', value)}
+              setDate={(value) => handleSetCustomerValue('issuedDate', value)}
             />
           </div>
         </div>
@@ -176,12 +198,90 @@ const CustomerAddModal = () => {
             />
           </div>
         </div>
-        <div className="flex w-full flex-row justify-end">
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col gap-3 ">
+            <Label>Ảnh CMND mặt trước</Label>
+            <div className="h-36 ">
+              <Zoom key={2}>
+                <img
+                  src={cmndMatTruoc[0]?.preview}
+                  alt={cmndMatTruoc[0]?.name}
+                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                    cmndMatTruoc?.length === 0 && 'pointer-events-none'
+                  }`}
+                />
+              </Zoom>
+              <div className="w-full flex justify-center mt-2">
+                <Button
+                  onPress={() => setIdentityModal(true)}
+                  isDisabled={identityModal}
+                  variant="flat"
+                >
+                  Tải ảnh lên
+                </Button>
+              </div>
+              <IndentityModal
+                isModalOpen={identityModal}
+                onClose={() => setIdentityModal(false)}
+                className="w-full"
+                name="identityFrontUrl"
+                key="identityFrontUrl"
+                setImageUrl={(value) =>
+                  handleSetCustomerValue('identityFrontUrl', value)
+                }
+                maxFiles={1}
+                maxSize={1024 * 1024 * 4}
+                files={cmndMatTruoc}
+                setFiles={setCmndMatTruoc}
+                disabled={false}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3 ">
+            <Label>Ảnh CMND mặt sau</Label>
+            <div className="h-36 ">
+              <Zoom key={2}>
+                <img
+                  src={cmndMatSau[0]?.preview}
+                  alt={cmndMatSau[0]?.name}
+                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                    cmndMatSau?.length === 0 && 'pointer-events-none'
+                  }`}
+                />
+              </Zoom>
+              <div className="w-full flex justify-center mt-2">
+                <Button
+                  onPress={() => setIdentityBackModal(true)}
+                  isDisabled={identityBackModal}
+                  variant="flat"
+                >
+                  Tải ảnh lên
+                </Button>
+              </div>
+              <IndentityModal
+                isModalOpen={identityBackModal}
+                onClose={() => setIdentityBackModal(false)}
+                className="w-full"
+                name="identityBackUrl"
+                setImageUrl={(value) =>
+                  handleSetCustomerValue('identityBackUrl', value)
+                }
+                maxFiles={1}
+                maxSize={1024 * 1024 * 4}
+                files={cmndMatSau}
+                setFiles={setCmndMatSau}
+                disabled={false}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full flex-row justify-end mt-[60px]">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
             onPress={handleAddCustomer}
+            isDisabled={isLoading}
           >
-            Lưu
+            {isLoading ? <Spinner size="sm" color="white" /> : 'Lưu'}
           </Button>
         </div>
       </div>
