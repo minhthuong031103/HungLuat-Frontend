@@ -44,31 +44,53 @@ const RoomCard = ({ room }: RoomCardProps) => {
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tiền phòng</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.roomPrice}
+              {
+                new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(room.roomPrice)
+              }
+              {/* {room.roomPrice} */}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tiền cọc</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.depositPrice}
+              {
+                new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(
+                  room.depositPrice
+                )
+              }
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tạm thu</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.suspenseMoney}
+              {
+                new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(
+                  room.suspenseMoney
+                )
+              }
+              {/* {room.suspenseMoney} */}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Nợ cũ</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.oldDebt}
+              {
+                new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(
+                  room.oldDebt
+                )
+              }
+              {/* {room.oldDebt} */}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Thực thu</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.netProceeds}
+              {
+                new Intl.NumberFormat('vi-VN', { maximumSignificantDigits: 3 }).format(
+                  room.netProceeds
+                )
+              }
+              {/* {room.netProceeds} */}
             </p>
           </div>
         </div>
