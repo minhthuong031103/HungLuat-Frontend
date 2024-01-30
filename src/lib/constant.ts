@@ -24,9 +24,9 @@ export const queryKey = {
   CUSTOMERS: 'customers',
   APARTMENTS: 'apartments',
   APARTMENTS_SELECT: 'apartmentsSelect',
-
   BILL: 'bill',
-  ROOMDETAILS: 'roomDetails'
+  ROOMDETAILS: 'roomDetails',
+  BILLAPARTMENT: 'billApartment'
 }
 
 export enum EModalType {

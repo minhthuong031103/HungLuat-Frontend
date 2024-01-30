@@ -1,37 +1,29 @@
 'use client'
 import { CommonSvg } from '@/assets/CommonSvg'
-import BuildingPlan from '@/components/rooms/BuildingPlan'
-import ListRooms from '@/components/rooms/ListRooms'
+
 import { useApartment } from '@/hooks/useApartment'
-import { useModal } from '@/hooks/useModalStore'
-import { useRoom } from '@/hooks/useRoom'
 import { queryKey } from '@/lib/constant'
 import { cn, getCurrentMonth } from '@/lib/utils'
 import { Apartment } from '@/types'
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
+import { Select, SelectItem, Spinner } from '@nextui-org/react'
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll'
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { ChevronDown } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { CustomSelect } from '../(components)/home/custom-select'
 import { SearchBar } from '../(components)/home/searchbar'
+import ListBill from './ListBill'
 
-interface ResponseProps {
-  items: any
-  totalItems: number
-  totalPages: number
-}
-
-const RoomsPage = () => {
+const FormsPage = () => {
   const [searchAdvanced, setSearchAdvanced] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [electricityPrice, setElectricityPrice] = useState('')
   const [statusRoom, setStatusRoom] = useState('')
   const [statusPayment, setStatusPayment] = useState('')
   const [apartmentChosen, setApartmentChosen] = useState('')
-  const { onOpen } = useModal()
+
   const [currentPage, setCurrentPage] = useState(1)
-  const [loading, setLoading] = useState(false)
+
   const { getApartments } = useApartment()
   const {
     data: apartments,
@@ -64,12 +56,9 @@ const RoomsPage = () => {
       }
     }
   )
-  const { handleSetValue } = useRoom()
   useEffect(() => {
-    console.log(apartments)
     if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
       setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString())
-      handleSetValue('apartmentId', apartments?.pages[0]?.data?.items[0]?.id)
     }
   }, [apartments])
   const apartment: Apartment = apartments?.pages?.map((page) => {
@@ -78,26 +67,9 @@ const RoomsPage = () => {
     )
   })[0]
 
-  const [floors, setFloors] = useState([])
-  const handleGetRooms = async () => {
-    setLoading(true)
-    const res = await getRooms({
-      apartmentId: Number(apartmentChosen),
-      search: searchValue
-    })
-    setFloors(res?.data?.rooms)
-    setLoading(false)
-  }
-  const { getRooms } = useRoom()
-  useEffect(() => {
-    if (Number(apartmentChosen)) {
-      handleGetRooms()
-    }
-  }, [apartmentChosen])
-
   const [month, setMonth] = useState('')
   const handleSearch = () => {
-    handleGetRooms()
+    //
   }
   const classNameChosen = 'font-semibold text-sm text-white'
   const classNameNotChosen = 'font-medium text-sm text-black'
@@ -220,7 +192,7 @@ const RoomsPage = () => {
                 onClick={() => setFlag(!flag)}
               >
                 <p className={!flag ? classNameChosen : classNameNotChosen}>
-                  Danh sách phòng
+                  Danh sách hóa đơn
                 </p>
               </div>
               <div
@@ -231,53 +203,23 @@ const RoomsPage = () => {
                 onClick={() => setFlag(!flag)}
               >
                 <p className={!flag ? classNameNotChosen : classNameChosen}>
-                  Sơ đồ tòa nhà
+                  Danh sách biểu mẫu
                 </p>
               </div>
-              {!flag && (
-                <div className="ml-auto">
-                  <Button
-                    className="rounded-[8px] px-4 py-2 bg-blueButton"
-                    onPress={() =>
-                      onOpen(
-                        'createRoom',
-                        {
-                          numberFloor: apartment?.numberFloor,
-                          apartmentId: Number(apartmentChosen)
-                        },
-                        handleGetRooms
-                      )
-                    }
-                  >
-                    <div className="flex flex-row items-center gap-x-[8px] ">
-                      <div>{CommonSvg.plus()}</div>
-                      <div className="text-white mt-[1px] font-medium">
-                        Thêm mới
-                      </div>
-                    </div>
-                  </Button>
-                </div>
+            </div>
+
+            <div>
+              {!flag ? (
+                <ListBill
+                  search={searchValue}
+                  setSearch={setSearchValue}
+                  searchField="name"
+                  apartmentId={Number(apartmentChosen)}
+                />
+              ) : (
+                <></>
               )}
             </div>
-            {loading ? (
-              <div className="w-full h-[300px] flex items-center justify-center">
-                <Spinner />
-              </div>
-            ) : floors?.length === 0 ? (
-              <div className="w-full h-[300px] flex items-center justify-center">
-                <p className="font-medium text-base text-room-detail/50">
-                  Không có dữ liệu...
-                </p>
-              </div>
-            ) : (
-              <div>
-                {!flag ? (
-                  <ListRooms floors={floors} />
-                ) : (
-                  <BuildingPlan apartmentId={apartmentChosen} />
-                )}
-              </div>
-            )}
           </div>
         )}
       </div>
@@ -285,4 +227,4 @@ const RoomsPage = () => {
   )
 }
 
-export default RoomsPage
+export default FormsPage

@@ -134,9 +134,9 @@ const CustomerList = () => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>View</DropdownItem>
-                  <DropdownItem>Edit</DropdownItem>
-                  <DropdownItem>Delete</DropdownItem>
+                  <DropdownItem>Xem chi tiết</DropdownItem>
+                  <DropdownItem>Chỉnh sửa</DropdownItem>
+                  <DropdownItem>Xóa</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>

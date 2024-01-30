@@ -1,21 +1,21 @@
+import { CommonSvg } from '@/assets/CommonSvg'
 import DataTable from '@/components/datatable/Datatable'
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon'
+
 import { queryKey } from '@/lib/constant'
-import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
 import {
   Button,
   Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
   DropdownItem,
-  Checkbox
+  DropdownMenu,
+  DropdownTrigger
 } from '@nextui-org/react'
-import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon'
+import { useQuery } from '@tanstack/react-query'
+
+import React, { useState } from 'react'
+
 import { exportBillProps, useRoom } from '@/hooks/useRoom'
 
-interface BillTaleProps {
-  roomId: string
-}
 interface ResponseProps {
   items: exportBillProps[]
   totalItems: number
@@ -73,21 +73,19 @@ const NormalRenderCell = ({ cellValue }) => {
   )
 }
 
-const BillTable = ({ roomId }: BillTaleProps) => {
+const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
   const [limit, setLimit] = useState('10')
   const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState('')
-
-  const { getBills } = useRoom()
-  const { data: bills, isLoading } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILL, { currentPage, limit, roomId }],
+  const { getAllBills } = useRoom()
+  const { data: billsApartment, isLoading } = useQuery<ResponseProps>({
+    queryKey: [queryKey.BILLAPARTMENT, { currentPage, limit, search }],
     queryFn: async () => {
-      const res = await getBills({
-        roomId: Number(roomId),
-        search: search,
-        searchField: 'name',
+      const res = await getAllBills({
+        apartmentId: apartmentId,
         page: currentPage,
-        limit: limit
+        limit,
+        search,
+        searchField
       })
       return {
         ...res?.data,
@@ -98,9 +96,9 @@ const BillTable = ({ roomId }: BillTaleProps) => {
           customer: item.room?.customer || 'Chưa có tên'
         }))
       }
-    },
-    enabled: !!roomId && !!currentPage && !!limit
+    }
   })
+
   const renderCell = React.useCallback(
     (bills: exportBillProps, columnKey: React.Key) => {
       let cellValue = bills[columnKey]
@@ -150,19 +148,21 @@ const BillTable = ({ roomId }: BillTaleProps) => {
   )
   return (
     <>
+      <div className="flex items-end justify-between mt-4">
+        <p className="font-semibold font-lg text-gray">THÔNG TIN HÓA ĐƠN</p>
+      </div>
       <div className="w-full h-full mt-4 grid gap-4 grid-cols-1">
         <DataTable
           columns={columns}
-          keyName={queryKey.BILL}
+          keyName={queryKey.BILLAPARTMENT}
           search={search}
           setSearch={setSearch}
           isLoading={isLoading}
-          data={bills?.items || []}
-          showLimit={false}
+          data={billsApartment?.items || []}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
-          totalPages={bills?.totalPages || 0}
-          totalItems={bills?.totalItems || 0}
+          totalPages={billsApartment?.totalPages || 0}
+          totalItems={billsApartment?.totalItems || 0}
           limit={limit}
           setLimit={setLimit}
           renderCell={renderCell}
@@ -172,4 +172,4 @@ const BillTable = ({ roomId }: BillTaleProps) => {
   )
 }
 
-export default BillTable
+export default ListBill

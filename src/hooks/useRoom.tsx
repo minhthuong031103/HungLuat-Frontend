@@ -4,7 +4,8 @@ import { RETURNED_MESSAGES } from '@/lib/translate'
 import {
   blobToBase64,
   checkValueNumberInput,
-  getDaysAmountInMonth
+  getDaysAmountInMonth,
+  getQueryParams
 } from '@/lib/utils'
 
 import { createContext, useContext, useEffect, useReducer } from 'react'
@@ -29,6 +30,7 @@ const reducer = (state, action) => {
   }
 }
 const initialState = {
+  apartmentId: '',
   name: '',
   roomStatus: '',
   roomPrice: 0,
@@ -102,6 +104,7 @@ interface IRoomContext {
   roomInfo: any
   getRooms: any
   getBills: any
+  getAllBills: any
   createRoom: any
   resetState: any
   getDetailRoom: any
@@ -122,8 +125,9 @@ interface StateContractProps {
   permanentResidence: string
   note: string
 }
-interface exportBillProps {
+export interface exportBillProps {
   roomId: string
+  apartmentId: string
   customerId: string
   endDate: Date
   roomPrice: number
@@ -141,6 +145,7 @@ interface exportBillProps {
   newElectric: number
   oldElectric: number
   files: any[]
+  fileName: string
 }
 const RoomContext = createContext<any>(null)
 
@@ -388,21 +393,54 @@ export const RoomProvider = ({ children }) => {
       console.log('🚀 ~ getRooms ~ error:', error)
     }
   }
-  const getBills = async ({ roomId }) => {
+  const getBills = async ({
+    roomId,
+    searchField = null,
+    search = null,
+    page,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortDirection = 'asc'
+  }) => {
     try {
-      return {
-        data: {
-          items: [
-            { id: 1, date: '02/2021', name: 'Hóa đơn tháng 2' },
-            { id: 2, date: '03/2021', name: 'Hóa đơn tháng 3' },
-            { id: 3, date: '04/2021', name: 'Hóa đơn tháng 4' },
-            { id: 4, date: '05/2021', name: 'Hóa đơn tháng 5' },
-            { id: 5, date: '06/2021', name: 'Hóa đơn tháng 6' }
-          ],
-          totalPages: 1,
-          totalItems: 5
-        }
-      }
+      const res = await requestApi({
+        endPoint: `/bill/room/${roomId}?${getQueryParams({
+          searchField,
+          search,
+          page,
+          limit,
+          sortBy,
+          sortDirection
+        })}`,
+        method: 'GET'
+      })
+      return res
+    } catch (error) {
+      console.log('🚀 ~ getRooms ~ error:', error)
+    }
+  }
+  const getAllBills = async ({
+    apartmentId,
+    searchField = null,
+    search = null,
+    page,
+    limit = 10,
+    sortBy = 'createdAt',
+    sortDirection = 'asc'
+  }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/bill/apartment/${apartmentId}?${getQueryParams({
+          searchField,
+          search,
+          page,
+          limit,
+          sortBy,
+          sortDirection
+        })}`,
+        method: 'GET'
+      })
+      return res
     } catch (error) {
       console.log('🚀 ~ getRooms ~ error:', error)
     }
@@ -611,6 +649,7 @@ export const RoomProvider = ({ children }) => {
         handleSetContract,
         roomInfo,
         getRooms,
+        getAllBills,
         getBills,
         createRoom,
         resetState,
