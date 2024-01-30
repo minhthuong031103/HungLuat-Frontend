@@ -1,7 +1,9 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
+import { queryKey } from '@/lib/constant';
 import { CreateCustomerProps, GetCustomersOfRoomProps } from '@/lib/interface';
 import { RETURNED_MESSAGES } from '@/lib/translate';
 import { GetQueryParamsProps, getBase64, getQueryParams } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
 import { useReducer } from 'react';
 import toast from 'react-hot-toast';
 
@@ -58,13 +60,13 @@ export const useCustomer = () => {
 
   const handleSetCustomerValue = <K extends keyof CreateCustomerProps>(
     key: K,
-    value: CreateCustomerProps[K]
+    value: CreateCustomerProps[K],
   ) => {
     dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
   };
   const createCustomer = async (
     data: CreateCustomerProps,
-    onClose: () => void
+    onClose: () => void,
   ) => {
     try {
       const res = await requestApi({
@@ -86,7 +88,11 @@ export const useCustomer = () => {
       console.log('🚀 ~ createCustomer ~ error:', error);
     }
   };
-
+  interface ResponseProps {
+    items: CustomerProps[];
+    totalItems: number;
+    totalPages: number;
+  }
   const getCustomers = async ({
     searchField = null,
     search = null,
@@ -140,7 +146,7 @@ export const useCustomer = () => {
     }
   };
 
-  const upLoadImage = async (data) => {
+  const upLoadImage = async data => {
     const formData = new FormData();
     const base64 = (await getBase64(data)) as any;
     formData.append('file', base64);

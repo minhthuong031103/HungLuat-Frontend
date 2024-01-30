@@ -10,7 +10,7 @@ const favoriteSlice = createSlice({
   reducers: {
     addFavorite: (state, { payload }: { payload: any }) => {
       const productIndex = state.listFavorite.findIndex(
-        (product) => product.id === payload.data.id
+        product => product.id === payload.data.id,
       );
       if (productIndex === -1) {
         state.listFavorite.push(payload.data);
@@ -18,7 +18,7 @@ const favoriteSlice = createSlice({
     },
     deleteFavorite: (state, { payload }: { payload: any }) => {
       const productIndex = state.listFavorite.findIndex(
-        (product) => product.id === payload.data.id
+        product => product.id === payload.data.id,
       );
       state.listFavorite.splice(productIndex, 1);
     },

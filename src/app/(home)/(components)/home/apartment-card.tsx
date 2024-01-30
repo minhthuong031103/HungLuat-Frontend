@@ -1,18 +1,18 @@
-import React from 'react'
+import React from 'react';
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Divider,
-  Image
-} from '@nextui-org/react'
-import RoomDropdown from './room-dropdown'
-import { CommonSvg } from '@/assets/CommonSvg'
-import { Apartment } from '@/types'
-import { imageApartment } from '@/lib/constant'
+  Image,
+} from '@nextui-org/react';
+import RoomDropdown from './room-dropdown';
+import { CommonSvg } from '@/assets/CommonSvg';
+import { Apartment } from '@/types';
+import { imageApartment } from '@/lib/constant';
 interface ApartmentCardProps {
-  apartment: Apartment
+  apartment: Apartment;
 }
 const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
   return (
@@ -20,7 +20,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
       className="max-w-[383px] h-[555px]"
       classNames={{
         header: 'p-0 flex relative',
-        base: 'rounded-none'
+        base: 'rounded-none',
       }}
     >
       <CardHeader>
@@ -92,7 +92,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
         </div>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
-export default ApartmentCard
+export default ApartmentCard;

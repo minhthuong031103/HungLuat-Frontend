@@ -1,10 +1,10 @@
-import { Metadata } from 'next'
-import React from 'react'
-import Login from './Login'
+import { Metadata } from 'next';
+import React from 'react';
+import Login from './Login';
 export const metadata: Metadata = {
   title: 'Authentication',
-  description: 'Authentication forms built using the components.'
-}
+  description: 'Authentication forms built using the components.',
+};
 
 const LoginPage = async () => {
   // await alreadyLoggedIn();
@@ -26,7 +26,7 @@ const LoginPage = async () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

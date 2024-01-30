@@ -1,52 +1,52 @@
-import Cropper, { type ReactCropperElement } from 'react-cropper'
+import Cropper, { type ReactCropperElement } from 'react-cropper';
 import {
   useDropzone,
   type Accept,
   type FileRejection,
-  type FileWithPath
-} from 'react-dropzone'
+  type FileWithPath,
+} from 'react-dropzone';
 import type {
   FieldPath,
   FieldValues,
   Path,
   PathValue,
-  UseFormSetValue
-} from 'react-hook-form'
-import { toast } from 'react-hot-toast'
+  UseFormSetValue,
+} from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 
-import 'cropperjs/dist/cropper.css'
+import 'cropperjs/dist/cropper.css';
 
-import { cn, formatBytes, getImageKey } from '@/lib/utils'
-import { Button } from '@components/ui/button'
-import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog'
-import { Icons } from '@/assets/Icons'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { ImageCus } from '@/components/ui/ImageCus'
-import { Modal } from '@mantine/core'
-import React from 'react'
-import { useCustomer } from '@/hooks/useCustomer'
-import { Spinner } from '@nextui-org/react'
+import { cn, formatBytes, getImageKey } from '@/lib/utils';
+import { Button } from '@components/ui/button';
+import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
+import { Icons } from '@/assets/Icons';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { ImageCus } from '@/components/ui/ImageCus';
+import { Modal } from '@mantine/core';
+import React from 'react';
+import { useCustomer } from '@/hooks/useCustomer';
+import { Spinner } from '@nextui-org/react';
 type FileWithPreview = FileWithPath & {
-  preview: string
-}
+  preview: string;
+};
 
 interface FileDialogProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > extends React.HTMLAttributes<HTMLDivElement> {
-  name: TName
-  setValue?: UseFormSetValue<TFieldValues>
-  accept?: Accept
-  maxSize?: number
-  maxFiles?: number
-  files: FileWithPreview[] | null
-  setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[] | null>>
-  isUploading?: boolean
-  disabled?: boolean
-  setDeletedImage?: React.Dispatch<React.SetStateAction<[]>>
-  isModalOpen: boolean
-  onClose: () => void
-  setImageUrl: (value: string) => void
+  name: TName;
+  setValue?: UseFormSetValue<TFieldValues>;
+  accept?: Accept;
+  maxSize?: number;
+  maxFiles?: number;
+  files: FileWithPreview[] | null;
+  setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[] | null>>;
+  isUploading?: boolean;
+  disabled?: boolean;
+  setDeletedImage?: React.Dispatch<React.SetStateAction<[]>>;
+  isModalOpen: boolean;
+  onClose: () => void;
+  setImageUrl: (value: string) => void;
 }
 function IndentityModal<TFieldValues extends FieldValues>({
   isModalOpen,
@@ -54,7 +54,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
   name,
   setValue,
   accept = {
-    'image/*': []
+    'image/*': [],
   },
   maxSize = 1024 * 1024 * 2,
   maxFiles = 1,
@@ -69,63 +69,63 @@ function IndentityModal<TFieldValues extends FieldValues>({
 }: FileDialogProps<TFieldValues>) {
   const onDrop = React.useCallback(
     (acceptedFiles: FileWithPath[], rejectedFiles: FileRejection[]) => {
-      console.log(acceptedFiles.length, files?.length)
+      console.log(acceptedFiles.length, files?.length);
       if (acceptedFiles.length + (files?.length ?? 0) > maxFiles) {
-        toast.error(`You can only upload up to ${maxFiles} files`)
-        return
+        toast.error(`You can only upload up to ${maxFiles} files`);
+        return;
       } else {
-        acceptedFiles.forEach((file) => {
+        acceptedFiles.forEach(file => {
           const fileWithPreview = Object.assign(file, {
-            preview: URL.createObjectURL(file)
-          })
-          setFiles((prev) => [...(prev ?? []), fileWithPreview])
-        })
+            preview: URL.createObjectURL(file),
+          });
+          setFiles(prev => [...(prev ?? []), fileWithPreview]);
+        });
         if (rejectedFiles.length > 0) {
           rejectedFiles.forEach(({ errors }) => {
             if (errors[0]?.code === 'file-too-large') {
               toast.error(
-                `File is too large. Max size is ${formatBytes(maxSize)}`
-              )
-              return
+                `File is too large. Max size is ${formatBytes(maxSize)}`,
+              );
+              return;
             }
-            errors[0]?.message && toast.error(errors[0].message)
-          })
+            errors[0]?.message && toast.error(errors[0].message);
+          });
         }
       }
     },
 
-    [maxSize, setFiles, files]
-  )
+    [maxSize, setFiles, files],
+  );
 
   // Register files to react-hook-form
   React.useEffect(() => {
-    setValue?.(name, files as PathValue<TFieldValues, Path<TFieldValues>>)
-  }, [files])
+    setValue?.(name, files as PathValue<TFieldValues, Path<TFieldValues>>);
+  }, [files]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
     maxSize,
     maxFiles,
     multiple: maxFiles > 1,
-    disabled
-  })
+    disabled,
+  });
 
   // Revoke preview url when component unmounts
   React.useEffect(() => {
     return () => {
-      if (!files) return
-      files.forEach((file) => URL.revokeObjectURL(file?.preview || file?.url))
-    }
-  }, [])
-  const { upLoadImage, handleSetCustomerValue } = useCustomer()
-  const [isLoading, setIsLoading] = React.useState(false)
+      if (!files) return;
+      files.forEach(file => URL.revokeObjectURL(file?.preview || file?.url));
+    };
+  }, []);
+  const { upLoadImage, handleSetCustomerValue } = useCustomer();
+  const [isLoading, setIsLoading] = React.useState(false);
   const handleUpload = async () => {
-    setIsLoading(true)
-    const res = await upLoadImage(files?.[0])
-    setIsLoading(false)
-    setImageUrl(res?.data?.url)
-    onClose()
-  }
+    setIsLoading(true);
+    const res = await upLoadImage(files?.[0]);
+    setIsLoading(false);
+    setImageUrl(res?.data?.url);
+    onClose();
+  };
   return (
     <Modal
       closeOnClickOutside={false}
@@ -134,7 +134,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
       classNames={{
         header: 'flex relative',
         title: 'font-bold text-gray uppercase font-bold text-xl',
-        close: 'm-0 absolute right-3 top-3'
+        close: 'm-0 absolute right-3 top-3',
       }}
       opened={isModalOpen}
       onClose={onClose}
@@ -152,7 +152,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
               'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
               isDragActive && 'border-muted-foreground/50',
               disabled && 'pointer-events-none opacity-60',
-              className
+              className,
             )}
             {...props}
           >
@@ -224,14 +224,14 @@ function IndentityModal<TFieldValues extends FieldValues>({
         </Button>
       ) : null}
     </Modal>
-  )
+  );
 
   interface FileCardProps {
-    i: number
-    file: FileWithPreview
-    files: FileWithPreview[] | null
-    setDeletedImage?: React.Dispatch<React.SetStateAction<[]>>
-    setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[] | null>>
+    i: number;
+    file: FileWithPreview;
+    files: FileWithPreview[] | null;
+    setDeletedImage?: React.Dispatch<React.SetStateAction<[]>>;
+    setFiles: React.Dispatch<React.SetStateAction<FileWithPreview[] | null>>;
   }
 
   function FileCard({
@@ -239,50 +239,50 @@ function IndentityModal<TFieldValues extends FieldValues>({
     file,
     files,
     setFiles,
-    setDeletedImage
+    setDeletedImage,
   }: FileCardProps) {
-    const [isOpen, setIsOpen] = React.useState(false)
-    const [cropData, setCropData] = React.useState<string | null>(null)
-    const cropperRef = React.useRef<ReactCropperElement>(null)
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [cropData, setCropData] = React.useState<string | null>(null);
+    const cropperRef = React.useRef<ReactCropperElement>(null);
 
     const onCrop = React.useCallback(() => {
-      if (!files || !cropperRef.current) return
+      if (!files || !cropperRef.current) return;
 
-      const croppedCanvas = cropperRef.current?.cropper.getCroppedCanvas()
-      setCropData(croppedCanvas.toDataURL())
+      const croppedCanvas = cropperRef.current?.cropper.getCroppedCanvas();
+      setCropData(croppedCanvas.toDataURL());
 
-      croppedCanvas.toBlob((blob) => {
+      croppedCanvas.toBlob(blob => {
         if (!blob) {
-          console.error('Blob creation failed')
-          return
+          console.error('Blob creation failed');
+          return;
         }
         const croppedImage = new File([blob], file.name, {
           type: file.type,
-          lastModified: Date.now()
-        })
+          lastModified: Date.now(),
+        });
 
         const croppedFileWithPathAndPreview = Object.assign(croppedImage, {
           preview: URL.createObjectURL(croppedImage),
-          path: file.name
-        }) satisfies FileWithPreview
+          path: file.name,
+        }) satisfies FileWithPreview;
 
         const newFiles = files.map((file, j) =>
-          j === i ? croppedFileWithPathAndPreview : file
-        )
-        setFiles(newFiles)
-      })
-    }, [file.name, file.type, files, i, setFiles])
+          j === i ? croppedFileWithPathAndPreview : file,
+        );
+        setFiles(newFiles);
+      });
+    }, [file.name, file.type, files, i, setFiles]);
 
     React.useEffect(() => {
       function handleKeydown(e: KeyboardEvent) {
         if (e.key === 'Enter') {
-          onCrop()
-          setIsOpen(false)
+          onCrop();
+          setIsOpen(false);
         }
       }
-      document.addEventListener('keydown', handleKeydown)
-      return () => document.removeEventListener('keydown', handleKeydown)
-    }, [onCrop])
+      document.addEventListener('keydown', handleKeydown);
+      return () => document.removeEventListener('keydown', handleKeydown);
+    }, [onCrop]);
     return (
       <div className="relative flex items-center justify-between gap-2.5">
         <div className="flex items-center gap-2">
@@ -325,7 +325,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
                 classNames={{
                   header: 'flex relative',
                   title: 'font-bold text-gray uppercase font-bold text-xl',
-                  close: 'm-0 absolute right-3 top-3'
+                  close: 'm-0 absolute right-3 top-3',
                 }}
                 opened={isOpen}
                 onClose={() => setIsOpen(false)}
@@ -361,8 +361,8 @@ function IndentityModal<TFieldValues extends FieldValues>({
                       size="sm"
                       className="h-8"
                       onClick={() => {
-                        onCrop()
-                        setIsOpen(false)
+                        onCrop();
+                        setIsOpen(false);
                       }}
                     >
                       <Icons.crop className="mr-2 h-3.5 w-3.5 text-secondary-50" />
@@ -375,8 +375,8 @@ function IndentityModal<TFieldValues extends FieldValues>({
                       size="sm"
                       className="h-8"
                       onClick={() => {
-                        cropperRef.current?.cropper.reset()
-                        setCropData(null)
+                        cropperRef.current?.cropper.reset();
+                        setCropData(null);
                       }}
                     >
                       <Icons.reset
@@ -396,7 +396,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
             size="icon"
             className="h-7 w-7"
             onClick={async () => {
-              if (!files) return
+              if (!files) return;
               // if (file.url) {
               //   const imageKey = getImageKey(file.url);
               //   const res = await postRequest({
@@ -409,9 +409,9 @@ function IndentityModal<TFieldValues extends FieldValues>({
               //     res
               //   );
               // }
-              setFiles(files.filter((_, j) => j !== i))
+              setFiles(files.filter((_, j) => j !== i));
               if (setDeletedImage && file.url) {
-                setDeletedImage((prev) => [...(prev ?? []), file])
+                setDeletedImage(prev => [...(prev ?? []), file]);
               }
             }}
           >
@@ -420,8 +420,8 @@ function IndentityModal<TFieldValues extends FieldValues>({
           </Button>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default IndentityModal
+export default IndentityModal;

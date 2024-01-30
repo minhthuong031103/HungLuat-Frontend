@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Modal,
@@ -6,35 +6,35 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button
-} from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { useModal } from '@/hooks/useModalStore'
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { CustomSelect } from '@/app/(home)/(components)/home/custom-select'
+  Button,
+} from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import { useModal } from '@/hooks/useModalStore';
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { CustomSelect } from '@/app/(home)/(components)/home/custom-select';
 
 const EditRoomModal = () => {
-  const { isOpen, onClose, type, data } = useModal()
-  const [floor, setFloor] = useState([])
+  const { isOpen, onClose, type, data } = useModal();
+  const [floor, setFloor] = useState([]);
   useEffect(() => {
     if (data && floor.length === 0 && data?.numberFloor) {
       for (let i = 1; i <= data?.numberFloor; i++) {
-        setFloor((prev: any) => [...prev, `Tầng ${i}`] as any)
+        setFloor((prev: any) => [...prev, `Tầng ${i}`] as any);
       }
     }
-  }, [data])
-  const [roomName, setRoomName] = useState('')
-  const [floorChosen, setFloorChosen] = useState('')
-  const isModalOpen = isOpen && type === 'editRoom'
+  }, [data]);
+  const [roomName, setRoomName] = useState('');
+  const [floorChosen, setFloorChosen] = useState('');
+  const isModalOpen = isOpen && type === 'editRoom';
   const resetState = () => {
-    setFloor([])
-    setRoomName('')
-    setFloorChosen('')
-  }
+    setFloor([]);
+    setRoomName('');
+    setFloorChosen('');
+  };
   const handleCreateRoom = () => {
-    resetState()
-    onClose()
-  }
+    resetState();
+    onClose();
+  };
   return (
     <Modal size="2xl" isOpen={isModalOpen} onOpenChange={onClose}>
       <ModalContent>
@@ -72,7 +72,7 @@ const EditRoomModal = () => {
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default EditRoomModal
+export default EditRoomModal;

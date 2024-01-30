@@ -1,5 +1,5 @@
-import { CommonSvg } from '@/assets/CommonSvg'
-import { Customer } from '@/types'
+import { CommonSvg } from '@/assets/CommonSvg';
+import { Customer } from '@/types';
 import {
   Button,
   Checkbox,
@@ -18,52 +18,52 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  User
-} from '@nextui-org/react'
-import React from 'react'
-import Loader from '../Loader'
-import { VerticalDotsIcon } from './VerticalDotsIcon'
+  User,
+} from '@nextui-org/react';
+import React from 'react';
+import Loader from '../Loader';
+import { VerticalDotsIcon } from './VerticalDotsIcon';
 
 interface CustomerProps {
-  id: string
-  name: string
-  address: string
-  identity: string
-  temporaryResidence: boolean
-  plate: string
+  id: string;
+  name: string;
+  address: string;
+  identity: string;
+  temporaryResidence: boolean;
+  plate: string;
 }
 
 interface dataTableProps {
-  data: any[]
-  currentPage: number
-  setCurrentPage: any
-  limit: string
-  setLimit?: any
-  totalPages: number
-  totalItems: number
-  keyName: string
-  search?: string | null
-  setSearch: any
-  renderRight?: any
-  renderCell?: any
-  isLoading?: boolean
-  columns: any
-  showLimit?: boolean
-  renderHeader?: any
+  data: any[];
+  currentPage: number;
+  setCurrentPage: any;
+  limit: string;
+  setLimit?: any;
+  totalPages: number;
+  totalItems: number;
+  keyName: string;
+  search?: string | null;
+  setSearch: any;
+  renderRight?: any;
+  renderCell?: any;
+  isLoading?: boolean;
+  columns: any;
+  showLimit?: boolean;
+  renderHeader?: any;
 }
 
 interface ColumnProps {
-  id: string
-  title: string
-  sortable?: boolean
+  id: string;
+  title: string;
+  sortable?: boolean;
 }
 
 const limitOptions = [
   { label: '5', value: '5' },
   { label: '10', value: '10' },
   { label: '15', value: '15' },
-  { label: '20', value: '20' }
-]
+  { label: '20', value: '20' },
+];
 
 export default function DataTable({
   data,
@@ -81,11 +81,11 @@ export default function DataTable({
   renderRight,
   renderCell,
   renderHeader,
-  columns
+  columns,
 }: dataTableProps) {
   const headerColumns = React.useMemo(() => {
-    return columns
-  }, [])
+    return columns;
+  }, []);
 
   // const onSearchChange = React.useCallback((value?: string) => {
   //     if (value) {
@@ -112,12 +112,12 @@ export default function DataTable({
               placeholder="Chọn giới hạn"
               className="w-[120px]"
               selectedKeys={[limit]}
-              onChange={(e) => {
-                setLimit(e.target.value)
-                setCurrentPage(1)
+              onChange={e => {
+                setLimit(e.target.value);
+                setCurrentPage(1);
               }}
             >
-              {limitOptions.map((limit) => (
+              {limitOptions.map(limit => (
                 <SelectItem key={limit.value} value={limit.value}>
                   {limit.label}
                 </SelectItem>
@@ -129,8 +129,8 @@ export default function DataTable({
           </div>
         </div>
       </div>
-    )
-  }, [data])
+    );
+  }, [data]);
 
   const bottomContent = React.useMemo(() => {
     return (
@@ -145,8 +145,8 @@ export default function DataTable({
           onChange={setCurrentPage}
         />
       </div>
-    )
-  }, [currentPage, totalPages, data])
+    );
+  }, [currentPage, totalPages, data]);
   return isLoading ? (
     <div className="w-full h-[300px] flex items-center justify-center">
       <Spinner />
@@ -156,7 +156,7 @@ export default function DataTable({
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: 'max-h-[700px]'
+        wrapper: 'max-h-[700px]',
       }}
       topContent={showLimit ? topContent : null}
       selectionMode="single"
@@ -178,13 +178,13 @@ export default function DataTable({
         {(item) => {
           return (
             <TableRow key={item.id}>
-              {(columnKey) => (
+              {columnKey => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
             </TableRow>
-          )
+          );
         }}
       </TableBody>
     </Table>
-  )
+  );
 }

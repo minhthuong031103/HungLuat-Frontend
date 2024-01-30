@@ -131,7 +131,7 @@ const RoomsPage = () => {
           <ChevronDown
             className={cn(
               'text-gray group-hover:font-semibold group-hover:scale-105',
-              searchAdvanced && 'transform rotate-180'
+              searchAdvanced && 'transform rotate-180',
             )}
             size={18}
           />
@@ -188,12 +188,12 @@ const RoomsPage = () => {
             }}
           >
             {apartments ? (
-              apartments?.pages?.map((page) =>
+              apartments?.pages?.map(page =>
                 page?.data?.items?.map((item: Apartment) => (
                   <SelectItem key={item.id} value={item.id}>
                     {item.name}
                   </SelectItem>
-                ))
+                )),
               )
             ) : (
               <SelectItem key={''}></SelectItem>
@@ -215,7 +215,7 @@ const RoomsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !flag && 'bg-gray pointer-events-none'
+                  !flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -226,7 +226,7 @@ const RoomsPage = () => {
               <div
                 className={cn(
                   'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !!flag && 'bg-gray pointer-events-none'
+                  !!flag && 'bg-gray pointer-events-none',
                 )}
                 onClick={() => setFlag(!flag)}
               >
@@ -245,7 +245,7 @@ const RoomsPage = () => {
                           numberFloor: apartment?.numberFloor,
                           apartmentId: Number(apartmentChosen)
                         },
-                        handleGetRooms
+                        handleGetRooms,
                       )
                     }
                   >

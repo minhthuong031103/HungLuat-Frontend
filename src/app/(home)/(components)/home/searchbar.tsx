@@ -1,42 +1,42 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client'
+'use client';
 
-import { CommonSvg } from '@/assets/CommonSvg'
-import { Button, Input } from '@nextui-org/react'
-import { useCallback } from 'react'
+import { CommonSvg } from '@/assets/CommonSvg';
+import { Button, Input } from '@nextui-org/react';
+import { useCallback } from 'react';
 
 interface SearchBarProps {
-  searchValue: string | null
-  setSearchValue: any
-  setCurrentPage?: (value: number) => void
-  handleSearch?: () => void
+  searchValue: string | null;
+  setSearchValue: any;
+  setCurrentPage?: (value: number) => void;
+  handleSearch?: () => void;
 }
 export function SearchBar({
   searchValue,
   setSearchValue,
   setCurrentPage,
-  handleSearch = () => {}
+  handleSearch = () => {},
 }: SearchBarProps) {
   const onSearchChange = useCallback((value?: string) => {
     if (value) {
-      setSearchValue(value)
-      setCurrentPage && setCurrentPage(1)
+      setSearchValue(value);
+      setCurrentPage && setCurrentPage(1);
     } else {
-      setSearchValue('')
+      setSearchValue('');
     }
-  }, [])
+  }, []);
 
   const onClear = useCallback(() => {
-    setSearchValue('')
-    setCurrentPage && setCurrentPage(1)
-  }, [])
+    setSearchValue('');
+    setCurrentPage && setCurrentPage(1);
+  }, []);
   return (
     <div className="w-full my-2 flex items-center gap-8">
       <Input
         isClearable
         onClear={onClear}
         onKeyDown={(e: any) => {
-          if (e.key === 'Enter') handleSearch()
+          if (e.key === 'Enter') handleSearch();
         }}
         radius="sm"
         size="sm"
@@ -47,7 +47,7 @@ export function SearchBar({
           input: [
             'bg-transparent',
             'text-black/90',
-            'placeholder:text-default-700/80 placeholder:text-sm'
+            'placeholder:text-default-700/80 placeholder:text-sm',
           ],
           innerWrapper: 'bg-transparent',
           inputWrapper: [
@@ -59,13 +59,13 @@ export function SearchBar({
             '!cursor-text',
             'w-[535px]',
             'border-1',
-            'border-borderColor'
+            'border-borderColor',
           ],
-          base: 'w-fit'
+          base: 'w-fit',
         }}
         placeholder="Nhập thông tin tìm kiếm"
         startContent={CommonSvg.searchIcon({
-          className: 'text-black/50 mb-0.5 pointer-events-none flex-shrink-0'
+          className: 'text-black/50 mb-0.5 pointer-events-none flex-shrink-0',
         })}
       />
       <Button
@@ -76,5 +76,5 @@ export function SearchBar({
         Tìm kiếm
       </Button>
     </div>
-  )
+  );
 }

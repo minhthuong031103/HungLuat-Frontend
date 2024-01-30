@@ -1,62 +1,62 @@
-"use client";
-import { cn } from "@/lib/utils";
+'use client';
+import { cn } from '@/lib/utils';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
-import { CommonSvg } from "@/assets/CommonSvg";
-import Link from "next/link";
+} from '@/components/ui/accordion';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
+import { CommonSvg } from '@/assets/CommonSvg';
+import Link from 'next/link';
 
 const mainNavItems = [
   {
-    title: "Trang chủ",
+    title: 'Trang chủ',
     items: [
       {
-        title: "Tìm kiếm bất động sản",
-        href: "/bat-dong-san",
-        description: "Find real estate",
+        title: 'Tìm kiếm bất động sản',
+        href: '/bat-dong-san',
+        description: 'Find real estate',
         items: [],
       },
       {
-        title: "Tìm kiếm đối tác",
-        href: "/doi-tac",
-        description: "Find agency",
+        title: 'Tìm kiếm đối tác',
+        href: '/doi-tac',
+        description: 'Find agency',
         items: [],
       },
       {
-        title: "Chính sách văn phòng",
-        href: "/chinh-sach",
-        description: "Policy",
+        title: 'Chính sách văn phòng',
+        href: '/chinh-sach',
+        description: 'Policy',
         items: [],
       },
     ],
   },
   {
-    title: "Hồ sơ",
+    title: 'Hồ sơ',
     items: [
       {
-        title: "Thông tin cá nhân",
-        href: "/bat-dong-san",
-        description: "profile",
+        title: 'Thông tin cá nhân',
+        href: '/bat-dong-san',
+        description: 'profile',
         items: [],
       },
       {
-        title: "Tin nhắn",
-        href: "/doi-tac",
-        description: "Message",
+        title: 'Tin nhắn',
+        href: '/doi-tac',
+        description: 'Message',
         items: [],
       },
       {
-        title: "Kênh đối tác",
-        href: "/chinh-sach",
-        description: "agency channel",
+        title: 'Kênh đối tác',
+        href: '/chinh-sach',
+        description: 'agency channel',
         items: [],
       },
     ],
@@ -87,7 +87,7 @@ export function MobileNav() {
             className="flex items-center"
             onClick={() => setIsOpen(false)}
           >
-            <span className="font-bold">{"UITEstate"}</span>
+            <span className="font-bold">{'UITEstate'}</span>
           </Link>
         </div>
         <ScrollArea className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
@@ -118,7 +118,7 @@ export function MobileNav() {
                           >
                             {item.title}
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </AccordionContent>
@@ -151,9 +151,9 @@ function MobileLink({
     <Link
       href={href}
       className={cn(
-        "text-foreground/70 transition-colors hover:text-foreground",
-        pathname === href && "text-foreground",
-        disabled && "pointer-events-none opacity-60"
+        'text-foreground/70 transition-colors hover:text-foreground',
+        pathname === href && 'text-foreground',
+        disabled && 'pointer-events-none opacity-60',
       )}
       onClick={() => setIsOpen(false)}
     >

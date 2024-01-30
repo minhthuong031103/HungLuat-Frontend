@@ -1,27 +1,27 @@
-'use client'
+'use client';
 
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { useModal } from '@/hooks/useModalStore'
-import { useRoom } from '@/hooks/useRoom'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { useModal } from '@/hooks/useModalStore';
+import { useRoom } from '@/hooks/useRoom';
 import {
   convertPrice,
   formatDateCustom,
-  getDaysAmountInMonth
-} from '@/lib/utils'
-import { Modal } from '@mantine/core'
-import { Button, Divider, Spinner } from '@nextui-org/react'
-import { BlobProvider } from '@react-pdf/renderer'
-import Invoice from '../invoice/invoice'
-import { saveAs } from 'file-saver'
-import { useState } from 'react'
+  getDaysAmountInMonth,
+} from '@/lib/utils';
+import { Modal } from '@mantine/core';
+import { Button, Divider, Spinner } from '@nextui-org/react';
+import { BlobProvider } from '@react-pdf/renderer';
+import Invoice from '../invoice/invoice';
+import { saveAs } from 'file-saver';
+import { useState } from 'react';
 const ExportBillModal = () => {
-  const { isOpen, onClose, type, data, onAction } = useModal()
-  const { roomId } = data
-  const { state, exportBill } = useRoom()
-  const [isLoading, setIsLoading] = useState(false)
-  const isModalOpen = isOpen && type === 'exportBill'
-  const handleExportBill = async (blob) => {
-    setIsLoading(true)
+  const { isOpen, onClose, type, data, onAction } = useModal();
+  const { roomId } = data;
+  const { state, exportBill } = useRoom();
+  const [isLoading, setIsLoading] = useState(false);
+  const isModalOpen = isOpen && type === 'exportBill';
+  const handleExportBill = async blob => {
+    setIsLoading(true);
     const data = {
       fileName: state.name,
       apartmentId: state.apartmentId,
@@ -32,8 +32,8 @@ const ExportBillModal = () => {
         (Number(state.roomPrice) * Number(state.dayStayed)) /
           getDaysAmountInMonth(
             new Date().getMonth() + 1,
-            new Date().getFullYear()
-          )
+            new Date().getFullYear(),
+          ),
       ),
       totalElectricPrice: state.totalElectricPrice,
       totalWaterPrice: state.totalWaterPrice,
@@ -52,25 +52,25 @@ const ExportBillModal = () => {
       newElectric: state.newElectric,
       oldElectric: state.oldElectric,
 
-      files: [blob]
-    }
-    await exportBill(data, onAction)
-    setIsLoading(false)
+      files: [blob],
+    };
+    await exportBill(data, onAction);
+    setIsLoading(false);
     await saveAs(
       blob,
       `${state.name} T${
         new Date().getMonth() + 1
-      }/${new Date().getFullYear()}.pdf`
-    )
-    onClose()
-  }
+      }/${new Date().getFullYear()}.pdf`,
+    );
+    onClose();
+  };
 
   const renderInput = (
     label,
     value,
     placeholder,
     inputType,
-    disabled = false
+    disabled = false,
   ) => (
     <div className="w-[31%]">
       <CustomInput
@@ -84,14 +84,14 @@ const ExportBillModal = () => {
         disabled={disabled}
       />
     </div>
-  )
+  );
 
   const renderNumberInput = (label, value, placeholder, disabled = false) =>
-    renderInput(label, value, placeholder, 'text', disabled)
+    renderInput(label, value, placeholder, 'text', disabled);
 
-  const renderInputRow = (inputs) => (
+  const renderInputRow = inputs => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
-  )
+  );
   return (
     <Modal
       closeOnClickOutside={false}
@@ -101,7 +101,7 @@ const ExportBillModal = () => {
       classNames={{
         header: 'flex justify-center items-center relative',
         title: 'font-bold text-gray uppercase font-bold text-xl',
-        close: 'm-0 absolute right-3 top-3'
+        close: 'm-0 absolute right-3 top-3',
       }}
       removeScrollProps={{ allowPinchZoom: true }}
       opened={isModalOpen}
@@ -117,8 +117,8 @@ const ExportBillModal = () => {
             renderNumberInput(
               'Số ngày ở trong tháng',
               state.dayStayed,
-              'Số ngày ở trong tháng'
-            )
+              'Số ngày ở trong tháng',
+            ),
           ])}
           {renderInputRow([
             renderNumberInput('Tiền nợ cũ', state.oldDebt, 'Tiền nợ cũ'),
@@ -128,8 +128,8 @@ const ExportBillModal = () => {
               Number(state.peopleRealStayed) - 4 > 0
                 ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
                 : 0,
-              'Số ngày ở trong tháng'
-            )
+              'Số ngày ở trong tháng',
+            ),
           ])}
           <p className="text-gray font-semibold text-lg">Tiền dịch vụ</p>
 
@@ -140,38 +140,39 @@ const ExportBillModal = () => {
               Number(state.oldElectric) >= Number(state.newElectric)
                 ? 0
                 : Math.floor(
-                    (Number(state.newElectric) - Number(state.oldElectric)) * 10
+                    (Number(state.newElectric) - Number(state.oldElectric)) *
+                      10,
                   ) / 10,
 
-              'Điện tiêu thụ'
+              'Điện tiêu thụ',
             ),
             renderNumberInput(
               'Tổng tiền điện',
               state.totalElectricPrice,
-              'Tổng tiền điện'
-            )
+              'Tổng tiền điện',
+            ),
           ])}
           {renderInputRow([
             renderNumberInput(
               'Tổng tiền nước',
               state.totalWaterPrice,
-              'Tổng tiền nước'
+              'Tổng tiền nước',
             ),
             renderNumberInput(
               'Tiền dịch vụ',
               state.servicePrice,
-              'Tiền dịch vụ'
+              'Tiền dịch vụ',
             ),
             renderNumberInput(
               'Chi phí phát sinh khác',
               state.otherPrice,
-              'Chi phí phát sinh'
+              'Chi phí phát sinh',
             ),
             renderNumberInput(
               'Tổng tiền giữ xe',
               state.totalParkingPrice,
-              'Tổng tiền giữ xe'
-            )
+              'Tổng tiền giữ xe',
+            ),
           ])}
 
           <div className="w-full pt-2">
@@ -200,7 +201,7 @@ const ExportBillModal = () => {
                 data={{
                   ...state,
                   startDate: formatDateCustom(state.startDate),
-                  endDate: formatDateCustom(state.endDate)
+                  endDate: formatDateCustom(state.endDate),
                 }}
               />
             }
@@ -217,7 +218,7 @@ const ExportBillModal = () => {
         </div>
       </>
     </Modal>
-  )
-}
+  );
+};
 
-export default ExportBillModal
+export default ExportBillModal;

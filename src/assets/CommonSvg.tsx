@@ -518,5 +518,5 @@ export const CommonSvg = {
         fill="#219653"
       />
     </svg>
-  )
-}
+  ),
+};

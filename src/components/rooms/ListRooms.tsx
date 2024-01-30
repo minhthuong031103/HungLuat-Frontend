@@ -1,7 +1,7 @@
-import { useRoom } from '@/hooks/useRoom'
-import { useEffect, useState } from 'react'
-import RoomCard from './room-card'
-import { numberFloor } from '@/types'
+import { useRoom } from '@/hooks/useRoom';
+import { useEffect, useState } from 'react';
+import RoomCard from './room-card';
+import { numberFloor } from '@/types';
 
 const ListRooms = ({ floors }) => {
   return (
@@ -13,19 +13,19 @@ const ListRooms = ({ floors }) => {
               Tầng {floor?.floor}
             </p>
             <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-              {floor?.rooms?.map((room) => {
+              {floor?.rooms?.map(room => {
                 return (
                   <div key={room.id}>
                     <RoomCard room={room} />
                   </div>
-                )
+                );
               })}
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default ListRooms
+export default ListRooms;

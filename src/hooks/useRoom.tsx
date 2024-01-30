@@ -502,7 +502,7 @@ export const RoomProvider = ({ children }) => {
         ? 0
         : Math.floor(
             (Math.floor(
-              (Number(state.newElectric) - Number(state.oldElectric)) * 10
+              (Number(state.newElectric) - Number(state.oldElectric)) * 10,
             ) /
               10) *
               Number(state.electricPrice)

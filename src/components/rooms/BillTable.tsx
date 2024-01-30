@@ -1,7 +1,7 @@
-import DataTable from '@/components/datatable/Datatable'
-import { queryKey } from '@/lib/constant'
-import { useQuery } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import DataTable from '@/components/datatable/Datatable';
+import { queryKey } from '@/lib/constant';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
 import {
   Button,
   Dropdown,
@@ -70,8 +70,8 @@ const NormalRenderCell = ({ cellValue }) => {
     <div className="flex flex-col">
       <p className="text-bold text-small ">{cellValue}</p>
     </div>
-  )
-}
+  );
+};
 
 const BillTable = ({ roomId }: BillTaleProps) => {
   const [limit, setLimit] = useState('10')
@@ -146,8 +146,8 @@ const BillTable = ({ roomId }: BillTaleProps) => {
           return <NormalRenderCell cellValue={cellValue} />
       }
     },
-    []
-  )
+    [],
+  );
   return (
     <>
       <div className="w-full h-full mt-4 grid gap-4 grid-cols-1">
@@ -169,7 +169,7 @@ const BillTable = ({ roomId }: BillTaleProps) => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default BillTable
+export default BillTable;

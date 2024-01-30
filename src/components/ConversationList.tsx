@@ -42,20 +42,20 @@ const ConversationList: React.FC<ConversationListProps> = ({
   }, [pusherKey, router]);
   const fetchConversations = async ({ cursor, pageSize }) => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations/all?cursor=${cursor}&pageSize=${pageSize}&userId=${session?.data?.user?.id}`
+      `${process.env.NEXT_PUBLIC_SOCKET_URL}/conversations/all?cursor=${cursor}&pageSize=${pageSize}&userId=${session?.data?.user?.id}`,
     );
     const data = await response.json();
     return data;
   };
 
-  const useInfiniteMessagesQuery = (pageSize) => {
+  const useInfiniteMessagesQuery = pageSize => {
     return useInfiniteQuery(
       ['conversations'],
       ({ pageParam }) => fetchConversations({ cursor: pageParam, pageSize }),
       {
-        getNextPageParam: (lastPage) => lastPage.nextCursor || null,
+        getNextPageParam: lastPage => lastPage.nextCursor || null,
         enabled: !!session.data?.user?.id,
-      }
+      },
     );
   };
   const pageSize = 6;
@@ -79,7 +79,7 @@ w-full h-full
         border-r 
         border-gray-200 
       `,
-          isOpen ? 'hidden' : 'block lg:w-[20%] left-0'
+          isOpen ? 'hidden' : 'block lg:w-[20%] left-0',
         )}
       >
         <div className="px-5">
@@ -89,7 +89,7 @@ w-full h-full
           {data?.pages.map((page, index) =>
             page?.conversations?.length > 0 ? (
               <React.Fragment key={index}>
-                {page?.conversations?.map((item) => (
+                {page?.conversations?.map(item => (
                   <ConversationBox
                     key={item.id}
                     data={item}
@@ -103,7 +103,7 @@ w-full h-full
                   Không có cuộc trò chuyện nào
                 </div>
               </div>
-            )
+            ),
           )}
         </div>
       </aside>

@@ -13,7 +13,7 @@ const Footer = () => {
   const { fetchOffice } = useOffice();
   useEffect(() => {
     const getOfficeInformation = async () => {
-      await fetchOffice().then((data) => {
+      await fetchOffice().then(data => {
         setInfo(data);
       });
     };

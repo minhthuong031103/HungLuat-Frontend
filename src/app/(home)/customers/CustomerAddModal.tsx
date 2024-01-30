@@ -79,7 +79,7 @@ const CustomerAddModal = () => {
               label="Họ tên khách hàng"
               placeholder="Nhập tên khách hàng"
               value={customerState.name}
-              setValue={(value) => handleSetCustomerValue('name', value)}
+              setValue={value => handleSetCustomerValue('name', value)}
             />
           </div>
           <div className="w-[33%]">
@@ -87,7 +87,7 @@ const CustomerAddModal = () => {
               label="Số điện thoại"
               placeholder="Nhập SĐT khách hàng"
               value={customerState.phone}
-              setValue={(value) => {
+              setValue={value => {
                 checkValueNumberInput('phone', value) &&
                   handleSetCustomerValue('phone', value);
               }}
@@ -98,7 +98,7 @@ const CustomerAddModal = () => {
               label="Ngày sinh"
               date={customerState.dayOfBirth}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetCustomerValue('dayOfBirth', value)}
+              setDate={value => handleSetCustomerValue('dayOfBirth', value)}
             />
           </div>
         </div>
@@ -108,7 +108,7 @@ const CustomerAddModal = () => {
               label="CMND/CCCD"
               placeholder="Nhập CMND/CCCD"
               value={customerState.identityCard}
-              setValue={(value) => {
+              setValue={value => {
                 {
                   checkValueNumberInput('identityCard', value) &&
                     handleSetCustomerValue('identityCard', value);
@@ -121,7 +121,7 @@ const CustomerAddModal = () => {
               label="Ngày cấp"
               date={customerState.issuedDate}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetCustomerValue('issuedDate', value)}
+              setDate={value => handleSetCustomerValue('issuedDate', value)}
             />
           </div>
         </div>
@@ -138,18 +138,18 @@ const CustomerAddModal = () => {
               disallowEmptySelection
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
-              onChange={(e) => {
+              onChange={e => {
                 setApartmentChosen(e.target.value);
                 setCurrentPage(1);
               }}
             >
               {apartments ? (
-                apartments?.pages?.map((page) =>
+                apartments?.pages?.map(page =>
                   page?.data?.items?.map((item: Apartment) => (
                     <SelectItem key={item.id} value={item.id}>
                       {item.name}
                     </SelectItem>
-                  ))
+                  )),
                 )
               ) : (
                 <SelectItem key={''}></SelectItem>
@@ -166,7 +166,7 @@ const CustomerAddModal = () => {
               disallowEmptySelection
               isDisabled={!apartmentChosen.length}
               selectedKeys={customerState.roomId ? [customerState.roomId] : []}
-              onChange={(e) => {
+              onChange={e => {
                 handleSetCustomerValue('roomId', e.target.value);
               }}
             >
@@ -189,7 +189,7 @@ const CustomerAddModal = () => {
               label="Địa chỉ thường trú"
               placeholder="Nhập Địa chỉ thường trú"
               value={customerState.address}
-              setValue={(value) => {
+              setValue={value => {
                 {
                   handleSetCustomerValue('address', value);
                 }
@@ -230,7 +230,7 @@ const CustomerAddModal = () => {
                 className="w-full"
                 name="identityFrontUrl"
                 key="identityFrontUrl"
-                setImageUrl={(value) =>
+                setImageUrl={value =>
                   handleSetCustomerValue('identityFrontUrl', value)
                 }
                 maxFiles={1}
@@ -272,7 +272,7 @@ const CustomerAddModal = () => {
                 onClose={() => setIdentityBackModal(false)}
                 className="w-full"
                 name="identityBackUrl"
-                setImageUrl={(value) =>
+                setImageUrl={value =>
                   handleSetCustomerValue('identityBackUrl', value)
                 }
                 maxFiles={1}
