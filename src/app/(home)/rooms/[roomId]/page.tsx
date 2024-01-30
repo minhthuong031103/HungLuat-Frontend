@@ -13,8 +13,9 @@ import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { CustomSelect } from '../(components)/home/custom-select';
-import { SearchBar } from '../(components)/home/searchbar';
+import { SearchBar } from '../../(components)/home/searchbar';
+import { CustomSelect } from '../../(components)/home/custom-select';
+
 
 interface ResponseProps {
   items: any;
