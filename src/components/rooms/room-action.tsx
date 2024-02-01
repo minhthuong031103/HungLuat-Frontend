@@ -1,8 +1,8 @@
-import { CommonSvg } from '@/assets/CommonSvg'
+import { CommonSvg } from '@/assets/CommonSvg';
 
 interface RoomActionProps {
-  status: boolean
-  onAction: () => void
+  status: boolean;
+  onAction: () => void;
 }
 const RoomAction = ({ status, onAction }: RoomActionProps) => {
   return (
@@ -15,7 +15,7 @@ const RoomAction = ({ status, onAction }: RoomActionProps) => {
       </div>
       <div className="ml-[10px]">{CommonSvg.export()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default RoomAction
+export default RoomAction;

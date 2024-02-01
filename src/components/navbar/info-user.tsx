@@ -1,16 +1,16 @@
-import { useAuth } from '@/hooks/useAuth'
-import { Avatar } from '@nextui-org/react'
+import { useAuth } from '@/hooks/useAuth';
+import { Avatar } from '@nextui-org/react';
 import {
   Dropdown,
   DropdownMenu,
   DropdownTrigger,
   DropdownItem,
-  Button
-} from '@nextui-org/react'
-import { CiLogout } from 'react-icons/ci'
+  Button,
+} from '@nextui-org/react';
+import { CiLogout } from 'react-icons/ci';
 
 const InfoUser = () => {
-  const { onLogout } = useAuth()
+  const { onLogout } = useAuth();
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -36,7 +36,7 @@ const InfoUser = () => {
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
-  )
-}
+  );
+};
 
-export default InfoUser
+export default InfoUser;

@@ -1,21 +1,21 @@
-'use client'
-import React, { useState } from 'react'
-import { ChevronUpIcon } from '../icons/sidebar/chevron-up-icon'
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import { CommonSvg } from '@/assets/CommonSvg'
-import { usePathname, useRouter } from 'next/navigation'
-import { cn } from '@/lib/utils'
-import { ChevronDownIcon } from 'lucide-react'
+'use client';
+import React, { useState } from 'react';
+import { ChevronUpIcon } from '../icons/sidebar/chevron-up-icon';
+import { Accordion, AccordionItem } from '@nextui-org/react';
+import { CommonSvg } from '@/assets/CommonSvg';
+import { usePathname, useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { ChevronDownIcon } from 'lucide-react';
 interface Props {
-  icon: React.ReactNode
-  title: string
-  items: { name: string; link: string }[]
+  icon: React.ReactNode;
+  title: string;
+  items: { name: string; link: string }[];
 }
 
 export const CollapseItems = ({ icon, items, title }: Props) => {
-  const [open, setOpen] = useState(false)
-  const router = useRouter()
-  const pathName = usePathname().split('/').slice(-1)[0]
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathName = usePathname().split('/').slice(-1)[0];
 
   return (
     <div className="flex gap-4 h-full items-center cursor-pointer">
@@ -27,7 +27,7 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
             trigger:
               'py-0 min-h-[44px] hover:bg-default-100 rounded-xl active:scale-[0.98] transition-transform pl-2',
             title:
-              'px-0 flex text-base gap-2 h-full items-center cursor-pointer'
+              'px-0 flex text-base gap-2 h-full items-center cursor-pointer',
           }}
           aria-label="Accordion 1"
           title={
@@ -44,7 +44,7 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
                 className={cn(
                   'flex gap-4 items-center px-4 py-2 rounded-sm scale-95 hover:scale-100 transition-all duration-150 ease-in-out cursor-pointer hover:bg-default-100 active:bg-default-200',
                   `/${pathName}` === item.link &&
-                    'bg-backgroundChosen pointer-events-none'
+                    'bg-backgroundChosen pointer-events-none',
                 )}
                 onClick={() => router.push(item.link)}
               >
@@ -53,7 +53,7 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
                   className={cn(
                     'w-full flex text-description text-base font-medium hover:font-semibold',
                     `/${pathName}` === item.link &&
-                      'text-textChosen font-semibold'
+                      'text-textChosen font-semibold',
                   )}
                 >
                   {item.name}
@@ -152,5 +152,5 @@ export const CollapseItems = ({ icon, items, title }: Props) => {
         ))}
       </Accordion> */}
     </div>
-  )
-}
+  );
+};

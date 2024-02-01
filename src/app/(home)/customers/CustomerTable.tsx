@@ -1,39 +1,39 @@
-import { CommonSvg } from '@/assets/CommonSvg'
-import DataTable from '@/components/datatable/Datatable'
-import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon'
-import { useCustomer } from '@/hooks/useCustomer'
-import { useModal } from '@/hooks/useModalStore'
-import { EModalType, queryKey } from '@/lib/constant'
+import { CommonSvg } from '@/assets/CommonSvg';
+import DataTable from '@/components/datatable/Datatable';
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
+import { useCustomer } from '@/hooks/useCustomer';
+import { useModal } from '@/hooks/useModalStore';
+import { EModalType, queryKey } from '@/lib/constant';
 import {
   Button,
   Checkbox,
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger
-} from '@nextui-org/react'
-import { useQuery } from '@tanstack/react-query'
-import { ChevronDown } from 'lucide-react'
-import React, { useState } from 'react'
-import { SearchBar } from '../(components)/home/searchbar'
+  DropdownTrigger,
+} from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
+import { ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { SearchBar } from '../(components)/home/searchbar';
 interface CustomerProps {
-  id: string
-  title: string
-  phone: string
-  address: string
-  identityCard: string
-  city: string
-  district: string
-  ward: string
-  houseNumber: string
-  registeredTemporaryResidence: boolean
-  plate: string
+  id: string;
+  title: string;
+  phone: string;
+  address: string;
+  identityCard: string;
+  city: string;
+  district: string;
+  ward: string;
+  houseNumber: string;
+  registeredTemporaryResidence: boolean;
+  plate: string;
 }
 
 interface ResponseProps {
-  items: CustomerProps[]
-  totalItems: number
-  totalPages: number
+  items: CustomerProps[];
+  totalItems: number;
+  totalPages: number;
 }
 
 const columnKeys = {
@@ -43,64 +43,64 @@ const columnKeys = {
   identityCard: 'identityCard',
   registeredTemporaryResidence: 'registeredTemporaryResidence',
   roomId: 'roomId',
-  action: 'action'
-}
+  action: 'action',
+};
 
 const columns = [
   {
     id: columnKeys.name,
     title: 'Tên khách hàng',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.phone,
     title: 'Số điện thoại',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.address,
     title: 'Địa chỉ',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.identityCard,
     title: 'Số CMND',
-    sortable: true
+    sortable: true,
   },
 
   {
     id: columnKeys.registeredTemporaryResidence,
     title: 'Tạm trú',
-    sortable: true
+    sortable: true,
   },
   {
     id: columnKeys.roomId,
-    title: 'Phòng'
+    title: 'Phòng',
   },
 
   {
     id: columnKeys.action,
     title: 'Thao tác',
-    sortable: false
-  }
-]
+    sortable: false,
+  },
+];
 
 const NormalRenderCell = ({ cellValue }) => {
   return (
     <div className="flex flex-col">
       <p className="text-bold text-small ">{cellValue}</p>
     </div>
-  )
-}
+  );
+};
 
 const CustomerTable = () => {
-  const [limit, setLimit] = useState('10')
-  const [currentPage, setCurrentPage] = useState(1)
-  const [search, setSearch] = useState(null)
-  const [searchField, setSearchField] = useState('name')
-  const { getCustomers } = useCustomer()
-  const { onOpen } = useModal()
-  const handleSearch = () => { }
+  const [limit, setLimit] = useState('10');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState(null);
+  const [searchField, setSearchField] = useState('name');
+  const { getCustomers } = useCustomer();
+  const { onOpen } = useModal();
+  const handleSearch = () => { };
   const { data: customers, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
     queryFn: async () => {
@@ -108,15 +108,15 @@ const CustomerTable = () => {
         page: currentPage,
         limit,
         search,
-        searchField
-      })
-      return res?.data
-    }
-  })
+        searchField,
+      });
+      return res?.data;
+    },
+  });
 
   const renderCell = React.useCallback(
     (user: CustomerProps, columnKey: React.Key) => {
-      const cellValue = user[columnKey]
+      const cellValue = user[columnKey];
 
       switch (columnKey) {
         case columnKeys.registeredTemporaryResidence:
@@ -128,7 +128,7 @@ const CustomerTable = () => {
                 isSelected={cellValue}
               ></Checkbox>
             </div>
-          )
+          );
         case columnKeys.action:
           return (
             <div className="relative flex w-24 justify-center items-center gap-2">
@@ -139,19 +139,19 @@ const CustomerTable = () => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>View</DropdownItem>
-                  <DropdownItem>Edit</DropdownItem>
-                  <DropdownItem>Delete</DropdownItem>
+                  <DropdownItem>Xem chi tiết</DropdownItem>
+                  <DropdownItem>Chỉnh sửa</DropdownItem>
+                  <DropdownItem>Xóa</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
-          )
+          );
         default:
-          return <NormalRenderCell cellValue={cellValue} />
+          return <NormalRenderCell cellValue={cellValue} />;
       }
     },
-    []
-  )
+    [],
+  );
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -189,7 +189,7 @@ const CustomerTable = () => {
                   </div>
                 </div>
               </Button>
-            )
+            );
           }}
           columns={columns}
           keyName={queryKey.CUSTOMERS}
@@ -207,7 +207,7 @@ const CustomerTable = () => {
         />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default CustomerTable
+export default CustomerTable;

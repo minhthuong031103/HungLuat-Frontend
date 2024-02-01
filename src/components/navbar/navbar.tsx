@@ -1,15 +1,15 @@
-'use client'
-import React from 'react'
+'use client';
+import React from 'react';
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   Link,
-  Button
-} from '@nextui-org/react'
-import { headers } from 'next/headers'
-import InfoUser from './info-user'
+  Button,
+} from '@nextui-org/react';
+import { headers } from 'next/headers';
+import InfoUser from './info-user';
 
 export const NavbarComponent = () => {
   return (
@@ -17,7 +17,7 @@ export const NavbarComponent = () => {
       shouldHideOnScroll
       className="bg-gray"
       classNames={{
-        wrapper: 'px-4'
+        wrapper: 'px-4',
       }}
     >
       <NavbarBrand>
@@ -32,5 +32,5 @@ export const NavbarComponent = () => {
         </NavbarItem>
       </NavbarContent>
     </Navbar>
-  )
-}
+  );
+};

@@ -1,35 +1,35 @@
-'use client'
+'use client';
 
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input'
-import { FileDialog } from '@/components/ui/FileDialog'
-import { DatePicker } from '@/components/ui/date-picker'
-import { Label } from '@/components/ui/label'
-import { Zoom } from '@/components/ui/zoom-image'
-import { useApartmentScroll } from '@/hooks/useApartmentScroll'
-import { useCustomer } from '@/hooks/useCustomer'
-import { useModal } from '@/hooks/useModalStore'
-import { EModalType } from '@/lib/constant'
-import { checkValueNumberInput } from '@/lib/utils'
-import { Apartment, Room } from '@/types'
-import { Modal } from '@mantine/core'
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react'
-import { useState } from 'react'
-import IndentityModal from './AddIndentityModal'
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { FileDialog } from '@/components/ui/FileDialog';
+import { DatePicker } from '@/components/ui/date-picker';
+import { Label } from '@/components/ui/label';
+import { Zoom } from '@/components/ui/zoom-image';
+import { useApartmentScroll } from '@/hooks/useApartmentScroll';
+import { useCustomer } from '@/hooks/useCustomer';
+import { useModal } from '@/hooks/useModalStore';
+import { EModalType } from '@/lib/constant';
+import { checkValueNumberInput } from '@/lib/utils';
+import { Apartment, Room } from '@/types';
+import { Modal } from '@mantine/core';
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { useState } from 'react';
+import IndentityModal from './AddIndentityModal';
 
 const CustomerAddModal = () => {
-  const { isOpen, onClose, type, onOpen } = useModal()
-  const [identityModal, setIdentityModal] = useState(false)
-  const [identityBackModal, setIdentityBackModal] = useState(false)
+  const { isOpen, onClose, type, onOpen } = useModal();
+  const [identityModal, setIdentityModal] = useState(false);
+  const [identityBackModal, setIdentityBackModal] = useState(false);
 
-  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE
-  const [cmndMatTruoc, setCmndMatTruoc] = useState([])
-  const [cmndMatSau, setCmndMatSau] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE;
+  const [cmndMatTruoc, setCmndMatTruoc] = useState([]);
+  const [cmndMatSau, setCmndMatSau] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { handleSetCustomerValue, customerState, createCustomer } =
-    useCustomer()
+    useCustomer();
   const handleAddCustomer = async () => {
     // resetCustomerState()
-    setIsLoading(true)
+    setIsLoading(true);
     const data = {
       name: customerState.name,
       phone: customerState.phone,
@@ -39,11 +39,11 @@ const CustomerAddModal = () => {
       address: customerState.address,
       identityFrontUrl: customerState.identityFrontUrl,
       identityBackUrl: customerState.identityBackUrl,
-      roomId: Number(customerState.roomId)
-    }
-    await createCustomer(data, onClose)
-    setIsLoading(false)
-  }
+      roomId: Number(customerState.roomId),
+    };
+    await createCustomer(data, onClose);
+    setIsLoading(false);
+  };
 
   const {
     apartmentChosen,
@@ -53,9 +53,8 @@ const CustomerAddModal = () => {
     isFetching,
     setIsScrollOpen,
     scrollerRef,
-    rooms
-  } = useApartmentScroll()
-
+    rooms,
+  } = useApartmentScroll();
   return (
     <Modal
       closeOnClickOutside={false}
@@ -64,7 +63,7 @@ const CustomerAddModal = () => {
       classNames={{
         header: 'flex justify-center items-center relative',
         title: 'font-bold text-gray uppercase font-bold text-xl',
-        close: 'm-0 absolute right-3 top-3'
+        close: 'm-0 absolute right-3 top-3',
       }}
       opened={isModalOpen}
       onClose={onClose}
@@ -80,7 +79,7 @@ const CustomerAddModal = () => {
               label="Họ tên khách hàng"
               placeholder="Nhập tên khách hàng"
               value={customerState.name}
-              setValue={(value) => handleSetCustomerValue('name', value)}
+              setValue={value => handleSetCustomerValue('name', value)}
             />
           </div>
           <div className="w-[33%]">
@@ -88,9 +87,9 @@ const CustomerAddModal = () => {
               label="Số điện thoại"
               placeholder="Nhập SĐT khách hàng"
               value={customerState.phone}
-              setValue={(value) => {
+              setValue={value => {
                 checkValueNumberInput('phone', value) &&
-                  handleSetCustomerValue('phone', value)
+                  handleSetCustomerValue('phone', value);
               }}
             />
           </div>
@@ -99,7 +98,7 @@ const CustomerAddModal = () => {
               label="Ngày sinh"
               date={customerState.dayOfBirth}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetCustomerValue('dayOfBirth', value)}
+              setDate={value => handleSetCustomerValue('dayOfBirth', value)}
             />
           </div>
         </div>
@@ -109,10 +108,10 @@ const CustomerAddModal = () => {
               label="CMND/CCCD"
               placeholder="Nhập CMND/CCCD"
               value={customerState.identityCard}
-              setValue={(value) => {
+              setValue={value => {
                 {
                   checkValueNumberInput('identityCard', value) &&
-                    handleSetCustomerValue('identityCard', value)
+                    handleSetCustomerValue('identityCard', value);
                 }
               }}
             />
@@ -122,7 +121,7 @@ const CustomerAddModal = () => {
               label="Ngày cấp"
               date={customerState.issuedDate}
               labelCustom="font-medium text-sm text-black"
-              setDate={(value) => handleSetCustomerValue('issuedDate', value)}
+              setDate={value => handleSetCustomerValue('issuedDate', value)}
             />
           </div>
         </div>
@@ -139,18 +138,18 @@ const CustomerAddModal = () => {
               disallowEmptySelection
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
-              onChange={(e) => {
-                setApartmentChosen(e.target.value)
-                setCurrentPage(1)
+              onChange={e => {
+                setApartmentChosen(e.target.value);
+                setCurrentPage(1);
               }}
             >
               {apartments ? (
-                apartments?.pages?.map((page) =>
+                apartments?.pages?.map(page =>
                   page?.data?.items?.map((item: Apartment) => (
                     <SelectItem key={item.id} value={item.id}>
                       {item.name}
                     </SelectItem>
-                  ))
+                  )),
                 )
               ) : (
                 <SelectItem key={''}></SelectItem>
@@ -167,19 +166,19 @@ const CustomerAddModal = () => {
               disallowEmptySelection
               isDisabled={!apartmentChosen.length}
               selectedKeys={customerState.roomId ? [customerState.roomId] : []}
-              onChange={(e) => {
-                handleSetCustomerValue('roomId', e.target.value)
+              onChange={e => {
+                handleSetCustomerValue('roomId', e.target.value);
               }}
             >
               {rooms?.map((item: any) => {
-                console.log('🚀 ~ {rooms?.map ~ item:', item)
+                console.log('🚀 ~ {rooms?.map ~ item:', item);
                 return item?.rooms?.map((room: Room) => {
                   return (
                     <SelectItem key={room.id} value={room.id}>
                       {room.name}
                     </SelectItem>
-                  )
-                })
+                  );
+                });
               })}
             </Select>
           </div>
@@ -190,9 +189,9 @@ const CustomerAddModal = () => {
               label="Địa chỉ thường trú"
               placeholder="Nhập Địa chỉ thường trú"
               value={customerState.address}
-              setValue={(value) => {
+              setValue={value => {
                 {
-                  handleSetCustomerValue('address', value)
+                  handleSetCustomerValue('address', value);
                 }
               }}
             />
@@ -203,13 +202,18 @@ const CustomerAddModal = () => {
             <Label>Ảnh CMND mặt trước</Label>
             <div className="h-36 ">
               <Zoom key={2}>
-                <img
-                  src={cmndMatTruoc[0]?.preview}
-                  alt={cmndMatTruoc[0]?.name}
-                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
-                    cmndMatTruoc?.length === 0 && 'pointer-events-none'
-                  }`}
-                />
+                {customerState.identityFrontUrl ? (
+                  <img
+                    src={customerState.identityFrontUrl}
+                    className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                      cmndMatTruoc?.length === 0 && 'pointer-events-none'
+                    }`}
+                  />
+                ) : (
+                  <div className="h-36 w-56 border-2 rounded-md object-cover object-center flex justify-center items-center">
+                    <p className="text-sm text-gray-500">Chưa có ảnh</p>
+                  </div>
+                )}
               </Zoom>
               <div className="w-full flex justify-center mt-2">
                 <Button
@@ -226,7 +230,7 @@ const CustomerAddModal = () => {
                 className="w-full"
                 name="identityFrontUrl"
                 key="identityFrontUrl"
-                setImageUrl={(value) =>
+                setImageUrl={value =>
                   handleSetCustomerValue('identityFrontUrl', value)
                 }
                 maxFiles={1}
@@ -241,13 +245,18 @@ const CustomerAddModal = () => {
             <Label>Ảnh CMND mặt sau</Label>
             <div className="h-36 ">
               <Zoom key={2}>
-                <img
-                  src={cmndMatSau[0]?.preview}
-                  alt={cmndMatSau[0]?.name}
-                  className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
-                    cmndMatSau?.length === 0 && 'pointer-events-none'
-                  }`}
-                />
+                {customerState.identityBackUrl ? (
+                  <img
+                    src={customerState.identityBackUrl}
+                    className={`h-36 w-56 border-2 rounded-md object-cover object-center ${
+                      cmndMatSau?.length === 0 && 'pointer-events-none'
+                    }`}
+                  />
+                ) : (
+                  <div className="h-36 w-56 border-2 rounded-md object-cover object-center flex justify-center items-center">
+                    <p className="text-sm text-gray-500">Chưa có ảnh</p>
+                  </div>
+                )}
               </Zoom>
               <div className="w-full flex justify-center mt-2">
                 <Button
@@ -263,7 +272,7 @@ const CustomerAddModal = () => {
                 onClose={() => setIdentityBackModal(false)}
                 className="w-full"
                 name="identityBackUrl"
-                setImageUrl={(value) =>
+                setImageUrl={value =>
                   handleSetCustomerValue('identityBackUrl', value)
                 }
                 maxFiles={1}
@@ -286,7 +295,7 @@ const CustomerAddModal = () => {
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};
 
-export default CustomerAddModal
+export default CustomerAddModal;

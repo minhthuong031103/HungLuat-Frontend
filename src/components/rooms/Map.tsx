@@ -28,7 +28,7 @@ const Map = ({ apartmentId }: RoomCardProps) => {
                 Tầng {floor.floor}
               </p>
               <div className="flex gap-[2px] w-full flex-wrap flex-1">
-                {floor.rooms.map((room) => {
+                {floor.rooms.map(room => {
                   return (
                     <div className="w-[100px] h-[100px] bg-room-red items-center justify-center flex border-1 border-room-borderColor">
                       <span className="font-semibold text-sm text-white w-full px-2 text-center truncate">

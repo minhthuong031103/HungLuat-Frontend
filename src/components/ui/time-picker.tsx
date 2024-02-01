@@ -6,7 +6,7 @@ const TimePicker = ({ value, setValue }) => {
   return (
     <Input
       value={value}
-      type='time'
+      type="time"
       onChange={e => {
         setValue(e.target.value);
       }}

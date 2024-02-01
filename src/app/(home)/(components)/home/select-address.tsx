@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { Select, SelectItem } from '@nextui-org/react'
+import { useEffect, useState } from 'react';
+import { Select, SelectItem } from '@nextui-org/react';
 // import { getRequest } from '@/lib/fetch'
-import axios from 'axios'
+import axios from 'axios';
 interface SelectAddressProps {
-  provinceValue: string
-  setProvinceValue: (value: string) => void
-  districtValue: string
-  setDistrictValue: (value: string) => void
-  wardValue: string
-  setWardValue: (value: string) => void
+  provinceValue: string;
+  setProvinceValue: (value: string) => void;
+  districtValue: string;
+  setDistrictValue: (value: string) => void;
+  wardValue: string;
+  setWardValue: (value: string) => void;
 }
 export const SelectAddress = ({
   provinceValue,
@@ -19,104 +19,103 @@ export const SelectAddress = ({
   districtValue,
   setDistrictValue,
   wardValue,
-  setWardValue
+  setWardValue,
 }: SelectAddressProps) => {
-  const [selectedProvince, setSelectedProvince] = useState(new Set([]))
-  const [selectedDistrict, setSelectedDistrict] = useState(new Set([]))
-  const [selectedWard, setSelectedWard] = useState(new Set([]))
+  const [selectedProvince, setSelectedProvince] = useState(new Set([]));
+  const [selectedDistrict, setSelectedDistrict] = useState(new Set([]));
+  const [selectedWard, setSelectedWard] = useState(new Set([]));
 
-  const [provinceTouched, setProvinceTouched] = useState(false)
-  const [districtTouched, setDistrictTouched] = useState(false)
-  const [wardTouched, setWardTouched] = useState(false)
+  const [provinceTouched, setProvinceTouched] = useState(false);
+  const [districtTouched, setDistrictTouched] = useState(false);
+  const [wardTouched, setWardTouched] = useState(false);
 
-  const [isLoadingProvince, setIsLoadingProvince] = useState(false)
-  const [isLoadingDistrict, setIsLoadingDistrict] = useState(false)
-  const [isLoadingWard, setIsLoadingWard] = useState(false)
+  const [isLoadingProvince, setIsLoadingProvince] = useState(false);
+  const [isLoadingDistrict, setIsLoadingDistrict] = useState(false);
+  const [isLoadingWard, setIsLoadingWard] = useState(false);
 
-  const [provinces, setProvince] = useState([])
-  const [districts, setDistrict] = useState([])
-  const [wards, setWard] = useState([])
+  const [provinces, setProvince] = useState([]);
+  const [districts, setDistrict] = useState([]);
+  const [wards, setWard] = useState([]);
 
   useEffect(() => {
     async function getProvince() {
-      setIsLoadingProvince(true)
+      setIsLoadingProvince(true);
       // const res = await getRequest({
       //   endPoint: 'https://provinces.open-api.vn/api/p/'
       // })
-      const res = await axios('https://provinces.open-api.vn/api/p/')
-      setProvince(res.data)
-      setIsLoadingProvince(false)
+      const res = await axios('https://provinces.open-api.vn/api/p/');
+      setProvince(res.data);
+      setIsLoadingProvince(false);
     }
-    getProvince()
-  }, [])
+    getProvince();
+  }, []);
   useEffect(() => {
-    setDistrict([])
-    setWard([])
+    setDistrict([]);
+    setWard([]);
     async function getDistrict() {
       if (selectedProvince.size > 0) {
-        setIsLoadingDistrict(true)
-        const valuesArray = Array.from(selectedProvince)
-        const provinceCode = valuesArray[0]
+        setIsLoadingDistrict(true);
+        const valuesArray = Array.from(selectedProvince);
+        const provinceCode = valuesArray[0];
         // const res = await getRequest({
         //   endPoint: `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
         // })
         const res = await axios(
-          `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
-        )
-        setDistrict(res?.data?.districts)
-        setIsLoadingDistrict(false)
+          `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`,
+        );
+        setDistrict(res?.data?.districts);
+        setIsLoadingDistrict(false);
       }
     }
-    getDistrict()
-  }, [selectedProvince])
+    getDistrict();
+  }, [selectedProvince]);
   useEffect(() => {
     async function getWard() {
       if (selectedDistrict.size > 0) {
-        setIsLoadingWard(true)
-        const valuesArray = Array.from(selectedDistrict)
-        const districtCode = valuesArray[0]
+        setIsLoadingWard(true);
+        const valuesArray = Array.from(selectedDistrict);
+        const districtCode = valuesArray[0];
         // const res = await getRequest({
         //   endPoint: `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
         // })
         const res = await axios.get(
-          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
-        )
-        setWard(res?.data?.wards)
-        setIsLoadingWard(false)
+          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`,
+        );
+        setWard(res?.data?.wards);
+        setIsLoadingWard(false);
       }
     }
 
-    getWard()
-  }, [selectedDistrict])
+    getWard();
+  }, [selectedDistrict]);
   useEffect(() => {
     async function setValue() {
       if (selectedWard.size > 0) {
-        const valuesArrayProvince = Array.from(selectedProvince)
-        const provinceCode = valuesArrayProvince[0]
+        const valuesArrayProvince = Array.from(selectedProvince);
+        const provinceCode = valuesArrayProvince[0];
         const provinceValue = await provinces.find(
-          (province) => province.code == provinceCode
-        )?.name
-        setProvinceValue(provinceValue)
-        const valuesArrayDistrict = Array.from(selectedDistrict)
-        const districtCode = valuesArrayDistrict[0]
+          province => province.code == provinceCode,
+        )?.name;
+        setProvinceValue(provinceValue);
+        const valuesArrayDistrict = Array.from(selectedDistrict);
+        const districtCode = valuesArrayDistrict[0];
         const districtValue = await districts.find(
-          (district) => district.code == districtCode
-        )?.name
-        setDistrictValue(districtValue)
-        const valuesArrayWard = Array.from(selectedWard)
-        const wardCode = valuesArrayWard[0]
-        const wardValue = await wards.find((ward) => ward.code == wardCode)
-          ?.name
-        setWardValue(wardValue)
+          district => district.code == districtCode,
+        )?.name;
+        setDistrictValue(districtValue);
+        const valuesArrayWard = Array.from(selectedWard);
+        const wardCode = valuesArrayWard[0];
+        const wardValue = await wards.find(ward => ward.code == wardCode)?.name;
+        setWardValue(wardValue);
       }
     }
 
-    setValue()
-  }, [selectedWard])
+    setValue();
+  }, [selectedWard]);
 
-  const isProvinceValid = selectedProvince.size > 0
-  const isDistrictValid = selectedDistrict.size > 0
-  const isWardValid = selectedWard.size > 0
+  const isProvinceValid = selectedProvince.size > 0;
+  const isDistrictValid = selectedDistrict.size > 0;
+  const isWardValid = selectedWard.size > 0;
 
   return (
     <>
@@ -141,7 +140,7 @@ export const SelectAddress = ({
         className="w-full "
         onClose={() => setProvinceTouched(true)}
       >
-        {provinces?.map((province) => (
+        {provinces?.map(province => (
           <SelectItem key={province.code} value={province.code}>
             {province.name}
           </SelectItem>
@@ -166,7 +165,7 @@ export const SelectAddress = ({
         className="w-full "
         onClose={() => setDistrictTouched(true)}
       >
-        {districts?.map((district) => (
+        {districts?.map(district => (
           <SelectItem key={district.code} value={district.code}>
             {district.name}
           </SelectItem>
@@ -191,12 +190,12 @@ export const SelectAddress = ({
         labelPlacement="outside"
         onClose={() => setWardTouched(true)}
       >
-        {wards?.map((ward) => (
+        {wards?.map(ward => (
           <SelectItem key={ward.code} value={ward.code}>
             {ward.name}
           </SelectItem>
         ))}
       </Select>
     </>
-  )
-}
+  );
+};

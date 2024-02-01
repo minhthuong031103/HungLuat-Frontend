@@ -1,26 +1,26 @@
-import { Room } from '@/types'
+import { Room } from '@/types';
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
-  Divider
-} from '@nextui-org/react'
-import RoomAction from './room-action'
-import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown'
-import { useModal } from '@/hooks/useModalStore'
-import { useRouter } from 'next/navigation'
+  Divider,
+} from '@nextui-org/react';
+import RoomAction from './room-action';
+import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown';
+import { useModal } from '@/hooks/useModalStore';
+import { useRouter } from 'next/navigation';
 interface RoomCardProps {
-  room: Room
+  room: Room;
 }
 const RoomCard = ({ room }: RoomCardProps) => {
-  const router = useRouter()
+  const router = useRouter();
   return (
     <Card
       className="max-w-[190px] h-[333px]"
       classNames={{
         header: 'p-0 flex relative',
-        base: 'rounded-none drop-shadow border-1 border-borderColor bg-white'
+        base: 'rounded-none drop-shadow border-1 border-borderColor bg-white',
       }}
     >
       <CardHeader onClick={() => router.push(`/rooms/${room.id}`)}>
@@ -99,12 +99,12 @@ const RoomCard = ({ room }: RoomCardProps) => {
       <CardFooter className="flex items-center justify-center">
         <RoomAction
           onAction={() => {
-            router.push(`/rooms/${room.id}`)
+            router.push(`/rooms/${room.id}`);
           }}
           status={true}
         />
       </CardFooter>
     </Card>
-  )
-}
-export default RoomCard
+  );
+};
+export default RoomCard;

@@ -1,287 +1,213 @@
-'use client';
 import { CommonSvg } from '@/assets/CommonSvg';
-import BuildingPlan from '@/components/rooms/BuildingPlan';
-import ListRooms from '@/components/rooms/ListRooms';
-import { useApartment } from '@/hooks/useApartment';
+import DataTable from '@/components/datatable/Datatable';
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
+import { useCustomer } from '@/hooks/useCustomer';
 import { useModal } from '@/hooks/useModalStore';
-import { useRoom } from '@/hooks/useRoom';
-import { queryKey } from '@/lib/constant';
-import { cn, getCurrentMonth } from '@/lib/utils';
-import { Apartment } from '@/types';
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { EModalType, queryKey } from '@/lib/constant';
+import {
+    Button,
+    Checkbox,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+} from '@nextui-org/react';
+import { useQuery } from '@tanstack/react-query';
 import { ChevronDown } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { SearchBar } from '../../(components)/home/searchbar';
-import { CustomSelect } from '../../(components)/home/custom-select';
-
-
-interface ResponseProps {
-  items: any;
-  totalItems: number;
-  totalPages: number;
+import React, { useState } from 'react';
+import { SearchBar } from '../(components)/home/searchbar';
+interface CustomerProps {
+    id: string;
+    title: string;
+    phone: string;
+    address: string;
+    identityCard: string;
+    city: string;
+    district: string;
+    ward: string;
+    houseNumber: string;
+    registeredTemporaryResidence: boolean;
+    plate: string;
 }
 
-const RoomsPage = () => {
-  const [searchAdvanced, setSearchAdvanced] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [electricityPrice, setElectricityPrice] = useState('');
-  const [statusRoom, setStatusRoom] = useState('');
-  const [statusPayment, setStatusPayment] = useState('');
-  const [apartmentChosen, setApartmentChosen] = useState('');
-  const { onOpen } = useModal();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const { getApartments } = useApartment();
-  const {
-    data: apartments,
-    fetchNextPage,
-    hasNextPage,
-    refetch: refetchData,
-    isFetching,
-    isFetchingNextPage,
-  } = useInfiniteQuery(
-    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
-    ({ pageParam = 0 }) =>
-      getApartments({
-        page: pageParam,
-        limit: 10,
-        search: searchValue,
-        searchField: 'name',
-      }),
-    {
-      staleTime: 1000 * 60 * 1,
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      getNextPageParam: (lastPage, pages) => {
-        if (
-          lastPage.data.currentPage === 1 &&
-          pages.length < lastPage.data.totalPages
-        )
-          return 2;
-        if (pages.length < lastPage.data.totalPages) return pages.length;
-        else return undefined;
-      },
-    }
-  );
-  useEffect(() => {
-    console.log(apartments);
-    if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
-      setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
-    }
-  }, [apartments]);
-  const apartment: Apartment = apartments?.pages?.map((page) => {
-    return page.data.items.find(
-      (item) => item.id.toString() === apartmentChosen
-    );
-  })[0];
+interface ResponseProps {
+    items: CustomerProps[];
+    totalItems: number;
+    totalPages: number;
+}
 
-  const [floors, setFloors] = useState([]);
-  const handleGetRooms = async () => {
-    setLoading(true);
-    const res = await getRooms({
-      apartmentId: Number(apartmentChosen),
-      search: searchValue,
-    });
-    setFloors(res?.data?.rooms);
-    setLoading(false);
-  };
-  const { getRooms } = useRoom();
-  useEffect(() => {
-    if (Number(apartmentChosen)) {
-      handleGetRooms();
-    }
-  }, [apartmentChosen]);
-
-  const [month, setMonth] = useState('');
-  const handleSearch = () => {
-    handleGetRooms();
-  };
-  const classNameChosen = 'font-semibold text-sm text-white';
-  const classNameNotChosen = 'font-medium text-sm text-black';
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [flag, setFlag] = useState(false);
-  const [, scrollerRef] = useInfiniteScroll({
-    isEnabled: isOpen,
-    hasMore: hasNextPage,
-    shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
-    onLoadMore: () => {
-      fetchNextPage();
-    },
-  });
-  return (
-    <>
-      <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
-        <p className="font-medium text-sm text-black">Tìm kiếm</p>
-        <SearchBar
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          handleSearch={handleSearch}
-        />
-        <div
-          className="w-fit pb-2 flex items-center gap-3 cursor-pointer group"
-          onClick={() => setSearchAdvanced(!searchAdvanced)}
-        >
-          <p className="font-medium text-base text-gray group-hover:font-semibold group-hover:scale-105">
-            Tìm kiếm nâng cao
-          </p>
-          <ChevronDown
-            className={cn(
-              'text-gray group-hover:font-semibold group-hover:scale-105',
-              searchAdvanced && 'transform rotate-180'
-            )}
-            size={18}
-          />
-        </div>
-        {searchAdvanced && (
-          <div className="flex w-full gap-5 mt-2 pb-2">
-            <CustomSelect
-              label="Cập nhật điện nước"
-              value={electricityPrice}
-              setValue={setElectricityPrice}
-              data={['1', '2', '3']}
-            />
-            <CustomSelect
-              label="Trạng thái phòng"
-              value={statusRoom}
-              setValue={setStatusRoom}
-              data={['1', '2', '3']}
-            />
-            <CustomSelect
-              label="Trạng thái thu tiền"
-              value={statusPayment}
-              setValue={setStatusPayment}
-              data={['1', '2', '3']}
-            />
-            <CustomSelect
-              label="Tháng"
-              value={month}
-              setValue={setMonth}
-              data={['1', '2', '3']}
-            />
-          </div>
-        )}
-      </div>
-      <div className="w-full h-full mt-4">
-        <div className="flex gap-4 items-center">
-          <Select
-            placeholder="Chọn căn hộ"
-            className="max-w-[250px]"
-            selectedKeys={apartmentChosen ? [apartmentChosen] : []}
-            isLoading={isFetching}
-            disallowEmptySelection
-            scrollRef={scrollerRef}
-            onOpenChange={setIsOpen}
-            classNames={{
-              selectorIcon: 'text-gray',
-              value:
-                'text-gray uppercase font-semibold text-lg group-data-[has-value=true]:text-gray',
-              trigger:
-                'data-[hover=true]:bg-white group-data-[focused=true]:bg-white bg-white',
-            }}
-            onChange={(e) => {
-              setApartmentChosen(e.target.value);
-              setCurrentPage(1);
-            }}
-          >
-            {apartments ? (
-              apartments?.pages?.map((page) =>
-                page?.data?.items?.map((item: Apartment) => (
-                  <SelectItem key={item.id} value={item.id}>
-                    {item.name}
-                  </SelectItem>
-                ))
-              )
-            ) : (
-              <SelectItem key={''}></SelectItem>
-            )}
-          </Select>
-          <p className="font-bold text-gray text-lg">
-            Tháng {getCurrentMonth()}
-          </p>
-        </div>
-        {apartmentChosen && (
-          <div className="mt-2 space-y-5 pl-4">
-            <div className="flex gap-2 items-center ">
-              <div>{CommonSvg.address()}</div>
-              <p className="text-black font-semibold text-sm ">
-                {apartment?.address}
-              </p>
-            </div>
-            <div className="flex items-end">
-              <div
-                className={cn(
-                  'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !flag && 'bg-gray pointer-events-none'
-                )}
-                onClick={() => setFlag(!flag)}
-              >
-                <p className={!flag ? classNameChosen : classNameNotChosen}>
-                  Danh sách phòng
-                </p>
-              </div>
-              <div
-                className={cn(
-                  'flex items-center justify-center p-2 border-1 cursor-pointer',
-                  !!flag && 'bg-gray pointer-events-none'
-                )}
-                onClick={() => setFlag(!flag)}
-              >
-                <p className={!flag ? classNameNotChosen : classNameChosen}>
-                  Sơ đồ tòa nhà
-                </p>
-              </div>
-              {!flag && (
-                <div className="ml-auto">
-                  <Button
-                    className="rounded-[8px] px-4 py-2 bg-blueButton"
-                    onPress={() =>
-                      onOpen(
-                        'createRoom',
-                        {
-                          numberFloor: apartment?.numberFloor,
-                          apartmentId: Number(apartmentChosen),
-                        },
-                        handleGetRooms
-                      )
-                    }
-                  >
-                    <div className="flex flex-row items-center gap-x-[8px] ">
-                      <div>{CommonSvg.plus()}</div>
-                      <div className="text-white mt-[1px] font-medium">
-                        Thêm mới
-                      </div>
-                    </div>
-                  </Button>
-                </div>
-              )}
-            </div>
-            {loading ? (
-              <div className="w-full h-[300px] flex items-center justify-center">
-                <Spinner />
-              </div>
-            ) : floors?.length === 0 ? (
-              <div className="w-full h-[300px] flex items-center justify-center">
-                <p className="font-medium text-base text-room-detail/50">
-                  Không có dữ liệu...
-                </p>
-              </div>
-            ) : (
-              <div>
-                {!flag ? (
-                  <ListRooms floors={floors} />
-                ) : (
-                  <BuildingPlan apartmentId={apartmentChosen} />
-                )}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </>
-  );
+const columnKeys = {
+    name: 'name',
+    phone: 'phone',
+    address: 'address',
+    identityCard: 'identityCard',
+    registeredTemporaryResidence: 'registeredTemporaryResidence',
+    roomId: 'roomId',
+    action: 'action',
 };
 
-export default RoomsPage;
+const columns = [
+    {
+        id: columnKeys.name,
+        title: 'Tên khách hàng',
+        sortable: true,
+    },
+    {
+        id: columnKeys.phone,
+        title: 'Số điện thoại',
+        sortable: true,
+    },
+    {
+        id: columnKeys.address,
+        title: 'Địa chỉ',
+        sortable: true,
+    },
+    {
+        id: columnKeys.identityCard,
+        title: 'Số CMND',
+        sortable: true,
+    },
+
+    {
+        id: columnKeys.registeredTemporaryResidence,
+        title: 'Tạm trú',
+        sortable: true,
+    },
+    {
+        id: columnKeys.roomId,
+        title: 'Phòng',
+    },
+
+    {
+        id: columnKeys.action,
+        title: 'Thao tác',
+        sortable: false,
+    },
+];
+
+const NormalRenderCell = ({ cellValue }) => {
+    return (
+        <div className="flex flex-col">
+            <p className="text-bold text-small ">{cellValue}</p>
+        </div>
+    );
+};
+
+const CustomerTable = () => {
+    const [limit, setLimit] = useState('10');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState(null);
+    const [searchField, setSearchField] = useState('name');
+    const { getCustomers } = useCustomer();
+    const { onOpen } = useModal();
+    const handleSearch = () => { };
+    const { data: customers, isLoading } = useQuery<ResponseProps>({
+        queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
+        queryFn: async () => {
+            const res = await getCustomers({
+                page: currentPage,
+                limit,
+                search,
+                searchField,
+            });
+            return res?.data;
+        },
+    });
+
+    const renderCell = React.useCallback(
+        (user: CustomerProps, columnKey: React.Key) => {
+            const cellValue = user[columnKey];
+
+            switch (columnKey) {
+                case columnKeys.registeredTemporaryResidence:
+                    return (
+                        <div className="flex items-center justify-start ml-3">
+                            <Checkbox
+                                color="success"
+                                disabled
+                                isSelected={cellValue}
+                            ></Checkbox>
+                        </div>
+                    );
+                case columnKeys.action:
+                    return (
+                        <div className="relative flex w-24 justify-center items-center gap-2">
+                            <Dropdown>
+                                <DropdownTrigger>
+                                    <Button isIconOnly size="sm" variant="light">
+                                        <VerticalDotsIcon className="text-black" />
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu>
+                                    <DropdownItem>Xem chi tiết</DropdownItem>
+                                    <DropdownItem>Chỉnh sửa</DropdownItem>
+                                    <DropdownItem>Xóa</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
+                    );
+                default:
+                    return <NormalRenderCell cellValue={cellValue} />;
+            }
+        },
+        [],
+    );
+    return (
+        <>
+            <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
+                <p className="font-medium text-sm text-black">Tìm kiếm</p>
+                <SearchBar
+                    searchValue={search}
+                    setSearchValue={setSearch}
+                    handleSearch={handleSearch}
+                />
+                <div className="w-fit pb-2 flex items-center gap-3 cursor-pointer group">
+                    <p className="font-medium text-base text-gray group-hover:font-semibold group-hover:scale-105">
+                        Tìm kiếm nâng cao
+                    </p>
+                    <ChevronDown
+                        className="text-gray group-hover:font-semibold group-hover:scale-105"
+                        size={18}
+                    />
+                </div>
+            </div>
+            <div className="flex items-end justify-between mt-4">
+                <p className="font-semibold font-lg text-gray">DANH SÁCH KHÁCH TRỌ</p>
+            </div>
+            <div className="w-full h-full mt-4 grid gap-4 grid-cols-1">
+                <DataTable
+                    renderHeader={() => {
+                        return (
+                            <Button
+                                onPress={() => onOpen(EModalType.CUSTOMER_CREATE)}
+                                className="rounded-[8px] px-4 py-2 bg-blueButton"
+                            >
+                                <div className="flex flex-row items-center gap-x-[8px] ">
+                                    <div>{CommonSvg.plus()}</div>
+                                    <div className="text-white mt-[1px] font-medium">
+                                        Thêm khách trọ
+                                    </div>
+                                </div>
+                            </Button>
+                        );
+                    }}
+                    columns={columns}
+                    keyName={queryKey.CUSTOMERS}
+                    search={search}
+                    setSearch={setSearch}
+                    isLoading={isLoading}
+                    data={customers?.items || []}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    totalPages={customers?.totalPages || 0}
+                    totalItems={customers?.totalItems || 0}
+                    limit={limit}
+                    setLimit={setLimit}
+                    renderCell={renderCell}
+                />
+            </div>
+        </>
+    );
+};
+
+export default CustomerTable;

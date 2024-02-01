@@ -1,8 +1,8 @@
-import Map from './Map'
-import MeaningRoom from './MeaningRoom'
+import Map from './Map';
+import MeaningRoom from './MeaningRoom';
 
 interface BuildingPlanProps {
-  apartmentId: string
+  apartmentId: string;
 }
 
 const BuildingPlan = ({ apartmentId }: BuildingPlanProps) => {
@@ -15,7 +15,7 @@ const BuildingPlan = ({ apartmentId }: BuildingPlanProps) => {
         <MeaningRoom />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BuildingPlan
+export default BuildingPlan;

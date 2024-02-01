@@ -37,7 +37,7 @@ export const CustomInput = ({
       isInvalid={isInvalid}
       errorMessage={errorMessage}
       value={value}
-      onValueChange={(e) => {
+      onValueChange={e => {
         setValue(e);
       }}
       placeholder={placeholder}

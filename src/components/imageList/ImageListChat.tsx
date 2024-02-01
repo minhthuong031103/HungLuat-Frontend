@@ -7,7 +7,7 @@ import { Button } from '@components/ui/button';
 import { Icons } from '@/assets/Icons';
 
 export const ImageListChat = ({ files, width, height, onDelete }) => {
-  const handleDelete = (index) => {
+  const handleDelete = index => {
     if (onDelete) {
       onDelete(index);
     }

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   Modal,
@@ -6,24 +6,24 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button
-} from '@nextui-org/react'
-import { useEffect, useState } from 'react'
-import { CustomInput } from './custom-input'
-import { SelectAddress } from './select-address'
-import toast from 'react-hot-toast'
-import { useModal } from '@/hooks/useModalStore'
+  Button,
+} from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import { CustomInput } from './custom-input';
+import { SelectAddress } from './select-address';
+import toast from 'react-hot-toast';
+import { useModal } from '@/hooks/useModalStore';
 
 const EditApartmentModal = () => {
-  const { isOpen, onClose, type, data } = useModal()
+  const { isOpen, onClose, type, data } = useModal();
 
-  const [apartmentName, setApartmentName] = useState('')
-  const [apartmentFloor, setApartmentFloor] = useState('')
-  const [address, setAddress] = useState('')
+  const [apartmentName, setApartmentName] = useState('');
+  const [apartmentFloor, setApartmentFloor] = useState('');
+  const [address, setAddress] = useState('');
 
-  const [provinceValue, setProvinceValue] = useState('')
-  const [districtValue, setDistrictValue] = useState('')
-  const [wardValue, setWardValue] = useState('')
+  const [provinceValue, setProvinceValue] = useState('');
+  const [districtValue, setDistrictValue] = useState('');
+  const [wardValue, setWardValue] = useState('');
   // useEffect(() => {
   //   if (data) {
   //     setApartmentName(data.name)
@@ -31,12 +31,12 @@ const EditApartmentModal = () => {
   //     setAddress(data.address)
   //   }
   // }, [data])
-  const isModalOpen = isOpen && type === 'editApartment'
+  const isModalOpen = isOpen && type === 'editApartment';
   const resetState = () => {
-    setApartmentName('')
-    setApartmentFloor('')
-    setAddress('')
-  }
+    setApartmentName('');
+    setApartmentFloor('');
+    setAddress('');
+  };
   const handleEditApartment = () => {
     if (
       apartmentName &&
@@ -46,13 +46,13 @@ const EditApartmentModal = () => {
       districtValue &&
       wardValue
     ) {
-      toast.success('Cập nhật thông tin căn hộ thành công')
-      resetState()
-      onClose()
+      toast.success('Cập nhật thông tin căn hộ thành công');
+      resetState();
+      onClose();
     } else {
-      toast.error('Vui lòng nhập đầy đủ thông tin trước khi chỉnh sửa')
+      toast.error('Vui lòng nhập đầy đủ thông tin trước khi chỉnh sửa');
     }
-  }
+  };
   return (
     <Modal size="2xl" isOpen={isModalOpen} onOpenChange={onClose}>
       <ModalContent>
@@ -113,7 +113,7 @@ const EditApartmentModal = () => {
         )}
       </ModalContent>
     </Modal>
-  )
-}
+  );
+};
 
-export default EditApartmentModal
+export default EditApartmentModal;

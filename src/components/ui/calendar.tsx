@@ -1,13 +1,13 @@
 /** @format */
 
-import { buttonVariants } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
-import { vi } from 'date-fns/locale'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import * as React from 'react'
-import { DayPicker } from 'react-day-picker'
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { vi } from 'date-fns/locale';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import * as React from 'react';
+import { DayPicker } from 'react-day-picker';
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
 const css = `
   .my-selected:not([disabled]) { 
@@ -23,7 +23,7 @@ const css = `
     font-size: 110%; 
     color: red;
   }
-`
+`;
 
 function Calendar({
   className,
@@ -43,13 +43,13 @@ function Calendar({
         showOutsideDays={showOutsideDays}
         modifiersClassNames={{
           selected: 'my-selected',
-          today: 'my-today'
+          today: 'my-today',
         }}
         // className={cn('p-3', className)}
         classNames={{
           dropdown_icon: 'hidden',
           dropdown_month: 'mr-4',
-          months: 'cursor-pointer'
+          months: 'cursor-pointer',
           // months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
           // month: 'space-y-4',
           // nav: 'space-x-1 flex items-center',
@@ -84,13 +84,13 @@ function Calendar({
         }}
         components={{
           IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-          IconRight: () => <ChevronRight className="h-4 w-4" />
+          IconRight: () => <ChevronRight className="h-4 w-4" />,
         }}
         {...props}
       />
     </>
-  )
+  );
 }
-Calendar.displayName = 'Calendar'
+Calendar.displayName = 'Calendar';
 
-export { Calendar }
+export { Calendar };

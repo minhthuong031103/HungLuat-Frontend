@@ -61,7 +61,7 @@ const page = async ({ searchParams }: { searchParams: any }) => {
       // </body>
       //      `, // HTML body
       //   });
-    }
+    },
   );
   if (!email) {
     redirect('/auth/register');

@@ -1,17 +1,17 @@
-'use client'
-import { CommonSvg } from '@/assets/CommonSvg'
-import ApartmentCard from './apartment-card'
-import { Button } from '@nextui-org/react'
-import { useModal } from '@/hooks/useModalStore'
-import { Apartment } from '@/types'
+'use client';
+import { CommonSvg } from '@/assets/CommonSvg';
+import ApartmentCard from './apartment-card';
+import { Button } from '@nextui-org/react';
+import { useModal } from '@/hooks/useModalStore';
+import { Apartment } from '@/types';
 
 interface ListApartmentProps {
-  apartments: Apartment[]
-  onAction?: () => void
+  apartments: Apartment[];
+  onAction?: () => void;
 }
 
 const ListApartment = ({ apartments, onAction }: ListApartmentProps) => {
-  const { onOpen } = useModal()
+  const { onOpen } = useModal();
   return (
     <>
       <div className="flex items-end justify-between">
@@ -34,7 +34,7 @@ const ListApartment = ({ apartments, onAction }: ListApartmentProps) => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ListApartment
+export default ListApartment;
