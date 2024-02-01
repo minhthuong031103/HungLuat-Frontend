@@ -6,7 +6,13 @@ import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
 import { checkValueNumberInput } from '@/lib/utils';
 import { Customer } from '@/types';
-import { Autocomplete, AutocompleteItem, Button } from '@nextui-org/react';
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Select,
+  SelectItem,
+} from '@nextui-org/react';
 import { throttle } from 'lodash';
 import { useParams } from 'next/navigation';
 import ModalCus from '../modalCus/ModalCus';
@@ -27,6 +33,7 @@ const ContractRoomModal = () => {
     setIsScrollOpen,
     scrollerRef,
   } = useCustomerByRoomScroll({ roomId });
+  console.log('🚀 ~ ContractRoomModal ~ customers:', customers);
   const { createContract } = useRoom();
   const handleCreateContract = async () => {
     const data = {
@@ -51,29 +58,32 @@ const ContractRoomModal = () => {
               isRequired={true}
               placeholder="Chọn khách hàng"
               className="max-w-[100%]"
-              selectedKey={customerChosen ? [customerChosen] : []}
+              selectedKeys={customerChosen ? [customerChosen] : []}
               isLoading={isFetching}
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
-              onSelectionChange={e => {
-                setCustomerChosen(e as any);
-              }}
+              // onSelectionChange={e => {
+              //   setCustomerChosen(e as any);
+              // }}
               onChange={e => {
                 console.log('🚀 ~ ContractRoomModal ~ e:', e);
                 setCustomerChosen(e.target.value);
                 setCurrentPage(1);
               }}
-              onInputChange={e => {
-                setSearchValue(e);
-              }}
+              // onInputChange={e => {
+              //   setSearchValue(e);
+              // }}
             >
               {customers ? (
                 customers?.pages?.map(page =>
-                  page?.data?.items?.map((item: Customer) => (
-                    <AutocompleteItem key={item.id} value={item.id}>
-                      {item.name}
-                    </AutocompleteItem>
-                  )),
+                  page?.data?.items?.map((item: Customer) => {
+                    console.log('🚀 ~ ContractRoomModal ~ item:', item);
+                    return (
+                      <AutocompleteItem key={item.id} value={item.id}>
+                        {item.name}
+                      </AutocompleteItem>
+                    );
+                  }),
                 )
               ) : (
                 <AutocompleteItem key={''}></AutocompleteItem>
