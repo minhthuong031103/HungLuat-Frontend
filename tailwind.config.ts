@@ -16,6 +16,7 @@ const config: Config = {
       colors: {
         border: '#e4e4e7',
         input: '#e4e4e7',
+        link: '#2469d6',
         ring: '#18181b',
         blueButton: '#2458C6',
         background: '#ffffff',

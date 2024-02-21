@@ -39,5 +39,5 @@ export interface CreateCustomerProps {
 }
 
 export interface GetCustomersOfRoomProps extends GetQueryParamsProps {
-  roomId: string;
+  roomId: number;
 }

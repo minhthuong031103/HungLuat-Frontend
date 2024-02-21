@@ -89,21 +89,22 @@ const NormalRenderCell = ({ cellValue }) => {
     </div>
   );
 };
-const CustomerList = () => {
+const CustomerList = ({ roomId }) => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState(null);
   const [searchField, setSearchField] = useState('name');
-  const { getCustomers } = useCustomer();
+  const { getCustomersByRoom } = useCustomer();
   const { onOpen } = useModal();
   const { data: customers, isLoading } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
     queryFn: async () => {
-      const res = await getCustomers({
+      const res = await getCustomersByRoom({
         page: currentPage,
         limit,
         search,
         searchField,
+        roomId,
       });
       return res?.data;
     },

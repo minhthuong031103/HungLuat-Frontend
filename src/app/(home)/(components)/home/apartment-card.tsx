@@ -10,7 +10,6 @@ import {
 import RoomDropdown from './room-dropdown';
 import { CommonSvg } from '@/assets/CommonSvg';
 import { Apartment } from '@/types';
-import { imageApartment } from '@/lib/constant';
 interface ApartmentCardProps {
   apartment: Apartment;
 }
@@ -28,7 +27,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           alt="Apartment"
           height={186}
           radius="none"
-          src={apartment.url ? apartment.url : imageApartment}
+          src={apartment.url ? apartment.url : '/apartmentImage.jpg'}
           width={383}
         />
         <RoomDropdown
