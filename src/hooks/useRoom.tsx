@@ -417,7 +417,7 @@ export const RoomProvider = ({ children }) => {
           page,
           limit,
           sortBy,
-          sortDirection,
+          sortDirection: sortDirection,
         })}`,
         method: 'GET',
       });

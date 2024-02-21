@@ -68,6 +68,7 @@
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-cropper": "^2.3.3",
+    "react-csv": "^2.2.2",
     "react-day-picker": "^8.8.2",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
@@ -93,6 +94,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
     "uploadthing": "^5.5.2",
+    "xlsx": "^0.18.5",
     "zod": "^3.22.2",
     "zustand": "^4.4.6"
   },

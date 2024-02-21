@@ -3,9 +3,11 @@ import { useRoom } from '@/hooks/useRoom';
 import { DatePicker } from '../ui/date-picker';
 import BillTable from './BillTable';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { useEffect } from 'react';
 
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
+  const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>
       {isLoading ? (
@@ -26,12 +28,14 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   placeholder="Chọn tình trạng phòng"
                   className="max-w-[50%]"
                   disallowEmptySelection
-                  selectedKeys={state.roomStatus ? [state.roomStatus] : []}
+                  selectedKeys={
+                    state.roomStatus !== 'string' ? [state.roomStatus] : []
+                  }
                   onChange={e => {
                     handleSetValue('roomStatus', e.target.value);
                   }}
                 >
-                  {['Đang trống', 'Đã thuê', 'Đang sửa chữa'].map(item => (
+                  {roomStatus.map(item => (
                     <SelectItem key={item} value={item}>
                       {item}
                     </SelectItem>

@@ -79,7 +79,9 @@ const RoomDetailPage = () => {
         );
         if (
           endDate.getMonth() === new Date().getMonth() &&
-          endDate.getFullYear() === new Date().getFullYear()
+          endDate.getFullYear() === new Date().getFullYear() &&
+          startDate.getMonth() === new Date().getMonth() &&
+          startDate.getFullYear() === new Date().getFullYear()
         ) {
           dispatch({
             type: 'SET_VALUES',
@@ -148,7 +150,7 @@ const RoomDetailPage = () => {
         {flag === 'finance' ? (
           <RoomInfo roomId={roomId} refetch={refetch} isLoading={isLoading} />
         ) : flag === 'customerList' ? (
-          <CustomerList />
+          <CustomerList roomId={roomId} />
         ) : (
           <RoomSetting />
         )}

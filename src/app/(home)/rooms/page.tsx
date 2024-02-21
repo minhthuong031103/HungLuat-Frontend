@@ -15,6 +15,8 @@ import { ChevronDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { CustomSelect } from '../(components)/home/custom-select';
 import { SearchBar } from '../(components)/home/searchbar';
+import ImportExcel from '@/components/excel/ImportExcel';
+import ExportExcel from '@/components/excel/ExportExcel';
 
 interface ResponseProps {
   items: any;
@@ -29,6 +31,7 @@ const RoomsPage = () => {
   const [statusRoom, setStatusRoom] = useState('');
   const [statusPayment, setStatusPayment] = useState('');
   const [apartmentChosen, setApartmentChosen] = useState('');
+  const [apartmentName, setApartmentName] = useState('');
   const { onOpen } = useModal();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -66,12 +69,22 @@ const RoomsPage = () => {
   );
   const { handleSetValue } = useRoom();
   useEffect(() => {
-    console.log(apartments);
     if (apartments?.pages?.[0]?.data?.items[0]?.id && apartmentChosen === '') {
       setApartmentChosen(apartments?.pages[0]?.data?.items[0]?.id?.toString());
       handleSetValue('apartmentId', apartments?.pages[0]?.data?.items[0]?.id);
     }
   }, [apartments]);
+  useEffect(() => {
+    if (apartmentChosen) {
+      const apartment = apartments?.pages?.map(page => {
+        return page?.data?.items?.find(
+          item => item.id.toString() === apartmentChosen,
+        );
+      })?.[0];
+      setApartmentName(apartment?.name);
+    }
+  }, [apartmentChosen]);
+  console.log(apartmentName);
   const apartment: Apartment = apartments?.pages?.map(page => {
     return page?.data?.items?.find(
       item => item.id.toString() === apartmentChosen,
@@ -90,7 +103,7 @@ const RoomsPage = () => {
   };
   const { getRooms } = useRoom();
   useEffect(() => {
-    if (Number(apartmentChosen)) {
+    if (apartmentChosen) {
       handleGetRooms();
     }
   }, [apartmentChosen]);
@@ -235,7 +248,7 @@ const RoomsPage = () => {
                 </p>
               </div>
               {!flag && (
-                <div className="ml-auto">
+                <div className="ml-auto flex">
                   <Button
                     className="rounded-[8px] px-4 py-2 bg-blueButton"
                     onPress={() =>
@@ -256,6 +269,8 @@ const RoomsPage = () => {
                       </div>
                     </div>
                   </Button>
+                  <ExportExcel data={floors} fileName={apartmentName} />
+                  <ImportExcel getData={{}} />
                 </div>
               )}
             </div>
