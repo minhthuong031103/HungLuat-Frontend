@@ -52,6 +52,11 @@ export const RETURNED_MESSAGES = {
       ENG: 'Apartment not found',
       VIE: 'Không tìm thấy căn hộ',
     },
+
+    APARTMENT_UPDATED: {
+      ENG: 'Apartment updated',
+      VIE: 'Cập nhật căn hộ thành công',
+    },
   },
 
   ROOM: {
@@ -79,6 +84,10 @@ export const RETURNED_MESSAGES = {
       VIE: 'Cập nhật phòng thành công',
     },
 
+    ROOM_DELETED: {
+      ENG: 'Room deleted',
+      VIE: 'Xóa phòng thành công',
+    },
     CONTRACT_CREATED: {
       ENG: 'Contract created',
       VIE: 'Tạo hợp đồng thành công',

@@ -14,6 +14,7 @@ import { BlobProvider } from '@react-pdf/renderer';
 import Invoice from '../invoice/invoice';
 import { saveAs } from 'file-saver';
 import { useState } from 'react';
+import { Textarea } from '../ui/text-area';
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId } = data;
@@ -174,7 +175,13 @@ const ExportBillModal = () => {
               'Tổng tiền giữ xe',
             ),
           ])}
-
+          <p className="text-gray font-semibold text-lg">Ghi chú</p>
+          <Textarea
+            value={state.description}
+            placeholder="Trống"
+            className="disabled:opacity-100"
+            disabled
+          />
           <div className="w-full pt-2">
             <Divider className="my-4" />
             <div className="w-full flex justify-between gap-5 px-5">

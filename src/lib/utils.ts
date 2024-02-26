@@ -187,7 +187,7 @@ export const convertPriceNotVND = price => {
     currency: 'VND',
   }).format(price);
 
-  return formatter.replace('₫', '');
+  return formatter.replace('₫', '').trim();
 };
 export function formatDateCustom(date) {
   const day = String(date.getDate()).padStart(2, '0');

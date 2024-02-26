@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import RoomCard from './room-card';
 import { numberFloor } from '@/types';
 
-const ListRooms = ({ floors }) => {
+const ListRooms = ({ floors, getRooms, numberFloor }) => {
   return (
     <div className="w-full h-auto space-y-4">
       {floors?.map((floor: numberFloor) => {
@@ -16,7 +16,11 @@ const ListRooms = ({ floors }) => {
               {floor?.rooms?.map(room => {
                 return (
                   <div key={room.id}>
-                    <RoomCard room={room} />
+                    <RoomCard
+                      room={room}
+                      numberFloor={numberFloor}
+                      getRooms={getRooms}
+                    />
                   </div>
                 );
               })}

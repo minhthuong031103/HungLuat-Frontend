@@ -14,15 +14,21 @@ interface RoomDropdownProps {
   className?: string;
   data?: ModalData;
   actionType: ModalType;
+  refecth?: () => void;
 }
-const RoomDropdown = ({ className, data, actionType }: RoomDropdownProps) => {
+const RoomDropdown = ({
+  className,
+  data,
+  actionType,
+  refecth,
+}: RoomDropdownProps) => {
   const dropdownItems = [
     {
       key: 'edit',
       label: 'Chỉnh sửa',
       icon: CommonSvg.edit(),
       onAction: () => {
-        onOpen(actionType);
+        onOpen(actionType, data, refecth);
       },
     },
     {
@@ -30,7 +36,7 @@ const RoomDropdown = ({ className, data, actionType }: RoomDropdownProps) => {
       label: 'Xóa',
       icon: CommonSvg.delete(),
       onAction: () => {
-        console.log('delete');
+        onOpen('deleteRoom', data, refecth);
       },
     },
   ];

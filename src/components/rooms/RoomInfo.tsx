@@ -3,7 +3,7 @@ import { useRoom } from '@/hooks/useRoom';
 import { DatePicker } from '../ui/date-picker';
 import BillTable from './BillTable';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useEffect } from 'react';
+import { Textarea } from '../ui/text-area';
 
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
@@ -28,9 +28,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   placeholder="Chọn tình trạng phòng"
                   className="max-w-[50%]"
                   disallowEmptySelection
-                  selectedKeys={
-                    state.roomStatus !== 'string' ? [state.roomStatus] : []
-                  }
+                  selectedKeys={state.roomStatus ? [state.roomStatus] : []}
                   onChange={e => {
                     handleSetValue('roomStatus', e.target.value);
                   }}
@@ -95,6 +93,14 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   ))}
                 </div>
               ))}
+              <div className="w-[70%]">
+                <p className="text-gray text-base font-medium">Ghi chú</p>
+                <Textarea
+                  placeholder="Vui lòng nhập ghi chú (nếu có)"
+                  value={state.description}
+                  onChange={e => handleSetValue('description', e.target.value)}
+                />
+              </div>
               <div className="flex gap-8 items-center">
                 <DatePicker
                   label="Chọn ngày bắt đầu"
@@ -110,6 +116,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   setDate={date => handleSetValue('endDate', date)}
                 />
               </div>
+
               <div className="flex justify-end w-full">
                 <Button
                   className="rounded-[8px] px-4 py-4 bg-blueButton"

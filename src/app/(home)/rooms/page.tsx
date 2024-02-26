@@ -84,7 +84,6 @@ const RoomsPage = () => {
       setApartmentName(apartment?.name);
     }
   }, [apartmentChosen]);
-  console.log(apartmentName);
   const apartment: Apartment = apartments?.pages?.map(page => {
     return page?.data?.items?.find(
       item => item.id.toString() === apartmentChosen,
@@ -287,7 +286,11 @@ const RoomsPage = () => {
             ) : (
               <div>
                 {!flag ? (
-                  <ListRooms floors={floors} />
+                  <ListRooms
+                    floors={floors}
+                    getRooms={handleGetRooms}
+                    numberFloor={apartment.numberFloor}
+                  />
                 ) : (
                   <BuildingPlan apartmentId={apartmentChosen} />
                 )}

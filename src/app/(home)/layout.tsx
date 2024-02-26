@@ -9,7 +9,6 @@ import React from 'react';
 const layout = ({ children }) => {
   const { useCheckNotLoggedIn, loading } = useAuth();
   useCheckNotLoggedIn();
-  console.log('🚀 ~ layout ~ loading:', loading);
   if (loading) return null;
 
   return (
