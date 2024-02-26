@@ -5,6 +5,11 @@ import { useEffect, useState } from 'react';
 import { Select, SelectItem } from '@nextui-org/react';
 // import { getRequest } from '@/lib/fetch'
 import axios from 'axios';
+import TinhTP from '../../../../../hanhchinhvn/tinh_tp.json';
+import QuanHuyen from '../../../../../hanhchinhvn/quan_huyen.json';
+
+import XaPhuong from '../../../../../hanhchinhvn/xa_phuong.json';
+
 interface SelectAddressProps {
   provinceValue: string;
   setProvinceValue: (value: string) => void;
@@ -43,8 +48,13 @@ export const SelectAddress = ({
       // const res = await getRequest({
       //   endPoint: 'https://provinces.open-api.vn/api/p/'
       // })
-      const res = await axios('https://provinces.open-api.vn/api/p/');
-      setProvince(res.data);
+      // const res = await axios('https://provinces.open-api.vn/api/p/');
+      // setProvince(res.data);
+      setProvince(
+        Object.values(TinhTP).sort((a, b) =>
+          a.name.localeCompare(b.name),
+        ) as any,
+      );
       setIsLoadingProvince(false);
     }
     getProvince();
@@ -60,16 +70,25 @@ export const SelectAddress = ({
         // const res = await getRequest({
         //   endPoint: `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
         // })
-        const res = await axios(
-          `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`,
+        const filterCity = Object.keys(QuanHuyen)
+          .filter(
+            key => QuanHuyen[key].parent_code === TinhTP[provinceCode]?.code,
+          )
+          .map(key => QuanHuyen[key]);
+
+        setDistrict(
+          Object.values(filterCity).sort((a, b) =>
+            a.name.localeCompare(b.name),
+          ) as any,
         );
-        setDistrict(res?.data?.districts);
         setIsLoadingDistrict(false);
       }
     }
     getDistrict();
   }, [selectedProvince]);
+
   useEffect(() => {
+    setWard([]);
     async function getWard() {
       if (selectedDistrict.size > 0) {
         setIsLoadingWard(true);
@@ -78,10 +97,19 @@ export const SelectAddress = ({
         // const res = await getRequest({
         //   endPoint: `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`
         // })
-        const res = await axios.get(
-          `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`,
+        // const res = await axios.get(
+        //   `https://provinces.open-api.vn/api/d/${districtCode}?depth=2`,
+        // );
+        const filterWard = Object.keys(XaPhuong)
+          .filter(
+            key => XaPhuong[key].parent_code === QuanHuyen[districtCode]?.code,
+          )
+          .map(key => XaPhuong[key]);
+        setWard(
+          Object.values(filterWard).sort((a, b) =>
+            a.name.localeCompare(b.name),
+          ) as any,
         );
-        setWard(res?.data?.wards);
         setIsLoadingWard(false);
       }
     }

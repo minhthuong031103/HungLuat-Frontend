@@ -429,7 +429,8 @@ const Invoice = ({ data }) => {
         )
       </Text>
       <Text>
-        (<Text style={{ textDecoration: 'underline' }}>Ghi chú</Text>: )
+        (<Text style={{ textDecoration: 'underline' }}>Ghi chú</Text>:{' '}
+        {data.description})
       </Text>
     </View>
   );

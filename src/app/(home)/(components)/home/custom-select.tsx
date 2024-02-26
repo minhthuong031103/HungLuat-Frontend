@@ -37,6 +37,7 @@ export const CustomSelect = ({
       selectedKeys={value}
       classNames={classNames}
       isLoading={isLoading}
+      disallowEmptySelection
       className={cn('max-w-xs', className)}
       disabled={disabled}
       onSelectionChange={e => {

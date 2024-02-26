@@ -8,12 +8,14 @@ import {
 } from '@nextui-org/react';
 import RoomAction from './room-action';
 import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown';
-import { useModal } from '@/hooks/useModalStore';
 import { useRouter } from 'next/navigation';
+import { convertPriceNotVND } from '@/lib/utils';
 interface RoomCardProps {
   room: Room;
+  numberFloor: number;
+  getRooms: () => void;
 }
-const RoomCard = ({ room }: RoomCardProps) => {
+const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
   const router = useRouter();
   return (
     <Card
@@ -28,6 +30,12 @@ const RoomCard = ({ room }: RoomCardProps) => {
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
           actionType="editRoom"
+          data={{
+            roomId: room.id,
+            numberFloor: numberFloor,
+            name: room.name,
+          }}
+          refecth={getRooms}
         />
       </CardHeader>
       <Divider />
@@ -44,31 +52,31 @@ const RoomCard = ({ room }: RoomCardProps) => {
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tiền phòng</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.roomPrice}
+              {convertPriceNotVND(room.roomPrice)}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tiền cọc</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.depositPrice}
+              {convertPriceNotVND(room.depositPrice)}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Tạm thu</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.suspenseMoney}
+              {convertPriceNotVND(room.suspenseMoney)}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Nợ cũ</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.oldDebt}
+              {convertPriceNotVND(room.oldDebt)}
             </p>
           </div>
           <div className="flex items-center">
             <p className="text-room-detail font-normal text-sm">Thực thu</p>
             <p className="text-black font-semibold text-sm ml-auto">
-              {room.netProceeds}
+              {convertPriceNotVND(room.netProceeds)}
             </p>
           </div>
         </div>

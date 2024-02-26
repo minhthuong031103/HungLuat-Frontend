@@ -129,18 +129,20 @@ export const useCustomer = () => {
     roomId,
   }: GetCustomersOfRoomProps) => {
     try {
-      const res = await requestApi({
-        endPoint: `/customer/room/${roomId}?${getQueryParams({
-          searchField,
-          search,
-          page,
-          limit,
-          sortBy,
-          sortDirection,
-        })}`,
-        method: 'GET',
-      });
-      return res;
+      if (roomId) {
+        const res = await requestApi({
+          endPoint: `/customer/room/${roomId}?${getQueryParams({
+            searchField,
+            search,
+            page,
+            limit,
+            sortBy,
+            sortDirection,
+          })}`,
+          method: 'GET',
+        });
+        return res;
+      }
     } catch (error) {
       console.log('🚀 ~ getCustomer ~ error:', error);
     }

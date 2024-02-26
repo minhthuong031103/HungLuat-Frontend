@@ -10,7 +10,6 @@ import {
 
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import toast from 'react-hot-toast';
-import { number } from 'zod';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_VALUES': {
@@ -66,6 +65,7 @@ const initialState = {
   totalParkingPrice: 0,
   totalElevatorPrice: 0,
   suspenseMoney: 0,
+  description: '',
 
   startDate: new Date(new Date().setDate(1)),
   endDate: new Date(),
@@ -99,6 +99,8 @@ interface IRoomContext {
   roomInfo: any;
   getRooms: any;
   getBills: any;
+  updateRoom: any;
+  deleteRoom: any;
   getAllBills: any;
   createRoom: any;
   createContract: any;
@@ -151,12 +153,14 @@ export const RoomProvider = ({ children }) => {
       (key == 'startDate' && value <= state.endDate) ||
       (key == 'endDate' && value >= state.startDate) ||
       key == 'roomStatus' ||
+      key == 'description' ||
       (key != 'startDate' &&
         key != 'endDate' &&
         key != 'roomStatus' &&
+        key != 'description' &&
         checkValueNumberInput(key, value))
     ) {
-      if (value === '') {
+      if (value === '' && key != 'roomStatus' && key != 'description') {
         value = 0;
       }
       if (value[0] == '0' && value[1] != '.' && value.length > 1) {
@@ -391,11 +395,13 @@ export const RoomProvider = ({ children }) => {
     searchField = 'name',
   }) => {
     try {
-      const res = await requestApi({
-        endPoint: `/room/apartment/${apartmentId}?search=${search}&searchField=${searchField}`,
-        method: 'GET',
-      });
-      return res;
+      if (apartmentId) {
+        const res = await requestApi({
+          endPoint: `/room/apartment/${apartmentId}?search=${search}&searchField=${searchField}`,
+          method: 'GET',
+        });
+        return res;
+      }
     } catch (error) {
       console.log('🚀 ~ getRooms ~ error:', error);
     }
@@ -669,6 +675,43 @@ export const RoomProvider = ({ children }) => {
       toast.error('Tạo hợp đồng thất bại');
     }
   };
+  const updateRoom = async ({ data, refetch }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/room/update`,
+        method: 'PUT',
+        body: data,
+      });
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE);
+        refetch();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+      } else {
+        toast.error('Cập nhật phòng thất bại');
+      }
+    } catch (error) {
+      toast.error('Cập nhật phòng thất bại');
+    }
+  };
+  const deleteRoom = async ({ data, refetch }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/room/${data?.roomId}`,
+        method: 'DELETE',
+      });
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOM_DELETED.VIE);
+        refetch();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+      } else {
+        toast.error('Xóa phòng thất bại');
+      }
+    } catch (error) {
+      toast.error('Xóa phòng thất bại');
+    }
+  };
   return (
     <RoomContext.Provider
       value={{
@@ -689,6 +732,8 @@ export const RoomProvider = ({ children }) => {
         createContract,
         exportBill,
         resetContractState,
+        updateRoom,
+        deleteRoom,
       }}
     >
       {children}
