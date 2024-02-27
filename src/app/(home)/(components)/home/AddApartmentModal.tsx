@@ -27,6 +27,9 @@ const AddApartmentModal = () => {
 
   const isModalOpen = isOpen && type === 'createApartment';
   const resetState = () => {
+    setProvinceValue('');
+    setDistrictValue('');
+    setWardValue('');
     setApartmentName('');
     setApartmentFloor('');
     setAddress('');

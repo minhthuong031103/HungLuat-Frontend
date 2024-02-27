@@ -13,7 +13,9 @@ export type ModalType =
   | 'contractRoom'
   | EModalType.CUSTOMER_CREATE
   | EModalType.IDENTITY_CARD
-  | 'deleteRoom';
+  | 'deleteRoom'
+  | 'deleteApartment'
+  | 'createEmployee';
 
 interface ModalStore {
   type: ModalType | null;

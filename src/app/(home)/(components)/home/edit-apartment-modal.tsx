@@ -13,9 +13,10 @@ import { CustomInput } from './custom-input';
 import { SelectAddress } from './select-address';
 import toast from 'react-hot-toast';
 import { useModal } from '@/hooks/useModalStore';
+import { useApartment } from '@/hooks/useApartment';
 
 const EditApartmentModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data, onAction } = useModal();
 
   const [apartmentName, setApartmentName] = useState('');
   const [apartmentFloor, setApartmentFloor] = useState('');
@@ -24,20 +25,31 @@ const EditApartmentModal = () => {
   const [provinceValue, setProvinceValue] = useState('');
   const [districtValue, setDistrictValue] = useState('');
   const [wardValue, setWardValue] = useState('');
-  // useEffect(() => {
-  //   if (data) {
-  //     setApartmentName(data.name)
-  //     setApartmentFloor(data.numberFloor?.toString())
-  //     setAddress(data.address)
-  //   }
-  // }, [data])
+
+  const [initProvince, setInitProvince] = useState('');
+  const [initDistrict, setInitDistrict] = useState('');
+  const [initWard, setInitWard] = useState('');
+  useEffect(() => {
+    if (data) {
+      setApartmentName(data?.name || '');
+      setApartmentFloor(data.numberFloor?.toString() || '0');
+      setAddress(data?.houseNumber || '');
+      setProvinceValue(data?.city || '');
+      setDistrictValue(data?.district || '');
+      setWardValue(data?.ward || '');
+      setInitProvince(data?.city || '');
+      setInitDistrict(data?.district || '');
+      setInitWard(data?.ward || '');
+    }
+  }, [data]);
   const isModalOpen = isOpen && type === 'editApartment';
+  const { updateApartment } = useApartment();
   const resetState = () => {
     setApartmentName('');
     setApartmentFloor('');
     setAddress('');
   };
-  const handleEditApartment = () => {
+  const handleEditApartment = async () => {
     if (
       apartmentName &&
       apartmentFloor &&
@@ -46,7 +58,17 @@ const EditApartmentModal = () => {
       districtValue &&
       wardValue
     ) {
-      toast.success('Cập nhật thông tin căn hộ thành công');
+      const updateData = {
+        name: apartmentName,
+        numberFloor: parseInt(apartmentFloor),
+        address: `${address}, ${wardValue}, ${districtValue}, ${provinceValue}`,
+        ward: wardValue,
+        district: districtValue,
+        city: provinceValue,
+        houseNumber: address,
+        id: data?.id,
+      };
+      await updateApartment(updateData, onAction);
       resetState();
       onClose();
     } else {
@@ -82,9 +104,9 @@ const EditApartmentModal = () => {
               </div>
               <div className="flex gap-[20px]">
                 <SelectAddress
-                  provinceValue={provinceValue}
-                  districtValue={districtValue}
-                  wardValue={wardValue}
+                  provinceValue={initProvince}
+                  districtValue={initDistrict}
+                  wardValue={initWard}
                   setProvinceValue={setProvinceValue}
                   setDistrictValue={setDistrictValue}
                   setWardValue={setWardValue}

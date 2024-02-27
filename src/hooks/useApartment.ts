@@ -68,5 +68,48 @@ export const useApartment = () => {
       console.log('🚀 ~ getApartments ~ error:', error);
     }
   };
-  return { createApartment, getApartments };
+
+  const updateApartment = async (
+    data: CreateApartmentProps,
+    refetch: () => void,
+  ) => {
+    try {
+      const res = await requestApi({
+        endPoint: '/apartment/info/update',
+        method: 'PUT',
+        body: data,
+      });
+      if (res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.APARTMENT.APARTMENT_UPDATED.VIE);
+        refetch();
+      } else if (
+        res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.APARTMENT.APARTMENT_EXISTED.VIE);
+      }
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ createApartment ~ error:', error);
+    }
+  };
+  const deleteApartment = async (apartmentId: number, refetch: () => void) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/apartment/${apartmentId}`,
+        method: 'DELETE',
+      });
+      if (res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.APARTMENT.APARTMENT_DELETED.VIE);
+        refetch();
+      } else if (
+        res?.message == RETURNED_MESSAGES.APARTMENT.APARTMENT_NOT_FOUND.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.APARTMENT.APARTMENT_NOT_FOUND.VIE);
+      }
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ createApartment ~ error:', error);
+    }
+  };
+  return { createApartment, getApartments, updateApartment, deleteApartment };
 };

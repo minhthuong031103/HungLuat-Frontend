@@ -177,7 +177,7 @@ const ExportBillModal = () => {
           ])}
           <p className="text-gray font-semibold text-lg">Ghi chú</p>
           <Textarea
-            value={state.description}
+            value={state.note}
             placeholder="Trống"
             className="disabled:opacity-100"
             disabled

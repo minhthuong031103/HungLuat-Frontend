@@ -29,11 +29,12 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
         <div className="w-[190px] h-[10px] bg-room-green cursor-pointer"></div>
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
-          actionType="editRoom"
+          actionType="Room"
           data={{
             roomId: room.id,
             numberFloor: numberFloor,
             name: room.name,
+            floor: room.floor,
           }}
           refecth={getRooms}
         />

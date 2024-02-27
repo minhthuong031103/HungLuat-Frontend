@@ -57,6 +57,10 @@ export const RETURNED_MESSAGES = {
       ENG: 'Apartment updated',
       VIE: 'Cập nhật căn hộ thành công',
     },
+    APARTMENT_DELETED: {
+      ENG: 'Apartment deleted',
+      VIE: 'Xóa căn hộ thành công',
+    },
   },
 
   ROOM: {
