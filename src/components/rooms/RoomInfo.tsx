@@ -97,8 +97,8 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                 <p className="text-gray text-base font-medium">Ghi chú</p>
                 <Textarea
                   placeholder="Vui lòng nhập ghi chú (nếu có)"
-                  value={state.description}
-                  onChange={e => handleSetValue('description', e.target.value)}
+                  value={state.note}
+                  onChange={e => handleSetValue('note', e.target.value)}
                 />
               </div>
               <div className="flex gap-8 items-center">

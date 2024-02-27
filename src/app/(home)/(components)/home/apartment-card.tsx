@@ -12,8 +12,10 @@ import { CommonSvg } from '@/assets/CommonSvg';
 import { Apartment } from '@/types';
 interface ApartmentCardProps {
   apartment: Apartment;
+  refresh?: () => void;
 }
-const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
+const ApartmentCard = ({ apartment, refresh }: ApartmentCardProps) => {
+  console.log(apartment);
   return (
     <Card
       className="max-w-[383px] h-[555px]"
@@ -32,7 +34,9 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
         />
         <RoomDropdown
           className="absolute top-2 right-2 z-50 cursor-pointer hover:scale-105 rounded-full drop-shadow"
-          actionType="editApartment"
+          actionType="Apartment"
+          data={apartment}
+          refecth={refresh}
         />
       </CardHeader>
       <Divider />
@@ -56,7 +60,7 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           <div className="flex gap-2">
             {CommonSvg.room()}
             <p className="text-black font-semibold text-sm">
-              {apartment.rooms | 0} phòng
+              {apartment.roomNumber | 0} phòng
             </p>
           </div>
         </div>
@@ -67,10 +71,10 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
           <div className="flex items-center">
             <p className="text-cardDetail font-medium text-sm">Đang ở</p>
             <p className="text-black font-semibold text-base ml-auto">
-              {apartment.stayed | 0}
+              {apartment.isStaying | 0}
             </p>
           </div>
-          <div className="flex items-center">
+          {/* <div className="flex items-center">
             <p className="text-cardDetail font-medium text-sm">Sắp trả</p>
             <p className="text-black font-semibold text-base ml-auto">
               {apartment.sap_tra | 0}
@@ -81,11 +85,11 @@ const ApartmentCard = ({ apartment }: ApartmentCardProps) => {
             <p className="text-black font-semibold text-base ml-auto">
               {apartment.dacoc | 0}
             </p>
-          </div>
+          </div> */}
           <div className="flex items-center">
             <p className="text-cardDetail font-medium text-sm">Trống</p>
             <p className="text-black font-semibold text-base ml-auto">
-              {apartment.empty | 0}
+              {apartment.isAvailable | 0}
             </p>
           </div>
         </div>

@@ -16,7 +16,6 @@ import { RETURNED_MESSAGES } from '@/lib/translate';
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
-  const dispatch = useDispatch();
   const router = useRouter();
   const { setKeySite, setUserLogin, removeKeySite } = useKey();
   const userDispatch = useUserDispatch();

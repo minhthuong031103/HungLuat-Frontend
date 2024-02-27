@@ -3,11 +3,9 @@ export type Apartment = {
   name: string;
   address: string;
   numberFloor: number;
-  rooms: number;
-  stayed: number;
-  empty: number;
-  sap_tra: number;
-  dacoc: number;
+  roomNumber: number;
+  isStaying: number;
+  isAvailable: number;
   url: string;
 };
 export type Room = {
@@ -15,7 +13,7 @@ export type Room = {
   billStatus: boolean;
   oldDebt: number;
   depositPrice: number;
-  description: string;
+  note: string;
   floor: number;
   id: number;
   name: string;

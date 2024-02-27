@@ -18,6 +18,8 @@ import toast from 'react-hot-toast';
 const EditRoomModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const [floor, setFloor] = useState([]);
+  const [floorChosen, setFloorChosen] = useState(new Set([]));
+
   useEffect(() => {
     if (data && floor.length === 0 && data.numberFloor) {
       for (let i = 1; i <= data.numberFloor; i++) {
@@ -26,8 +28,12 @@ const EditRoomModal = () => {
     }
     setRoomName(data?.name || '');
   }, [data]);
+  useEffect(() => {
+    if (data && floor.length > 0 && data.floor) {
+      setFloorChosen(new Set([`Tầng ${data.floor}`]));
+    }
+  }, [data, floor]);
   const [roomName, setRoomName] = useState('');
-  const [floorChosen, setFloorChosen] = useState('');
   const isModalOpen = isOpen && type === 'editRoom';
   const { updateRoom } = useRoom();
   const resetState = () => {

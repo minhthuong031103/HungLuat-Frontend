@@ -41,7 +41,6 @@ export const SelectAddress = ({
   const [provinces, setProvince] = useState([]);
   const [districts, setDistrict] = useState([]);
   const [wards, setWard] = useState([]);
-
   useEffect(() => {
     async function getProvince() {
       setIsLoadingProvince(true);
@@ -141,6 +140,28 @@ export const SelectAddress = ({
     setValue();
   }, [selectedWard]);
 
+  useEffect(() => {
+    if (provinceValue && provinces) {
+      const province = Object.values(provinces).find(
+        province => province.name === provinceValue,
+      );
+      setSelectedProvince(new Set([province?.code]));
+    }
+  }, [provinces, provinceValue]);
+  useEffect(() => {
+    if (districtValue && districts) {
+      const district = districts.find(
+        district => district.name === districtValue,
+      );
+      setSelectedDistrict(new Set([district?.code]));
+    }
+  }, [districts, districtValue]);
+  useEffect(() => {
+    if (wardValue && wards) {
+      const ward = wards.find(ward => ward.name === wardValue);
+      setSelectedWard(new Set([ward?.code]));
+    }
+  }, [wards, wardValue]);
   const isProvinceValid = selectedProvince.size > 0;
   const isDistrictValid = selectedDistrict.size > 0;
   const isWardValid = selectedWard.size > 0;

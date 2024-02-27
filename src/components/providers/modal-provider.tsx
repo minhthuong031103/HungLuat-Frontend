@@ -10,6 +10,8 @@ import EditRoomModal from '../rooms/edit-room-modal';
 import ExportBillModal from '../rooms/export-bill-modal';
 import IndentityModal from '@/app/(home)/customers/AddIndentityModal';
 import DeleteRoomModal from '../rooms/delete-room-modal';
+import DeleteApartmentModal from '@/app/(home)/(components)/home/delete-apartment-modal';
+import CreateEmployeeModal from '../employee/CreateEmployeeModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -29,6 +31,8 @@ export const ModalProvider = () => {
       <ContractRoomModal />
       <CustomerAddModal />
       <DeleteRoomModal />
+      <DeleteApartmentModal />
+      <CreateEmployeeModal />
     </>
   );
 };

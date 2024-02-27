@@ -9,6 +9,7 @@ export interface ModalData {
   roomId?: number;
   name?: string;
   city?: string;
+  floor?: number;
   district?: string;
   ward?: string;
   numberFloor?: number;
@@ -40,4 +41,14 @@ export interface CreateCustomerProps {
 
 export interface GetCustomersOfRoomProps extends GetQueryParamsProps {
   roomId: number;
+}
+
+export interface EmployeeProps {
+  name: string;
+  phone: string;
+  bankNumber: string;
+  bank: string;
+  email?: string;
+  password?: string;
+  apartmentIds?: number[];
 }

@@ -13,7 +13,7 @@ import { ModalData } from '@/lib/interface';
 interface RoomDropdownProps {
   className?: string;
   data?: ModalData;
-  actionType: ModalType;
+  actionType: 'Room' | 'Apartment';
   refecth?: () => void;
 }
 const RoomDropdown = ({
@@ -28,7 +28,7 @@ const RoomDropdown = ({
       label: 'Chỉnh sửa',
       icon: CommonSvg.edit(),
       onAction: () => {
-        onOpen(actionType, data, refecth);
+        onOpen(`edit${actionType}`, data, refecth);
       },
     },
     {
@@ -36,7 +36,7 @@ const RoomDropdown = ({
       label: 'Xóa',
       icon: CommonSvg.delete(),
       onAction: () => {
-        onOpen('deleteRoom', data, refecth);
+        onOpen(`delete${actionType}`, data, refecth);
       },
     },
   ];

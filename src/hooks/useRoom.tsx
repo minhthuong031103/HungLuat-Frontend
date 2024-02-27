@@ -65,7 +65,7 @@ const initialState = {
   totalParkingPrice: 0,
   totalElevatorPrice: 0,
   suspenseMoney: 0,
-  description: '',
+  note: '',
 
   startDate: new Date(new Date().setDate(1)),
   endDate: new Date(),
@@ -153,14 +153,14 @@ export const RoomProvider = ({ children }) => {
       (key == 'startDate' && value <= state.endDate) ||
       (key == 'endDate' && value >= state.startDate) ||
       key == 'roomStatus' ||
-      key == 'description' ||
+      key == 'note' ||
       (key != 'startDate' &&
         key != 'endDate' &&
         key != 'roomStatus' &&
-        key != 'description' &&
+        key != 'note' &&
         checkValueNumberInput(key, value))
     ) {
-      if (value === '' && key != 'roomStatus' && key != 'description') {
+      if (value === '' && key != 'roomStatus' && key != 'note') {
         value = 0;
       }
       if (value[0] == '0' && value[1] != '.' && value.length > 1) {
@@ -599,6 +599,7 @@ export const RoomProvider = ({ children }) => {
         totalElevatorPrice: Number(state.totalElevatorPrice),
         startDate: state.startDate,
         endDate: state.endDate,
+        note: state.note,
       };
       try {
         const res = await requestApi({
