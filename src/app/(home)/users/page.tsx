@@ -6,11 +6,10 @@ import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useEmployee } from '@/hooks/useEmployee';
 
 import { useModal } from '@/hooks/useModalStore';
-import { EModalType, queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { EmployeeProps } from '@/lib/interface';
 import {
   Button,
-  Checkbox,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -96,7 +95,6 @@ const UserPage = () => {
   const renderCell = React.useCallback(
     (user: EmployeeProps, columnKey: React.Key) => {
       const cellValue = user[columnKey];
-
       switch (columnKey) {
         case columnKeys.action:
           return (
@@ -108,8 +106,21 @@ const UserPage = () => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>Chỉnh sửa</DropdownItem>
-                  <DropdownItem>Xóa</DropdownItem>
+                  <DropdownItem
+                    onClick={() => onOpen('editEmployee', user, refetch)}
+                  >
+                    Chỉnh sửa
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => onOpen('updatePassword', user, refetch)}
+                  >
+                    Đổi mật khẩu
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() => onOpen('deleteEmployee', user, refetch)}
+                  >
+                    Xóa
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -122,7 +133,7 @@ const UserPage = () => {
   );
   return (
     <>
-      <div className="flex items-end justify-between mt-4">
+      <div className="flex items-end justify-between">
         <p className="font-semibold font-lg text-gray">DANH SÁCH NHÂN VIÊN</p>
       </div>
       <div className="w-full h-full mt-4 grid gap-4 grid-cols-1">

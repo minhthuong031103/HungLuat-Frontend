@@ -12,6 +12,9 @@ import IndentityModal from '@/app/(home)/customers/AddIndentityModal';
 import DeleteRoomModal from '../rooms/delete-room-modal';
 import DeleteApartmentModal from '@/app/(home)/(components)/home/delete-apartment-modal';
 import CreateEmployeeModal from '../employee/CreateEmployeeModal';
+import EditEmployeeModal from '../employee/EditEmployeeModal';
+import UpdatePasswordEmployeeModal from '../employee/UpdatePasswordEmployeeModal';
+import DeleteEmployeeModal from '../employee/DeleteEmployeeModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -33,6 +36,9 @@ export const ModalProvider = () => {
       <DeleteRoomModal />
       <DeleteApartmentModal />
       <CreateEmployeeModal />
+      <EditEmployeeModal />
+      <UpdatePasswordEmployeeModal />
+      <DeleteEmployeeModal />
     </>
   );
 };

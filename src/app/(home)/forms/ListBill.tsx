@@ -12,7 +12,7 @@ import {
 } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { exportBillProps, useRoom } from '@/hooks/useRoom';
 
@@ -77,8 +77,15 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBills } = useRoom();
-  const { data: billsApartment, isLoading } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILLAPARTMENT, { currentPage, limit, search }],
+  const {
+    data: billsApartment,
+    isLoading,
+    refetch,
+  } = useQuery<ResponseProps>({
+    queryKey: [
+      queryKey.BILLAPARTMENT,
+      { currentPage, limit, search, apartmentId },
+    ],
     queryFn: async () => {
       const res = await getAllBills({
         apartmentId: apartmentId,

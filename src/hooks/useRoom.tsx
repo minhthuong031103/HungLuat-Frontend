@@ -139,6 +139,7 @@ export interface exportBillProps {
   oldElectric: number;
   files: any[];
   fileName: string;
+  userName: string;
 }
 const RoomContext = createContext<any>(null);
 

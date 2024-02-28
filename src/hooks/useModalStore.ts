@@ -1,5 +1,5 @@
 import { EModalType } from '@/lib/constant';
-import { ModalData } from '@/lib/interface';
+import { EmployeeProps, ModalData } from '@/lib/interface';
 import { create } from 'zustand';
 
 export type ModalType =
@@ -15,12 +15,15 @@ export type ModalType =
   | EModalType.IDENTITY_CARD
   | 'deleteRoom'
   | 'deleteApartment'
-  | 'createEmployee';
+  | 'createEmployee'
+  | 'editEmployee'
+  | 'updatePassword'
+  | 'deleteEmployee';
 
 interface ModalStore {
   type: ModalType | null;
   isOpen: boolean;
-  data: ModalData;
+  data: ModalData | any;
   onOpen: (type: ModalType, data?: ModalData, onAction?: () => void) => void;
   onClose: () => void;
   onAction: () => void;
