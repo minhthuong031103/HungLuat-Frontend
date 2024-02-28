@@ -23,6 +23,14 @@ export const RETURNED_MESSAGES = {
       ENG: 'User created',
       VIE: 'Tạo tài khoản thành công',
     },
+    USER_DELETED: {
+      ENG: 'User deleted',
+      VIE: 'Xoá tài khoản thành công',
+    },
+    USER_UPDATED: {
+      ENG: 'User updated',
+      VIE: 'Cập nhật tài khoản thành công',
+    },
 
     FORBIDDEN_RESOURCE: {
       ENG: 'Forbidden resource',

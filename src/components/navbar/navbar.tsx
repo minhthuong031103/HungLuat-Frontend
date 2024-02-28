@@ -8,10 +8,11 @@ import {
   Link,
   Button,
 } from '@nextui-org/react';
-import { headers } from 'next/headers';
 import InfoUser from './info-user';
+import { useRouter } from 'next/navigation';
 
 export const NavbarComponent = () => {
+  const router = useRouter();
   return (
     <Navbar
       shouldHideOnScroll
@@ -20,8 +21,8 @@ export const NavbarComponent = () => {
         wrapper: 'px-4',
       }}
     >
-      <NavbarBrand>
-        <p className="font-bold text-white uppercase text-lg">
+      <NavbarBrand onClick={() => router.push('/')}>
+        <p className="font-bold text-white uppercase text-lg cursor-pointer">
           Hùng Luật Group
         </p>
       </NavbarBrand>

@@ -15,7 +15,6 @@ interface ApartmentCardProps {
   refresh?: () => void;
 }
 const ApartmentCard = ({ apartment, refresh }: ApartmentCardProps) => {
-  console.log(apartment);
   return (
     <Card
       className="max-w-[383px] h-[555px]"

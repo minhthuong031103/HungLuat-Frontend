@@ -35,14 +35,15 @@ export const SidebarWrapper = () => {
             <CollapseItems
               icon={CommonSvg.dashboard()}
               items={[
-                { name: 'Quản lý chi', link: '/4' },
+                { name: 'Quản lý thu', link: '/income' },
+                { name: 'Quản lý chi', link: '/pay' },
                 { name: 'Thống kê', link: '/5' },
               ]}
               title="Thống kê"
             />
             <CollapseItems
               icon={CommonSvg.stack()}
-              items={[{ name: 'Quản lý người dùng', link: '/users' }]}
+              items={[{ name: 'Quản lý nhân viên', link: '/users' }]}
               title="Quản lý hệ thống"
             />
           </div>

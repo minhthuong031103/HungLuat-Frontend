@@ -15,6 +15,7 @@ import Invoice from '../invoice/invoice';
 import { saveAs } from 'file-saver';
 import { useState } from 'react';
 import { Textarea } from '../ui/text-area';
+import { KEY_CONTEXT } from '@/lib/constant';
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId } = data;
@@ -52,7 +53,8 @@ const ExportBillModal = () => {
       oldDebt: state.oldDebt,
       newElectric: state.newElectric,
       oldElectric: state.oldElectric,
-
+      userName: JSON?.parse(localStorage.getItem(KEY_CONTEXT.USER) as any)
+        ?.name,
       files: [blob],
     };
     await exportBill(data, onAction);
@@ -73,7 +75,7 @@ const ExportBillModal = () => {
     inputType,
     disabled = false,
   ) => (
-    <div className="w-[31%]">
+    <div className="w-[31%]" key={label}>
       <CustomInput
         label={label}
         value={value}

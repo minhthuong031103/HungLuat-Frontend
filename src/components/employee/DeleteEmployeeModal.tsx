@@ -9,17 +9,17 @@ import {
   Button,
 } from '@nextui-org/react';
 import { useModal } from '@/hooks/useModalStore';
-
-import { useRoom } from '@/hooks/useRoom';
-
-const DeleteRoomModal = () => {
+import { useEmployee } from '@/hooks/useEmployee';
+const DeleteEmployeeModal = () => {
   const { isOpen, onClose, type, onAction, data } = useModal();
 
-  const isModalOpen = isOpen && type === 'deleteRoom';
-  const { deleteRoom } = useRoom();
-  const handleDeleteRoom = async () => {
-    await deleteRoom({
-      data: data,
+  const isModalOpen = isOpen && type === 'deleteEmployee';
+  const { deleteEmployee } = useEmployee();
+  const handleDeleteEmployee = async () => {
+    await deleteEmployee({
+      data: {
+        id: data?.id,
+      },
       refetch: onAction,
     });
     onClose();
@@ -30,11 +30,11 @@ const DeleteRoomModal = () => {
         {() => (
           <>
             <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-              Xóa thông tin phòng
+              Xóa tài khoản nhân viên
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="text-center">
-                Bạn có đồng ý xóa phòng{' '}
+                Bạn có đồng ý xóa nhân viên{' '}
                 <span className="text-gray font-bold text-base">
                   {data?.name}
                 </span>{' '}
@@ -50,7 +50,7 @@ const DeleteRoomModal = () => {
               </Button>
               <Button
                 className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-                onPress={handleDeleteRoom}
+                onPress={handleDeleteEmployee}
               >
                 Xóa
               </Button>
@@ -62,4 +62,4 @@ const DeleteRoomModal = () => {
   );
 };
 
-export default DeleteRoomModal;
+export default DeleteEmployeeModal;
