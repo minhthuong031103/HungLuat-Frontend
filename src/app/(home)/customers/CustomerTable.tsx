@@ -101,7 +101,11 @@ const CustomerTable = () => {
   const { getCustomers } = useCustomer();
   const { onOpen } = useModal();
   const handleSearch = () => {};
-  const { data: customers, isLoading } = useQuery<ResponseProps>({
+  const {
+    data: customers,
+    isLoading,
+    refetch,
+  } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
     queryFn: async () => {
       const res = await getCustomers({
@@ -131,7 +135,7 @@ const CustomerTable = () => {
           );
         case columnKeys.action:
           return (
-            <div className="relative flex w-24 justify-center items-center gap-2">
+            <div className="relative flex w-24 ml-2 items-center gap-2">
               <Dropdown>
                 <DropdownTrigger>
                   <Button isIconOnly size="sm" variant="light">
@@ -139,9 +143,20 @@ const CustomerTable = () => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>Xem chi tiết</DropdownItem>
-                  <DropdownItem>Chỉnh sửa</DropdownItem>
-                  <DropdownItem>Xóa</DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      onOpen(EModalType.CUSTOMER_EDIT, user, refetch)
+                    }
+                  >
+                    Chỉnh sửa
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      onOpen(EModalType.CUSTOMER_DELETE, user, refetch)
+                    }
+                  >
+                    Xóa
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -179,7 +194,7 @@ const CustomerTable = () => {
           renderHeader={() => {
             return (
               <Button
-                onPress={() => onOpen(EModalType.CUSTOMER_CREATE)}
+                onPress={() => onOpen(EModalType.CUSTOMER_CREATE, {}, refetch)}
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
               >
                 <div className="flex flex-row items-center gap-x-[8px] ">

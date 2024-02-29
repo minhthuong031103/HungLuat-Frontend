@@ -44,7 +44,7 @@ export interface GetCustomersOfRoomProps extends GetQueryParamsProps {
 }
 
 export interface EmployeeProps {
-  id?: number;
+  id: number;
   name: string;
   phone: string;
   bankNumber: string;
@@ -54,7 +54,16 @@ export interface EmployeeProps {
   apartmentIds?: number[];
   apartmentPermissionIds?: number[];
 }
-
+export interface CreateEmployeeProps {
+  name: string;
+  phone: string;
+  bankNumber: string;
+  bank: string;
+  email?: string;
+  password?: string;
+  apartmentIds?: number[];
+  apartmentPermissionIds?: number[];
+}
 export interface IncomeProps {
   id: number;
   apartmentName: string;

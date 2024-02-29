@@ -8,13 +8,16 @@ import ContractRoomModal from '../rooms/contract-room-modal';
 import CreateRoomModal from '../rooms/create-room-modal';
 import EditRoomModal from '../rooms/edit-room-modal';
 import ExportBillModal from '../rooms/export-bill-modal';
-import IndentityModal from '@/app/(home)/customers/AddIndentityModal';
 import DeleteRoomModal from '../rooms/delete-room-modal';
 import DeleteApartmentModal from '@/app/(home)/(components)/home/delete-apartment-modal';
 import CreateEmployeeModal from '../employee/CreateEmployeeModal';
 import EditEmployeeModal from '../employee/EditEmployeeModal';
 import UpdatePasswordEmployeeModal from '../employee/UpdatePasswordEmployeeModal';
 import DeleteEmployeeModal from '../employee/DeleteEmployeeModal';
+import EditCustomerModal from '@/app/(home)/customers/EditCustomerModal';
+import DeleteCustomerModal from '@/app/(home)/customers/DeleteCustomerModal';
+import AddPayModal from '../statisctics/AddPayModal';
+import EditPayModal from '../statisctics/EditPayModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -39,6 +42,10 @@ export const ModalProvider = () => {
       <EditEmployeeModal />
       <UpdatePasswordEmployeeModal />
       <DeleteEmployeeModal />
+      <EditCustomerModal />
+      <DeleteCustomerModal />
+      <AddPayModal />
+      <EditPayModal />
     </>
   );
 };

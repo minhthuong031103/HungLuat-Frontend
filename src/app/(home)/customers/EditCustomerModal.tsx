@@ -13,16 +13,16 @@ import { checkValueNumberInput } from '@/lib/utils';
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IndentityModal from './AddIndentityModal';
-import toast from 'react-hot-toast';
+import { CreateCustomerProps } from '@/lib/interface';
 
-const CustomerAddModal = () => {
-  const { isOpen, onClose, type, onAction } = useModal();
+const EditCustomerModal = () => {
+  const { isOpen, onClose, type, data } = useModal();
   const [identityModal, setIdentityModal] = useState(false);
   const [identityBackModal, setIdentityBackModal] = useState(false);
-
-  const isModalOpen = isOpen && type === EModalType.CUSTOMER_CREATE;
+  console.log(data);
+  const isModalOpen = isOpen && type === EModalType.CUSTOMER_EDIT;
   const [cmndMatTruoc, setCmndMatTruoc] = useState([]);
   const [cmndMatSau, setCmndMatSau] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,37 +30,32 @@ const CustomerAddModal = () => {
     useCustomer();
   const handleAddCustomer = async () => {
     // resetCustomerState()
-    if (
-      customerState?.name &&
-      customerState?.phone &&
-      customerState?.dayOfBirth &&
-      customerState?.identityCard &&
-      customerState?.issuedDate &&
-      customerState?.address &&
-      customerState?.identityFrontUrl &&
-      customerState?.identityBackUrl &&
-      customerState?.roomId
-    ) {
-      setIsLoading(true);
-      const data = {
-        name: customerState.name,
-        phone: customerState.phone,
-        dayOfBirth: new Date(customerState.dayOfBirth),
-        identityCard: customerState.identityCard,
-        issuedDate: new Date(customerState.issuedDate),
-        address: customerState.address,
-        identityFrontUrl: customerState.identityFrontUrl,
-        identityBackUrl: customerState.identityBackUrl,
-        roomId: Number(customerState.roomId),
-      };
-      await createCustomer(data, onClose);
-      onAction();
-      setIsLoading(false);
-    } else {
-      toast.error('Vui lòng điền đầy đủ thông tin');
-    }
+    setIsLoading(true);
+    const data = {
+      name: customerState.name,
+      phone: customerState.phone,
+      dayOfBirth: new Date(customerState.dayOfBirth),
+      identityCard: customerState.identityCard,
+      issuedDate: new Date(customerState.issuedDate),
+      address: customerState.address,
+      identityFrontUrl: customerState.identityFrontUrl,
+      identityBackUrl: customerState.identityBackUrl,
+      roomId: Number(customerState.roomId),
+    };
+    await createCustomer(data, onClose);
+    setIsLoading(false);
   };
-
+  useEffect(() => {
+    if (data) {
+      Object.keys(data).map((key: any) => {
+        if (key === 'dayOfBirth' || key === 'issuedDate') {
+          handleSetCustomerValue(key, new Date(data[key]));
+        } else {
+          handleSetCustomerValue(key, data[key]);
+        }
+      });
+    }
+  }, [data]);
   const {
     apartmentChosen,
     setApartmentChosen,
@@ -75,7 +70,7 @@ const CustomerAddModal = () => {
     <Modal
       closeOnClickOutside={false}
       centered
-      title="Thêm khách trọ"
+      title="Cập nhật thông tin khách trọ"
       classNames={{
         header: 'flex justify-center items-center relative',
         title: 'font-bold text-gray uppercase font-bold text-xl',
@@ -187,6 +182,7 @@ const CustomerAddModal = () => {
               }}
             >
               {rooms?.map((item: any) => {
+                console.log('🚀 ~ {rooms?.map ~ item:', item);
                 return item?.rooms?.map((room: Room) => {
                   return (
                     <SelectItem key={room.id} value={room.id}>
@@ -313,4 +309,4 @@ const CustomerAddModal = () => {
   );
 };
 
-export default CustomerAddModal;
+export default EditCustomerModal;

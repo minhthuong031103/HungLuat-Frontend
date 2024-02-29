@@ -127,7 +127,7 @@ const CustomerList = ({ roomId }) => {
           );
         case columnKeys.action:
           return (
-            <div className="relative flex w-24 justify-center items-center gap-2">
+            <div className="relative flex w-24 ml-2 items-center gap-2">
               <Dropdown>
                 <DropdownTrigger>
                   <Button isIconOnly size="sm" variant="light">
@@ -135,8 +135,11 @@ const CustomerList = ({ roomId }) => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>Xem chi tiết</DropdownItem>
-                  <DropdownItem>Chỉnh sửa</DropdownItem>
+                  <DropdownItem
+                    onClick={() => onOpen(EModalType.CUSTOMER_EDIT)}
+                  >
+                    Chỉnh sửa
+                  </DropdownItem>
                   <DropdownItem>Xóa</DropdownItem>
                 </DropdownMenu>
               </Dropdown>

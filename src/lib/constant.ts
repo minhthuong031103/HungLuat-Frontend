@@ -37,4 +37,25 @@ export const queryKey = {
 export enum EModalType {
   CUSTOMER_CREATE = 'CUSTOMER_CREATE',
   IDENTITY_CARD = 'IDENTITY_CARD',
+  CUSTOMER_EDIT = 'CUSTOMER_EDIT',
+  CUSTOMER_DELETE = 'CUSTOMER_DELETE',
 }
+
+export const payTypes = [
+  {
+    id: 1,
+    value: 'Tiền điện',
+  },
+  {
+    id: 2,
+    value: 'Tiền nước',
+  },
+  {
+    id: 3,
+    value: 'Tiền Internet',
+  },
+  {
+    id: 4,
+    value: 'Phí môi giới',
+  },
+];

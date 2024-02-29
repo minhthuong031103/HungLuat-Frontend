@@ -1,5 +1,5 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
-import { EmployeeProps } from '@/lib/interface';
+import { CreateEmployeeProps, EmployeeProps } from '@/lib/interface';
 import { RETURNED_MESSAGES } from '@/lib/translate';
 import { GetQueryParamsProps, getQueryParams } from '@/lib/utils';
 
@@ -8,7 +8,10 @@ import toast from 'react-hot-toast';
 export const useEmployee = () => {
   const { requestApi } = useApiAxios();
 
-  const createEmployee = async (data: EmployeeProps, onClose: () => void) => {
+  const createEmployee = async (
+    data: CreateEmployeeProps,
+    onClose: () => void,
+  ) => {
     try {
       const res = await requestApi({
         endPoint: '/user/create',
