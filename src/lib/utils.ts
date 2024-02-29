@@ -231,3 +231,17 @@ export const getBase64 = (file: File) => {
     reader.onerror = error => reject(error);
   });
 };
+
+export function insertSpaceEveryThreeCharacters(inputString) {
+  inputString = inputString.toString();
+  let result = '';
+  let j = 0;
+  for (let i = inputString.length - 1; i >= 0; i--) {
+    j++;
+    result += inputString[i];
+    if (j % 3 === 0 && j !== inputString.length) {
+      result += ' ';
+    }
+  }
+  return result.split('').reverse().join('');
+}

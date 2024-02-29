@@ -7,6 +7,7 @@ import {
   convertPrice,
   formatDateCustom,
   getDaysAmountInMonth,
+  insertSpaceEveryThreeCharacters,
 } from '@/lib/utils';
 import { Modal } from '@mantine/core';
 import { Button, Divider, Spinner } from '@nextui-org/react';
@@ -74,21 +75,26 @@ const ExportBillModal = () => {
     placeholder,
     inputType,
     disabled = false,
-  ) => (
-    <div className="w-[31%]" key={label}>
-      <CustomInput
-        label={label}
-        value={value}
-        placeholder={placeholder}
-        type={inputType}
-        isRequired={false}
-        readonly={true}
-        setValue={() => {}}
-        disabled={disabled}
-      />
-    </div>
-  );
-
+  ) => {
+    if (label !== 'Điện tiêu thụ') {
+      // value = insertSpaceEveryThreeCharacters(value);
+      value = insertSpaceEveryThreeCharacters(value);
+    }
+    return (
+      <div className="w-[31%]" key={label}>
+        <CustomInput
+          label={label}
+          value={value}
+          placeholder={placeholder}
+          type={inputType}
+          isRequired={false}
+          readonly={true}
+          setValue={() => {}}
+          disabled={disabled}
+        />
+      </div>
+    );
+  };
   const renderNumberInput = (label, value, placeholder, disabled = false) =>
     renderInput(label, value, placeholder, 'text', disabled);
 
@@ -131,7 +137,7 @@ const ExportBillModal = () => {
               Number(state.peopleRealStayed) - 4 > 0
                 ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
                 : 0,
-              'Số ngày ở trong tháng',
+              'Tổng tiền phụ thu',
             ),
           ])}
           <p className="text-gray font-semibold text-lg">Tiền dịch vụ</p>

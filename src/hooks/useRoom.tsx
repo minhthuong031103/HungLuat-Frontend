@@ -6,6 +6,7 @@ import {
   checkValueNumberInput,
   getDaysAmountInMonth,
   getQueryParams,
+  insertSpaceEveryThreeCharacters,
 } from '@/lib/utils';
 
 import { createContext, useContext, useEffect, useReducer } from 'react';
@@ -194,8 +195,9 @@ export const RoomProvider = ({ children }) => {
     const endDate = new Date(state.endDate);
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    handleSetValue('dayStayed', diffDays);
+    handleSetValue('dayStayed', diffDays + 1);
   }, [state.startDate, state.endDate]);
+
   const roomInfo = [
     {
       id: 1,
@@ -205,8 +207,11 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền cọc',
           isRequired: true,
-          value: state.depositPrice,
-          setValue: value => handleSetValue('depositPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.depositPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('depositPrice', tempValue);
+          },
         },
         {
           label: 'Số ngày ở trong tháng',
@@ -227,16 +232,22 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền nợ cũ',
           isRequired: true,
-          value: state.oldDebt,
-          setValue: value => handleSetValue('oldDebt', value),
+          value: insertSpaceEveryThreeCharacters(state.oldDebt),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('oldDebt', tempValue);
+          },
         },
         {
           label: 'Nợ mới',
           type: 'text',
           placeholder: 'Nhập số ngày ở trong tháng',
           isRequired: true,
-          value: state.newDebt,
-          setValue: value => handleSetValue('newDebt', value),
+          value: insertSpaceEveryThreeCharacters(state.newDebt),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('newDebt', tempValue);
+          },
         },
       ],
     },
@@ -248,8 +259,11 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền phụ thu',
           isRequired: true,
-          value: state.surcharge,
-          setValue: value => handleSetValue('surcharge', value),
+          value: insertSpaceEveryThreeCharacters(state.surcharge),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('surcharge', tempValue);
+          },
         },
         {
           label: 'Số lượng người ở thực tế',
@@ -292,8 +306,11 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Giá điện',
           isRequired: true,
-          value: state.electricPrice,
-          setValue: value => handleSetValue('electricPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.electricPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('electricPrice', tempValue);
+          },
         },
 
         {
@@ -322,8 +339,11 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền nước',
           isRequired: true,
-          value: state.waterPrice,
-          setValue: value => handleSetValue('waterPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.waterPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('waterPrice', tempValue);
+          },
         },
       ],
     },
@@ -335,15 +355,21 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền thang máy',
           isRequired: true,
-          value: state.elevatorPrice,
-          setValue: value => handleSetValue('elevatorPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.elevatorPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('elevatorPrice', tempValue);
+          },
         },
         {
           label: 'Chi phí phát sinh khác',
           type: 'text',
           placeholder: 'Nhập chi phí phát sinh',
-          value: state.otherPrice,
-          setValue: value => handleSetValue('otherPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.otherPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('otherPrice', tempValue);
+          },
         },
       ],
     },
@@ -355,16 +381,22 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền Internet',
           isRequired: true,
-          value: state.internetPrice,
-          setValue: value => handleSetValue('internetPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.internetPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('internetPrice', tempValue);
+          },
         },
         {
           label: 'Tiền dịch vụ (VND / phòng)',
           type: 'text',
           placeholder: 'Nhập tiền dịch vụ',
           isRequired: true,
-          value: state.servicePrice,
-          setValue: value => handleSetValue('servicePrice', value),
+          value: insertSpaceEveryThreeCharacters(state.servicePrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('servicePrice', tempValue);
+          },
         },
       ],
     },
@@ -384,8 +416,11 @@ export const RoomProvider = ({ children }) => {
           type: 'text',
           placeholder: 'Nhập tiền gửi xe',
           isRequired: true,
-          value: state.parkingPrice,
-          setValue: value => handleSetValue('parkingPrice', value),
+          value: insertSpaceEveryThreeCharacters(state.parkingPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('parkingPrice', tempValue);
+          },
         },
       ],
     },
