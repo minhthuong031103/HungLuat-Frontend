@@ -4,7 +4,7 @@ import { Select, SelectItem } from '@nextui-org/react';
 interface CustomSelectProps {
   label?: string;
   placeholder?: string;
-  value: string;
+  value: string | Set<string>;
   isRequired?: boolean;
   variant?: 'flat' | 'bordered' | 'underlined' | 'faded';
   setValue: (e: string) => void;

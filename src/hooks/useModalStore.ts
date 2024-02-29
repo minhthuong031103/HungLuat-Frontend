@@ -1,5 +1,5 @@
 import { EModalType } from '@/lib/constant';
-import { EmployeeProps, ModalData } from '@/lib/interface';
+import { ModalData } from '@/lib/interface';
 import { create } from 'zustand';
 
 export type ModalType =
@@ -12,19 +12,27 @@ export type ModalType =
   | 'editCustomer'
   | 'contractRoom'
   | EModalType.CUSTOMER_CREATE
+  | EModalType.CUSTOMER_EDIT
   | EModalType.IDENTITY_CARD
+  | EModalType.CUSTOMER_DELETE
   | 'deleteRoom'
   | 'deleteApartment'
   | 'createEmployee'
   | 'editEmployee'
   | 'updatePassword'
-  | 'deleteEmployee';
-
+  | 'deleteEmployee'
+  | 'addPay'
+  | 'editPay'
+  | 'deletePay';
 interface ModalStore {
   type: ModalType | null;
   isOpen: boolean;
   data: ModalData | any;
-  onOpen: (type: ModalType, data?: ModalData, onAction?: () => void) => void;
+  onOpen: (
+    type: ModalType,
+    data?: ModalData | any,
+    onAction?: () => void,
+  ) => void;
   onClose: () => void;
   onAction: () => void;
 }

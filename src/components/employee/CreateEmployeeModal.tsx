@@ -88,9 +88,8 @@ const CreateEmployeeModal = () => {
     data: apartments,
     fetchNextPage,
     hasNextPage,
-    refetch: refetchData,
+
     isFetching,
-    isFetchingNextPage,
   } = useInfiniteQuery(
     [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
     ({ pageParam = 0 }) =>

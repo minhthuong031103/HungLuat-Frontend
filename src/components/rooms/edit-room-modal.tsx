@@ -18,7 +18,7 @@ import toast from 'react-hot-toast';
 const EditRoomModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const [floor, setFloor] = useState([]);
-  const [floorChosen, setFloorChosen] = useState(new Set([]));
+  const [floorChosen, setFloorChosen] = useState(new Set<string>([]));
 
   useEffect(() => {
     if (data && floor.length === 0 && data.numberFloor) {
@@ -39,10 +39,10 @@ const EditRoomModal = () => {
   const resetState = () => {
     setFloor([]);
     setRoomName('');
-    setFloorChosen('');
+    setFloorChosen(new Set<string>([]));
   };
   const handleEditRoom = async () => {
-    if (roomName === '' || floorChosen === '') {
+    if (roomName === '' || Array.from(floorChosen)[0] === '') {
       toast.error('Vui lòng nhập đầy đủ thông tin');
       return;
     }
@@ -76,7 +76,7 @@ const EditRoomModal = () => {
                 <CustomSelect
                   label="Tầng"
                   value={floorChosen}
-                  setValue={setFloorChosen}
+                  setValue={value => setFloorChosen(new Set(value))}
                   data={floor}
                   isRequired={true}
                 />

@@ -167,6 +167,24 @@ export const useCustomer = () => {
     dispatchContract({ type: 'RESET' });
   };
 
+  const deleteCustomer = async ({ data, refetch }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/customer/delete/${data.id}`,
+        method: 'DELETE',
+      });
+      if (res?.message == RETURNED_MESSAGES.AUTH.USER_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.AUTH.USER_DELETED.VIE);
+        refetch();
+      } else if (res?.message == RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.ENG) {
+        toast.error(RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.VIE);
+      } else {
+        toast.error('Xóa khách trọ thất bại');
+      }
+    } catch (error) {
+      toast.error('Xóa khách trọ thất bại');
+    }
+  };
   return {
     createCustomer,
     upLoadImage,
@@ -175,5 +193,6 @@ export const useCustomer = () => {
     handleSetCustomerValue,
     resetCustomerState,
     getCustomersByRoom,
+    deleteCustomer,
   };
 };

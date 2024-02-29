@@ -2,13 +2,20 @@
 
 import { CommonSvg } from '@/assets/CommonSvg';
 import DataTable from '@/components/datatable/Datatable';
+import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useModal } from '@/hooks/useModalStore';
 
 import { useStatistics } from '@/hooks/useStatistics';
 import { queryKey } from '@/lib/constant';
 import { IncomeProps } from '@/lib/interface';
 import { convertPrice, convertPrismaTimeToDateTime } from '@/lib/utils';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from '@nextui-org/react';
 
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
@@ -26,6 +33,7 @@ const columnKeys = {
   totalPrice: 'totalPrice',
   userName: 'userName',
   payType: 'payType',
+  action: 'action',
 };
 
 const columns = [
@@ -55,6 +63,11 @@ const columns = [
     id: columnKeys.totalPrice,
     title: 'Tổng tiền chi',
   },
+  {
+    id: columnKeys.action,
+    title: 'Thao tác',
+    sortable: false,
+  },
 ];
 
 const NormalRenderCell = ({ cellValue }) => {
@@ -70,7 +83,11 @@ const UserPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBill } = useStatistics();
   const { onOpen } = useModal();
-  const { data: bills, isLoading } = useQuery<ResponseProps>({
+  const {
+    data: bills,
+    isLoading,
+    refetch,
+  } = useQuery<ResponseProps>({
     queryKey: [queryKey.BILL, { currentPage, limit }],
     queryFn: async () => {
       const res = await getAllBill({
@@ -92,9 +109,34 @@ const UserPage = () => {
     },
   });
   const renderCell = React.useCallback(
-    (user: IncomeProps, columnKey: React.Key) => {
-      const cellValue = user[columnKey];
+    (bill: IncomeProps, columnKey: React.Key) => {
+      const cellValue = bill[columnKey];
       switch (columnKey) {
+        case columnKeys.action:
+          return (
+            <div className="relative flex w-24 ml-3 items-center gap-2">
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button isIconOnly size="sm" variant="light">
+                    <VerticalDotsIcon className="text-black" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem
+                    onClick={() => onOpen('editPay', bill, refetch)}
+                  >
+                    Chỉnh sửa
+                  </DropdownItem>
+
+                  <DropdownItem
+                    onClick={() => onOpen('deletePay', bill, refetch)}
+                  >
+                    Xóa
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+          );
         default:
           return <NormalRenderCell cellValue={cellValue} />;
       }
@@ -111,7 +153,7 @@ const UserPage = () => {
           renderHeader={() => {
             return (
               <Button
-                onPress={() => onOpen('createEmployee', {})}
+                onPress={() => onOpen('addPay', {})}
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
               >
                 <div className="flex flex-row items-center gap-x-[8px] ">
