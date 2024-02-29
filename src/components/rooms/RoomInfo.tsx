@@ -4,6 +4,10 @@ import { DatePicker } from '../ui/date-picker';
 import BillTable from './BillTable';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { Textarea } from '../ui/text-area';
+import {
+  convertPriceNotVND,
+  insertSpaceEveryThreeCharacters,
+} from '@/lib/utils';
 
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
@@ -44,8 +48,11 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   type="text"
                   placeholder="Nhập giá phòng"
                   isRequired
-                  value={state.roomPrice}
-                  setValue={value => handleSetValue('roomPrice', value)}
+                  value={insertSpaceEveryThreeCharacters(state.roomPrice)}
+                  setValue={value => {
+                    const tempValue = value?.split(' ').join('');
+                    handleSetValue('roomPrice', tempValue);
+                  }}
                 />
               </div>
               {roomInfo.slice(0, 3).map(item => (
