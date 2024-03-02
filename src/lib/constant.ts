@@ -39,6 +39,8 @@ export enum EModalType {
   IDENTITY_CARD = 'IDENTITY_CARD',
   CUSTOMER_EDIT = 'CUSTOMER_EDIT',
   CUSTOMER_DELETE = 'CUSTOMER_DELETE',
+  BILL_DELETE = 'BILL_DELETE',
+  PAY_DELETE = 'PAY_DELETE',
 }
 
 export const payTypes = [
