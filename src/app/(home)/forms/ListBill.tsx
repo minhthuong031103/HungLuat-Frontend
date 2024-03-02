@@ -2,7 +2,7 @@ import { CommonSvg } from '@/assets/CommonSvg';
 import DataTable from '@/components/datatable/Datatable';
 import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 
-import { queryKey } from '@/lib/constant';
+import { EModalType, queryKey } from '@/lib/constant';
 import {
   Button,
   Dropdown,
@@ -15,6 +15,8 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 import { exportBillProps, useRoom } from '@/hooks/useRoom';
+import { useModal } from '@/hooks/useModalStore';
+import Link from 'next/link';
 
 interface ResponseProps {
   items: exportBillProps[];
@@ -77,6 +79,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBills } = useRoom();
+  const { onOpen } = useModal();
   const {
     data: billsApartment,
     isLoading,
@@ -115,6 +118,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
           cellValue,
         ).getFullYear()}`;
       }
+      console.log(bills);
       switch (columnKey) {
         case columnKeys.pdfUrl:
           return (
@@ -140,9 +144,22 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>Xem chi tiết</DropdownItem>
-                  <DropdownItem>Chỉnh sửa</DropdownItem>
-                  <DropdownItem>Xóa</DropdownItem>
+                  <DropdownItem>
+                    <Link
+                      href={bills?.pdfUrl || ''}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Xem chi tiết
+                    </Link>
+                  </DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      onOpen(EModalType.BILL_DELETE, bills, refetch)
+                    }
+                  >
+                    Xóa
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>

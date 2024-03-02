@@ -6,7 +6,7 @@ import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useModal } from '@/hooks/useModalStore';
 
 import { useStatistics } from '@/hooks/useStatistics';
-import { queryKey } from '@/lib/constant';
+import { EModalType, queryKey } from '@/lib/constant';
 import { IncomeProps } from '@/lib/interface';
 import { convertPrice, convertPrismaTimeToDateTime } from '@/lib/utils';
 import {
@@ -129,7 +129,7 @@ const UserPage = () => {
                   </DropdownItem>
 
                   <DropdownItem
-                    onClick={() => onOpen('deletePay', bill, refetch)}
+                    onClick={() => onOpen(EModalType.PAY_DELETE, bill, refetch)}
                   >
                     Xóa
                   </DropdownItem>

@@ -18,6 +18,8 @@ import EditCustomerModal from '@/app/(home)/customers/EditCustomerModal';
 import DeleteCustomerModal from '@/app/(home)/customers/DeleteCustomerModal';
 import AddPayModal from '../statisctics/AddPayModal';
 import EditPayModal from '../statisctics/EditPayModal';
+import DeletePayModal from '../statisctics/DeletePayModal';
+import DeleteBillModal from '../statisctics/DeleteBillModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -46,6 +48,8 @@ export const ModalProvider = () => {
       <DeleteCustomerModal />
       <AddPayModal />
       <EditPayModal />
+      <DeletePayModal />
+      <DeleteBillModal />
     </>
   );
 };

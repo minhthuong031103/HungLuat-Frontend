@@ -141,6 +141,7 @@ export interface exportBillProps {
   files: any[];
   fileName: string;
   userName: string;
+  pdfUrl?: string;
 }
 const RoomContext = createContext<any>(null);
 
