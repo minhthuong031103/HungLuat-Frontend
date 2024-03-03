@@ -5,7 +5,7 @@ import DataTable from '@/components/datatable/Datatable';
 import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useModal } from '@/hooks/useModalStore';
 
-import { useStatistics } from '@/hooks/useStatistics';
+import { BillProps, useStatistics } from '@/hooks/useStatistics';
 import { EModalType, KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { IncomeProps } from '@/lib/interface';
 import { convertPrice, convertPrismaTimeToDateTime } from '@/lib/utils';
@@ -21,7 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 
 interface ResponseProps {
-  items: IncomeProps[];
+  items: BillProps[];
   totalItems: number;
   totalPages: number;
 }
@@ -29,10 +29,10 @@ interface ResponseProps {
 const columnKeys = {
   apartmentName: 'apartmentName',
   roomName: 'roomName',
-  endDate: 'endDate',
-  totalPrice: 'totalPrice',
+  payDay: 'payDay',
+  paymentAmount: 'paymentAmount',
   userName: 'userName',
-  payType: 'payType',
+  paymentType: 'paymentType',
   action: 'action',
 };
 
@@ -48,7 +48,7 @@ const columns = [
     sortable: true,
   },
   {
-    id: columnKeys.payType,
+    id: columnKeys.paymentType,
     title: 'Loại chi',
   },
   {
@@ -56,11 +56,11 @@ const columns = [
     title: 'Nhân viên chi',
   },
   {
-    id: columnKeys.endDate,
+    id: columnKeys.payDay,
     title: 'Ngày chi',
   },
   {
-    id: columnKeys.totalPrice,
+    id: columnKeys.paymentAmount,
     title: 'Tổng tiền chi',
   },
   {
@@ -81,7 +81,7 @@ const NormalRenderCell = ({ cellValue }) => {
 const UserPage = () => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
-  const { getAllBill } = useStatistics();
+  const { getAllPay } = useStatistics();
   const { onOpen } = useModal();
   const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
 
@@ -90,20 +90,25 @@ const UserPage = () => {
     isLoading,
     refetch,
   } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILL, { currentPage, limit, userId }],
+    queryKey: [queryKey.PAYMENTS, { currentPage, limit, userId }],
     queryFn: async () => {
-      const res = await getAllBill({
+      const res = await getAllPay({
         page: currentPage,
         limit,
       });
       return {
         items: res?.data?.items.map((item: any) => ({
           id: item.id,
-          endDate: convertPrismaTimeToDateTime(item?.endDate),
+          payDay: convertPrismaTimeToDateTime(item?.payDay),
           userName: item?.userName || 'Không tìm thấy',
           apartmentName: item?.apartment?.name,
+          apartmentId: item?.apartment?.id,
+          roomId: item?.room?.id,
+          payMoney: item?.paymentAmount,
+          payDayDefault: item?.payDay,
           roomName: item?.room?.name,
-          totalPrice: convertPrice(item?.room?.netProceeds),
+          paymentType: item?.paymentType,
+          paymentAmount: convertPrice(item?.paymentAmount),
         })),
         totalItems: res?.data?.totalItems,
         totalPages: res?.data?.totalPages,
@@ -111,7 +116,7 @@ const UserPage = () => {
     },
   });
   const renderCell = React.useCallback(
-    (bill: IncomeProps, columnKey: React.Key) => {
+    (bill: BillProps, columnKey: React.Key) => {
       const cellValue = bill[columnKey];
       switch (columnKey) {
         case columnKeys.action:
@@ -155,7 +160,7 @@ const UserPage = () => {
           renderHeader={() => {
             return (
               <Button
-                onPress={() => onOpen('addPay', {})}
+                onPress={() => onOpen('addPay', {}, refetch)}
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
               >
                 <div className="flex flex-row items-center gap-x-[8px] ">

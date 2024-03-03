@@ -1,29 +1,77 @@
 'use client';
-
 import { useApartmentScroll } from '@/hooks/useApartmentScroll';
-
 import { useModal } from '@/hooks/useModalStore';
-
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { DatePicker } from '../ui/date-picker';
 import { payTypes } from '@/lib/constant';
 import { useEmployeeScroll } from '@/hooks/useEmployeeScroll';
 import { EmployeeProps } from '@/lib/interface';
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { checkValueNumberInput } from '@/lib/utils';
+import {
+  checkValueNumberInput,
+  insertSpaceEveryThreeCharacters,
+} from '@/lib/utils';
+import { useStatistics } from '@/hooks/useStatistics';
 
-const EditPayModal = () => {
-  const { isOpen, onClose, type, onAction } = useModal();
+const AddPayModal = () => {
+  const { isOpen, onClose, type, onAction, data } = useModal();
   const [payType, setPayType] = useState('');
-  const [dayPay, setDayPay] = useState(new Date());
+  const [payDay, setPayDay] = useState(new Date());
   const [payMoney, setPayMoney] = useState('');
-  const isModalOpen = isOpen && type === 'addPay';
-
-  const handleAddPay = async () => {
+  const [roomId, setRoomId] = useState('');
+  const [flag, setFlag] = useState(true);
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      setPayType(data?.paymentType);
+      setPayDay(
+        new Date(data?.payDayDefault ? data?.payDayDefault : new Date()),
+      );
+      setPayMoney(data?.payMoney?.toString());
+      setEmployeeChosen(data?.userName);
+      setApartmentChosen(data?.apartmentId?.toString());
+    }
+  }, [data]);
+  const resetState = () => {
+    setPayType('');
+    setPayDay(new Date());
+    setPayMoney('');
+    setRoomId('');
+    setApartmentChosen('');
+    setEmployeeChosen('');
+    onClose();
+    onAction();
+  };
+  const isModalOpen = isOpen && type === 'editPay';
+  const { editPay } = useStatistics();
+  const handleEditPay = async () => {
+    if (
+      payType &&
+      payMoney &&
+      payDay &&
+      employeesChosen &&
+      apartmentChosen &&
+      roomId
+    ) {
+      await editPay({
+        data: {
+          id: Number(data?.id),
+          userName: employeesChosen,
+          paymentType: payType,
+          paymentAmount: Number(payMoney),
+          apartmentId: Number(apartmentChosen),
+          roomId: Number(roomId),
+          payDay: new Date(payDay),
+        },
+        refetch: resetState,
+      });
+    } else {
+      toast.error('Vui lòng nhập đủ thông tin');
+    }
     // resetCustomerState()
   };
 
@@ -47,11 +95,17 @@ const EditPayModal = () => {
     setIsScrollOpen: setIsScrollOpenEmployee,
     scrollerRef: scrollerRefEmployee,
   } = useEmployeeScroll();
+  useEffect(() => {
+    if (flag && apartmentChosen) {
+      setRoomId(data?.roomId?.toString());
+      setFlag(false);
+    }
+  }, [flag, apartmentChosen]);
   return (
     <Modal
       closeOnClickOutside={false}
       centered
-      title="Tạo phiếu chi"
+      title="Cập nhật phiếu chi"
       classNames={{
         header: 'flex justify-center items-center relative',
         title: 'font-bold text-gray uppercase font-bold text-xl',
@@ -81,7 +135,7 @@ const EditPayModal = () => {
             >
               {payTypes?.map((item: any) => {
                 return (
-                  <SelectItem key={item.id} value={item.value}>
+                  <SelectItem key={item.value} value={item.value}>
                     {item.value}
                   </SelectItem>
                 );
@@ -108,7 +162,7 @@ const EditPayModal = () => {
               {employees ? (
                 employees?.pages?.map(page =>
                   page?.data?.items?.map((item: EmployeeProps) => (
-                    <SelectItem key={item.id} value={item.name}>
+                    <SelectItem key={item.name} value={item.name}>
                       {item.name}
                     </SelectItem>
                   )),
@@ -121,9 +175,9 @@ const EditPayModal = () => {
           <div className="w-[33%]">
             <DatePicker
               label="Ngày chi"
-              date={dayPay}
+              date={payDay}
               labelCustom="font-medium text-sm text-black"
-              setDate={value => setDayPay(value)}
+              setDate={value => setPayDay(value)}
             />
           </div>
         </div>
@@ -166,9 +220,12 @@ const EditPayModal = () => {
               placeholder="Chọn phòng"
               className="max-w-[100%] "
               disallowEmptySelection
-              isDisabled={!apartmentChosen.length}
-              selectedKeys={[]}
-              onChange={e => {}}
+              isLoading={flag}
+              isDisabled={!apartmentChosen?.length}
+              selectedKeys={roomId ? [roomId] : []}
+              onChange={e => {
+                setRoomId(e.target.value);
+              }}
             >
               {rooms?.map((item: any) => {
                 return item?.rooms?.map((room: Room) => {
@@ -188,16 +245,17 @@ const EditPayModal = () => {
             type="text"
             placeholder="Nhập số tiền chi"
             isRequired
-            value={payMoney}
-            setValue={value =>
-              checkValueNumberInput('payMoney', value) && setPayMoney(value)
-            }
+            value={insertSpaceEveryThreeCharacters(payMoney)}
+            setValue={value => {
+              value = value.split(' ').join('');
+              checkValueNumberInput('payMoney', value) && setPayMoney(value);
+            }}
           />
         </div>
         <div className="flex w-full flex-row justify-end mt-[60px]">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-            onPress={handleAddPay}
+            onPress={handleEditPay}
           >
             Lưu
           </Button>
@@ -207,4 +265,4 @@ const EditPayModal = () => {
   );
 };
 
-export default EditPayModal;
+export default AddPayModal;

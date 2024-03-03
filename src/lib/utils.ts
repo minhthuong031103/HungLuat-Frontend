@@ -233,13 +233,13 @@ export const getBase64 = (file: File) => {
 };
 
 export function insertSpaceEveryThreeCharacters(inputString) {
-  inputString = inputString.toString();
+  inputString = inputString?.toString();
   let result = '';
   let j = 0;
-  for (let i = inputString.length - 1; i >= 0; i--) {
+  for (let i = inputString?.length - 1; i >= 0; i--) {
     j++;
     result += inputString[i];
-    if (j % 3 === 0 && j !== inputString.length) {
+    if (j % 3 === 0 && j !== inputString?.length) {
       result += ' ';
     }
   }
