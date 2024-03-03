@@ -1,5 +1,5 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,8 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
   const [loading, setLoading] = useState(false);
   const { getCustomersByRoom } = useCustomer();
   const { debounceValue } = useDebounce(searchValue, 500);
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: customers,
     fetchNextPage,
@@ -24,7 +26,7 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
   } = useInfiniteQuery(
     [
       queryKey.CUSTOMERS_SELECT,
-      { currentPage, limit: 10, debounceValue, roomId },
+      { currentPage, limit: 10, debounceValue, roomId, userId },
     ],
     ({ pageParam = 0 }) =>
       getCustomersByRoom({

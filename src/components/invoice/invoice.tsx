@@ -226,15 +226,17 @@ const Invoice = ({ data }) => {
       <View>
         <Text style={{ fontSize: 11 }}>
           - Khách hàng:{' '}
-          <Text style={{ fontWeight: 700 }}>Nguyễn Ngọc Bình</Text>
+          <Text style={{ fontWeight: 700 }}>{data?.clientName}</Text>
         </Text>
         <Text style={{ fontSize: 11 }}>
-          - Số điện thoại: <Text style={{ fontWeight: 700 }}>0963618637</Text>
+          - Số điện thoại:{' '}
+          <Text style={{ fontWeight: 700 }}>{data?.clientPNumber}</Text>
         </Text>
       </View>
       <View>
         <Text style={{ fontSize: 11 }}>
-          - Ngày thuê: <Text style={{ fontWeight: 700 }}>28/01/2024</Text>
+          - Ngày thuê:{' '}
+          <Text style={{ fontWeight: 700 }}>{data?.daySigned}</Text>
         </Text>
         <Text style={{ fontSize: 11 }}>
           - Tiền phòng:{' '}
@@ -448,12 +450,15 @@ const Invoice = ({ data }) => {
     >
       <Text style={{ fontSize: 10 }}>
         Quý khách thanh toán tiền mặt, hoặc chuyển khoản vào TK "{' '}
-        <Text style={{ fontWeight: 700, color: 'blue' }}>NGUYỄN NGỌC BÌNH</Text>{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>{data?.bankName}</Text>{' '}
         "
       </Text>
       <Text>
-        - Số TK Ngân hàng Agribank:{' '}
-        <Text style={{ fontWeight: 700, color: 'blue' }}>6905 2052 205 75</Text>
+        - Số TK Ngân hàng{' '}
+        {`${data?.bank?.charAt(0).toUpperCase()}${data?.bank?.slice(1)}`}:{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>
+          {data?.bankNumber}
+        </Text>
         . Nội dung chuyển khoản:{' '}
         <Text style={{ fontWeight: 700, color: 'blue' }}>
           {data.name} T{new Date().getMonth() + 1}/{new Date().getFullYear()}

@@ -16,46 +16,67 @@ import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import IndentityModal from './AddIndentityModal';
 import { CreateCustomerProps } from '@/lib/interface';
+import toast from 'react-hot-toast';
 
 const EditCustomerModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const { isOpen, onClose, type, data, onAction } = useModal();
   const [identityModal, setIdentityModal] = useState(false);
   const [identityBackModal, setIdentityBackModal] = useState(false);
-  console.log(data);
   const isModalOpen = isOpen && type === EModalType.CUSTOMER_EDIT;
   const [cmndMatTruoc, setCmndMatTruoc] = useState([]);
   const [cmndMatSau, setCmndMatSau] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { handleSetCustomerValue, customerState, createCustomer } =
+  const { handleSetCustomerValue, customerState, updateCustomer } =
     useCustomer();
-  const handleAddCustomer = async () => {
+  const handleEditCustomer = async () => {
     // resetCustomerState()
-    setIsLoading(true);
-    const data = {
-      name: customerState.name,
-      phone: customerState.phone,
-      dayOfBirth: new Date(customerState.dayOfBirth),
-      identityCard: customerState.identityCard,
-      issuedDate: new Date(customerState.issuedDate),
-      address: customerState.address,
-      identityFrontUrl: customerState.identityFrontUrl,
-      identityBackUrl: customerState.identityBackUrl,
-      roomId: Number(customerState.roomId),
-    };
-    await createCustomer(data, onClose);
-    setIsLoading(false);
+    if (
+      customerState?.name &&
+      customerState?.phone &&
+      customerState?.dayOfBirth &&
+      customerState?.identityCard &&
+      customerState?.issuedDate &&
+      customerState?.address &&
+      customerState?.identityFrontUrl &&
+      customerState?.identityBackUrl &&
+      customerState?.roomId &&
+      apartmentChosen
+    ) {
+      setIsLoading(true);
+      const updateData = {
+        id: data?.id,
+        name: customerState.name,
+        phone: customerState.phone,
+        dayOfBirth: new Date(customerState.dayOfBirth),
+        identityCard: customerState.identityCard,
+        issuedDate: new Date(customerState.issuedDate),
+        address: customerState.address,
+        identityFrontUrl: customerState.identityFrontUrl,
+        identityBackUrl: customerState.identityBackUrl,
+        roomId: Number(customerState.roomId),
+        apartmentId: Number(apartmentChosen),
+      };
+      await updateCustomer(updateData, onClose);
+      onAction();
+      setIsLoading(false);
+    } else {
+      toast.error('Vui lòng điền đầy đủ thông tin');
+    }
   };
   useEffect(() => {
     if (data) {
+      setApartmentChosen(data?.apartmentId?.toString());
       Object.keys(data).map((key: any) => {
         if (key === 'dayOfBirth' || key === 'issuedDate') {
           handleSetCustomerValue(key, new Date(data[key]));
-        } else {
+        } else if (key !== 'roomId') {
           handleSetCustomerValue(key, data[key]);
         }
       });
+      handleSetCustomerValue('roomId', data?.roomId?.toString());
     }
   }, [data]);
+
   const {
     apartmentChosen,
     setApartmentChosen,
@@ -66,6 +87,7 @@ const EditCustomerModal = () => {
     scrollerRef,
     rooms,
   } = useApartmentScroll();
+
   return (
     <Modal
       closeOnClickOutside={false}
@@ -151,6 +173,7 @@ const EditCustomerModal = () => {
               onOpenChange={setIsScrollOpen}
               onChange={e => {
                 setApartmentChosen(e.target.value);
+                handleSetCustomerValue('roomId', '');
                 setCurrentPage(1);
               }}
             >
@@ -175,14 +198,13 @@ const EditCustomerModal = () => {
               placeholder="Chọn phòng"
               className="max-w-[100%] "
               disallowEmptySelection
-              isDisabled={!apartmentChosen.length}
+              isDisabled={!apartmentChosen?.length}
               selectedKeys={customerState.roomId ? [customerState.roomId] : []}
               onChange={e => {
                 handleSetCustomerValue('roomId', e.target.value);
               }}
             >
               {rooms?.map((item: any) => {
-                console.log('🚀 ~ {rooms?.map ~ item:', item);
                 return item?.rooms?.map((room: Room) => {
                   return (
                     <SelectItem key={room.id} value={room.id}>
@@ -298,7 +320,7 @@ const EditCustomerModal = () => {
         <div className="flex w-full flex-row justify-end mt-[60px]">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-            onPress={handleAddCustomer}
+            onPress={handleEditCustomer}
             isDisabled={isLoading}
           >
             {isLoading ? <Spinner size="sm" color="white" /> : 'Lưu'}

@@ -1,5 +1,5 @@
 import DataTable from '@/components/datatable/Datatable';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import {
@@ -77,10 +77,11 @@ const BillTable = ({ roomId }: BillTaleProps) => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState('');
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
 
   const { getBills } = useRoom();
   const { data: bills, isLoading } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILL, { currentPage, limit, roomId }],
+    queryKey: [queryKey.BILL, { currentPage, limit, roomId, userId }],
     queryFn: async () => {
       const res = await getBills({
         roomId: Number(roomId),

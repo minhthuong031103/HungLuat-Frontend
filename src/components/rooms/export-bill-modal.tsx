@@ -20,7 +20,7 @@ import { KEY_CONTEXT } from '@/lib/constant';
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId } = data;
-  const { state, exportBill } = useRoom();
+  const { state, exportBill, contractState, updateRoomStates } = useRoom();
   const [isLoading, setIsLoading] = useState(false);
   const isModalOpen = isOpen && type === 'exportBill';
   const handleExportBill = async blob => {
@@ -57,15 +57,19 @@ const ExportBillModal = () => {
       userName: JSON?.parse(localStorage.getItem(KEY_CONTEXT.USER) as any)
         ?.name,
       files: [blob],
+      note: state.note,
     };
-    await exportBill(data, onAction);
+    await updateRoomStates({ roomId, refetch: () => {} });
+    await exportBill(data, onAction, () => {
+      saveAs(
+        blob,
+        `${state.name} T${
+          new Date().getMonth() + 1
+        }/${new Date().getFullYear()}.pdf`,
+      );
+    });
     setIsLoading(false);
-    await saveAs(
-      blob,
-      `${state.name} T${
-        new Date().getMonth() + 1
-      }/${new Date().getFullYear()}.pdf`,
-    );
+
     onClose();
   };
 
@@ -101,6 +105,8 @@ const ExportBillModal = () => {
   const renderInputRow = inputs => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
   );
+
+  const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
     <Modal
       closeOnClickOutside={false}
@@ -217,6 +223,12 @@ const ExportBillModal = () => {
                   ...state,
                   startDate: formatDateCustom(state.startDate),
                   endDate: formatDateCustom(state.endDate),
+                  bank: userInfo?.bank,
+                  bankNumber: userInfo?.bankNumber,
+                  bankName: userInfo?.name,
+                  clientName: contractState?.clientName,
+                  clientPNumber: contractState?.clientPNumber,
+                  daySigned: formatDateCustom(contractState?.daySignContract),
                 }}
               />
             }

@@ -10,15 +10,16 @@ import toast from 'react-hot-toast';
 interface CustomerProps {
   id: string;
   name: string;
-  email: string;
+  email?: string;
   phone: string;
   address: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
   dayOfBirth: Date;
   identityCard: string;
-  issueDate: Date;
-  roomId: string;
+  issueDate?: Date;
+  roomId: string | number;
+  apartmentId: string | number;
   provinceValue?: string;
   districtValue?: string;
   wardValue?: string;
@@ -40,6 +41,7 @@ const initCustomerState: CustomerProps = {
   roomId: '',
   identityFrontUrl: '',
   identityBackUrl: '',
+  apartmentId: '',
 };
 
 const reducerContract = (state: CustomerProps, action) => {
@@ -88,11 +90,27 @@ export const useCustomer = () => {
       console.log('🚀 ~ createCustomer ~ error:', error);
     }
   };
-  interface ResponseProps {
-    items: CustomerProps[];
-    totalItems: number;
-    totalPages: number;
-  }
+  const updateCustomer = async (data: CustomerProps, onClose: () => void) => {
+    try {
+      const res = await requestApi({
+        endPoint: '/customer/update',
+        method: 'PUT',
+        body: data,
+      });
+      if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_UPDATED.VIE);
+        resetCustomerState();
+        onClose();
+      } else if (
+        res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_EXISTED.VIE);
+      }
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ createCustomer ~ error:', error);
+    }
+  };
   const getCustomers = async ({
     searchField = null,
     search = null,
@@ -194,5 +212,6 @@ export const useCustomer = () => {
     resetCustomerState,
     getCustomersByRoom,
     deleteCustomer,
+    updateCustomer,
   };
 };

@@ -43,7 +43,6 @@ const ImportExcel = ({ getData }) => {
       setUpdateData([...data]);
     }
   }, [data]);
-  console.log(data);
   const handleUpdateListProductItems = async () => {
     //
   };

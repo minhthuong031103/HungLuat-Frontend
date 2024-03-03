@@ -36,6 +36,7 @@ export interface CreateCustomerProps {
   roomId: string | number;
   dayOfBirth: Date;
   identityFrontUrl: string;
+  apartmentId: string | number;
   identityBackUrl: string;
 }
 
