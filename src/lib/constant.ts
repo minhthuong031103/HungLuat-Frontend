@@ -32,6 +32,7 @@ export const queryKey = {
   BILLAPARTMENT: 'billApartment',
   EMPLOYEES: 'employees',
   USERS: 'users',
+  PAYMENTS: 'payments',
 };
 
 export enum EModalType {

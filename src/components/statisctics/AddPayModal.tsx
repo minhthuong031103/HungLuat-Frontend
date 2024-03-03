@@ -1,9 +1,6 @@
 'use client';
-
 import { useApartmentScroll } from '@/hooks/useApartmentScroll';
-
 import { useModal } from '@/hooks/useModalStore';
-
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
@@ -14,16 +11,53 @@ import { payTypes } from '@/lib/constant';
 import { useEmployeeScroll } from '@/hooks/useEmployeeScroll';
 import { EmployeeProps } from '@/lib/interface';
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { checkValueNumberInput } from '@/lib/utils';
+import {
+  checkValueNumberInput,
+  insertSpaceEveryThreeCharacters,
+} from '@/lib/utils';
+import { useStatistics } from '@/hooks/useStatistics';
 
 const AddPayModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
   const [payType, setPayType] = useState('');
-  const [dayPay, setDayPay] = useState(new Date());
+  const [payDay, setPayDay] = useState(new Date());
   const [payMoney, setPayMoney] = useState('');
+  const [roomId, setRoomId] = useState('');
   const isModalOpen = isOpen && type === 'addPay';
-
+  const { createPay } = useStatistics();
+  const resetState = () => {
+    setPayType('');
+    setPayDay(new Date());
+    setPayMoney('');
+    setRoomId('');
+    setApartmentChosen('');
+    setEmployeeChosen('');
+    onClose();
+    onAction();
+  };
   const handleAddPay = async () => {
+    if (
+      payType &&
+      payMoney &&
+      payDay &&
+      employeesChosen &&
+      apartmentChosen &&
+      roomId
+    ) {
+      await createPay({
+        data: {
+          userName: employeesChosen,
+          paymentType: payType,
+          paymentAmount: Number(payMoney),
+          apartmentId: Number(apartmentChosen),
+          roomId: Number(roomId),
+          payDay: new Date(payDay),
+        },
+        refetch: resetState,
+      });
+    } else {
+      toast.error('Vui lòng nhập đủ thông tin');
+    }
     // resetCustomerState()
   };
 
@@ -81,7 +115,7 @@ const AddPayModal = () => {
             >
               {payTypes?.map((item: any) => {
                 return (
-                  <SelectItem key={item.id} value={item.value}>
+                  <SelectItem key={item.value} value={item.value}>
                     {item.value}
                   </SelectItem>
                 );
@@ -108,7 +142,7 @@ const AddPayModal = () => {
               {employees ? (
                 employees?.pages?.map(page =>
                   page?.data?.items?.map((item: EmployeeProps) => (
-                    <SelectItem key={item.id} value={item.name}>
+                    <SelectItem key={item.name} value={item.name}>
                       {item.name}
                     </SelectItem>
                   )),
@@ -121,9 +155,9 @@ const AddPayModal = () => {
           <div className="w-[33%]">
             <DatePicker
               label="Ngày chi"
-              date={dayPay}
+              date={payDay}
               labelCustom="font-medium text-sm text-black"
-              setDate={value => setDayPay(value)}
+              setDate={value => setPayDay(value)}
             />
           </div>
         </div>
@@ -167,8 +201,10 @@ const AddPayModal = () => {
               className="max-w-[100%] "
               disallowEmptySelection
               isDisabled={!apartmentChosen.length}
-              selectedKeys={[]}
-              onChange={e => {}}
+              selectedKeys={roomId ? [roomId] : []}
+              onChange={e => {
+                setRoomId(e.target.value);
+              }}
             >
               {rooms?.map((item: any) => {
                 return item?.rooms?.map((room: Room) => {
@@ -188,10 +224,11 @@ const AddPayModal = () => {
             type="text"
             placeholder="Nhập số tiền chi"
             isRequired
-            value={payMoney}
-            setValue={value =>
-              checkValueNumberInput('payMoney', value) && setPayMoney(value)
-            }
+            value={insertSpaceEveryThreeCharacters(payMoney)}
+            setValue={value => {
+              value = value.split(' ').join('');
+              checkValueNumberInput('payMoney', value) && setPayMoney(value);
+            }}
           />
         </div>
         <div className="flex w-full flex-row justify-end mt-[60px]">

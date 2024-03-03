@@ -4,7 +4,7 @@ import RoomInfo from '@/components/rooms/RoomInfo';
 import RoomSetting from '@/components/rooms/RoomSetting';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { cn } from '@/lib/utils';
 import {
   BreadcrumbItem,
@@ -88,12 +88,14 @@ const RoomDetailPage = () => {
       handleGetContract();
     }
   }, [roomId]);
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: roomDetail,
     refetch,
     isLoading,
   } = useQuery({
-    queryKey: [queryKey.ROOMDETAILS, { roomId }],
+    queryKey: [queryKey.ROOMDETAILS, { roomId, userId }],
     queryFn: async () => {
       const res = await getDetailRoom({
         roomId: roomId,
