@@ -77,12 +77,13 @@ const UserPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { onOpen } = useModal();
   const { getEmployees } = useEmployee();
+  const userAdmin = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   const {
     data: employees,
     isLoading,
     refetch,
   } = useQuery<ResponseProps>({
-    queryKey: [queryKey.EMPLOYEES, { currentPage, limit }],
+    queryKey: [queryKey.EMPLOYEES, { currentPage, limit, userAdmin }],
     queryFn: async () => {
       const res = await getEmployees({
         page: currentPage,
@@ -98,31 +99,34 @@ const UserPage = () => {
       switch (columnKey) {
         case columnKeys.action:
           return (
-            <div className="relative flex w-24 ml-3 items-center gap-2">
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button isIconOnly size="sm" variant="light">
-                    <VerticalDotsIcon className="text-black" />
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem
-                    onClick={() => onOpen('editEmployee', user, refetch)}
-                  >
-                    Chỉnh sửa
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => onOpen('updatePassword', user, refetch)}
-                  >
-                    Đổi mật khẩu
-                  </DropdownItem>
-                  <DropdownItem
-                    onClick={() => onOpen('deleteEmployee', user, refetch)}
-                  >
-                    Xóa
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+            <div className="relative flex w-24 ml-2 items-center gap-2">
+              {userAdmin?.roleName === 'Admin' &&
+                Number(userAdmin?.id) !== user.id && (
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button isIconOnly size="sm" variant="light">
+                        <VerticalDotsIcon className="text-black" />
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem
+                        onClick={() => onOpen('editEmployee', user, refetch)}
+                      >
+                        Chỉnh sửa
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => onOpen('updatePassword', user, refetch)}
+                      >
+                        Đổi mật khẩu
+                      </DropdownItem>
+                      <DropdownItem
+                        onClick={() => onOpen('deleteEmployee', user, refetch)}
+                      >
+                        Xóa
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                )}
             </div>
           );
         default:

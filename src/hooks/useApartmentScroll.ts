@@ -1,5 +1,5 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -14,6 +14,8 @@ export const useApartmentScroll = () => {
   const { getApartments } = useApartment();
   const { requestApi } = useApiAxios();
   const [rooms, setRooms] = useState([]);
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: apartments,
     fetchNextPage,
@@ -22,7 +24,7 @@ export const useApartmentScroll = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10, userId }],
     ({ pageParam = 0 }) =>
       getApartments({
         page: pageParam,

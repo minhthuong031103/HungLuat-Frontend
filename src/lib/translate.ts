@@ -130,6 +130,10 @@ export const RETURNED_MESSAGES = {
       ENG: 'Customer not found',
       VIE: 'Không tìm thấy khách hàng',
     },
+    CUSTOMER_UPDATED: {
+      ENG: 'Customer updated',
+      VIE: 'Cập nhật thông tin khách trọ thành công',
+    },
   },
   BILL: {
     BILL_CREATED: {
@@ -143,6 +147,16 @@ export const RETURNED_MESSAGES = {
     BILL_EXISTED: {
       ENG: 'Bill is existed',
       VIE: 'Hóa đơn đã tồn tại',
+    },
+    BILL_DELETED: {
+      ENG: 'Bill deleted',
+      VIE: 'Xoá hóa đơn thành công',
+    },
+  },
+  CONTRACT: {
+    CONTRACT_NOT_FOUND: {
+      ENG: 'Contract not found',
+      VIE: 'Không tìm thấy hợp đồng',
     },
   },
 };

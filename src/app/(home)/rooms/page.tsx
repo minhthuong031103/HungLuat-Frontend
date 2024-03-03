@@ -5,7 +5,7 @@ import ListRooms from '@/components/rooms/ListRooms';
 import { useApartment } from '@/hooks/useApartment';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { cn, getCurrentMonth } from '@/lib/utils';
 import { Apartment } from '@/types';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
@@ -36,6 +36,8 @@ const RoomsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const { getApartments } = useApartment();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: apartments,
     fetchNextPage,
@@ -44,7 +46,7 @@ const RoomsPage = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10, userId }],
     ({ pageParam = 0 }) =>
       getApartments({
         page: pageParam,
@@ -268,7 +270,7 @@ const RoomsPage = () => {
                       </div>
                     </div>
                   </Button>
-                  <ExportExcel data={floors} fileName={apartmentName} />
+                  <ExportExcel data={floors as any} fileName={apartmentName} />
                   <ImportExcel getData={{}} />
                 </div>
               )}

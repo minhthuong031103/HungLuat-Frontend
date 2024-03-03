@@ -3,7 +3,7 @@ import DataTable from '@/components/datatable/Datatable';
 import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useCustomer } from '@/hooks/useCustomer';
 import { useModal } from '@/hooks/useModalStore';
-import { EModalType, queryKey } from '@/lib/constant';
+import { EModalType, KEY_CONTEXT, queryKey } from '@/lib/constant';
 import {
   Button,
   Checkbox,
@@ -96,8 +96,10 @@ const CustomerList = ({ roomId }) => {
   const [searchField, setSearchField] = useState('name');
   const { getCustomersByRoom } = useCustomer();
   const { onOpen } = useModal();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const { data: customers, isLoading } = useQuery<ResponseProps>({
-    queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search }],
+    queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search, userId }],
     queryFn: async () => {
       const res = await getCustomersByRoom({
         page: currentPage,

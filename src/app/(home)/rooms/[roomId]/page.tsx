@@ -60,7 +60,34 @@ const RoomDetailPage = () => {
       },
     },
   ];
-  const { getDetailRoom, dispatch } = useRoom();
+  const { getDetailRoom, dispatch, getContract, handleSetContract } = useRoom();
+  useEffect(() => {
+    const handleGetContract = async () => {
+      const res = await getContract({ roomId });
+      console.log(res);
+      if (res?.data) {
+        handleSetContract('note', res?.data?.note);
+        handleSetContract(
+          'defaultElectric',
+          res?.data?.defaultElectric.toString(),
+        );
+        handleSetContract(
+          'daySignContract',
+          new Date(res?.data?.daySignContract),
+        );
+        handleSetContract(
+          'dayEndContract',
+          new Date(res?.data?.dayEndContract),
+        );
+        handleSetContract('customerId', res?.data?.customer?.id);
+        handleSetContract('clientPNumber', res?.data?.customer?.phone);
+        handleSetContract('clientName', res?.data?.customer?.name);
+      }
+    };
+    if (roomId) {
+      handleGetContract();
+    }
+  }, [roomId]);
   const {
     data: roomDetail,
     refetch,

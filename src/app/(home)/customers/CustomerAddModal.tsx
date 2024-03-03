@@ -39,7 +39,8 @@ const CustomerAddModal = () => {
       customerState?.address &&
       customerState?.identityFrontUrl &&
       customerState?.identityBackUrl &&
-      customerState?.roomId
+      customerState?.roomId &&
+      apartmentChosen
     ) {
       setIsLoading(true);
       const data = {
@@ -52,6 +53,7 @@ const CustomerAddModal = () => {
         identityFrontUrl: customerState.identityFrontUrl,
         identityBackUrl: customerState.identityBackUrl,
         roomId: Number(customerState.roomId),
+        apartmentId: Number(apartmentChosen),
       };
       await createCustomer(data, onClose);
       onAction();

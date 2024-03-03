@@ -4,7 +4,6 @@ import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { useCustomerByRoomScroll } from '@/hooks/useCustomerByRoomScroll';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
-import { checkValueNumberInput } from '@/lib/utils';
 import { Customer } from '@/types';
 import {
   Autocomplete,
@@ -13,16 +12,18 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { throttle } from 'lodash';
 import { useParams } from 'next/navigation';
 import ModalCus from '../modalCus/ModalCus';
 import { DatePicker } from '../ui/date-picker';
+import { useEffect } from 'react';
 const ContractRoomModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
   const { roomId } = useParams();
-  const { contractState, handleSetContract } = useRoom();
+  const { contractState, handleSetContract, createContract } = useRoom();
   const isModalOpen = isOpen && type === 'contractRoom';
-
+  useEffect(() => {
+    setCustomerChosen(contractState?.customerId?.toString());
+  }, [contractState?.customerId]);
   const {
     customerChosen,
     setCustomerChosen,
@@ -33,18 +34,18 @@ const ContractRoomModal = () => {
     setIsScrollOpen,
     scrollerRef,
   } = useCustomerByRoomScroll({ roomId });
-  console.log('🚀 ~ ContractRoomModal ~ customers:', customers);
-  const { createContract } = useRoom();
+
   const handleCreateContract = async () => {
     const data = {
-      ...contractState,
+      note: contractState.note,
+      daySignContract: contractState.daySignContract,
+      dayEndContract: contractState.dayEndContract,
       defaultElectric: Number(contractState.defaultElectric),
       customerId: Number(customerChosen),
       roomId: Number(roomId),
     };
     await createContract({ data, onClose });
     onAction();
-    setCustomerChosen('');
   };
 
   return (
@@ -58,18 +59,17 @@ const ContractRoomModal = () => {
               isRequired={true}
               placeholder="Chọn khách hàng"
               className="max-w-[100%]"
-              selectedKeys={customerChosen ? [customerChosen] : []}
+              selectedKey={customerChosen}
               isLoading={isFetching}
               scrollRef={scrollerRef}
               onOpenChange={setIsScrollOpen}
-              // onSelectionChange={e => {
-              //   setCustomerChosen(e as any);
-              // }}
-              onChange={e => {
-                console.log('🚀 ~ ContractRoomModal ~ e:', e);
-                setCustomerChosen(e.target.value);
-                setCurrentPage(1);
+              onSelectionChange={e => {
+                setCustomerChosen(e as any);
               }}
+              // onChange={e => {
+              //   setCustomerChosen(e.target.value);
+              //   setCurrentPage(1);
+              // }}
               // onInputChange={e => {
               //   setSearchValue(e);
               // }}
@@ -77,7 +77,6 @@ const ContractRoomModal = () => {
               {customers ? (
                 customers?.pages?.map(page =>
                   page?.data?.items?.map((item: Customer) => {
-                    console.log('🚀 ~ ContractRoomModal ~ item:', item);
                     return (
                       <AutocompleteItem key={item.id} value={item.id}>
                         {item.name}
@@ -95,7 +94,7 @@ const ContractRoomModal = () => {
               label="Ngày ký hợp đồng"
               date={contractState.daySignContract}
               labelCustom="font-medium text-sm text-black"
-              setDate={value => handleSetContract('dateContract', value)}
+              setDate={value => handleSetContract('daySignContract', value)}
             />
           </div>
           <div className="w-[33%]">
@@ -103,7 +102,7 @@ const ContractRoomModal = () => {
               label="Ngày hết hạn hợp đồng"
               labelCustom="font-medium text-sm text-black"
               date={contractState.dayEndContract}
-              setDate={value => handleSetContract('dateExpired', value)}
+              setDate={value => handleSetContract('dayEndContract', value)}
             />
           </div>
         </div>

@@ -3,7 +3,7 @@
 import DataTable from '@/components/datatable/Datatable';
 
 import { useStatistics } from '@/hooks/useStatistics';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { IncomeProps } from '@/lib/interface';
 import { convertPrice, convertPrismaTimeToDateTime } from '@/lib/utils';
 
@@ -61,8 +61,10 @@ const UserPage = () => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBill } = useStatistics();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const { data: bills, isLoading } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILL, { currentPage, limit }],
+    queryKey: [queryKey.BILL, { currentPage, limit, userId }],
     queryFn: async () => {
       const res = await getAllBill({
         page: currentPage,

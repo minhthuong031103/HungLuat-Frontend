@@ -2,7 +2,7 @@
 import { CommonSvg } from '@/assets/CommonSvg';
 
 import { useApartment } from '@/hooks/useApartment';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { cn, getCurrentMonth } from '@/lib/utils';
 import { Apartment } from '@/types';
 import { Select, SelectItem, Spinner } from '@nextui-org/react';
@@ -25,6 +25,8 @@ const FormsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { getApartments } = useApartment();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: apartments,
     fetchNextPage,
@@ -33,7 +35,7 @@ const FormsPage = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10, userId }],
     ({ pageParam = 0 }) =>
       getApartments({
         page: pageParam,

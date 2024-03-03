@@ -6,9 +6,10 @@ import { useSidebarContext } from '../layout/layout-context';
 import { ScrollArea } from '../ui/scroll-area';
 import { CollapseItems } from './collapse-items';
 import { Sidebar } from './sidebar.styles';
+import { KEY_CONTEXT } from '@/lib/constant';
 export const SidebarWrapper = () => {
   const { collapsed, setCollapsed } = useSidebarContext();
-
+  const user = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
     <div className="h-full z-[10] sticky top-0 ">
       {collapsed ? (
@@ -41,11 +42,13 @@ export const SidebarWrapper = () => {
               ]}
               title="Thống kê"
             />
-            <CollapseItems
-              icon={CommonSvg.stack()}
-              items={[{ name: 'Quản lý nhân viên', link: '/users' }]}
-              title="Quản lý hệ thống"
-            />
+            {user?.roleName === 'Admin' && (
+              <CollapseItems
+                icon={CommonSvg.stack()}
+                items={[{ name: 'Quản lý nhân viên', link: '/users' }]}
+                title="Quản lý hệ thống"
+              />
+            )}
           </div>
         </div>
       </ScrollArea>

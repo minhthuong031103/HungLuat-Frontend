@@ -2,7 +2,7 @@ import { CommonSvg } from '@/assets/CommonSvg';
 import DataTable from '@/components/datatable/Datatable';
 import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 
-import { EModalType, queryKey } from '@/lib/constant';
+import { EModalType, KEY_CONTEXT, queryKey } from '@/lib/constant';
 import {
   Button,
   Dropdown,
@@ -80,6 +80,8 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBills } = useRoom();
   const { onOpen } = useModal();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: billsApartment,
     isLoading,
@@ -87,7 +89,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
   } = useQuery<ResponseProps>({
     queryKey: [
       queryKey.BILLAPARTMENT,
-      { currentPage, limit, search, apartmentId },
+      { currentPage, limit, search, apartmentId, userId },
     ],
     queryFn: async () => {
       const res = await getAllBills({
@@ -118,7 +120,6 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
           cellValue,
         ).getFullYear()}`;
       }
-      console.log(bills);
       switch (columnKey) {
         case columnKeys.pdfUrl:
           return (

@@ -94,6 +94,7 @@ interface IRoomContext {
   state: any;
   dispatch: any;
   contractState: any;
+  getContract: any;
   dispatchContract: any;
   handleSetValue: any;
   handleSetContract: any;
@@ -109,6 +110,7 @@ interface IRoomContext {
   getDetailRoom: any;
   updateRoomStates: any;
   exportBill: any;
+  deleteBill: any;
   resetContractState: any;
 }
 interface StateContractProps {
@@ -118,6 +120,8 @@ interface StateContractProps {
   daySignContract: Date;
   dayEndContract: Date;
   note: string;
+  clientPNumber?: string;
+  clientPName?: string;
 }
 export interface exportBillProps {
   roomId: string;
@@ -142,6 +146,7 @@ export interface exportBillProps {
   fileName: string;
   userName: string;
   pdfUrl?: string;
+  note?: string;
 }
 const RoomContext = createContext<any>(null);
 
@@ -175,7 +180,9 @@ export const RoomProvider = ({ children }) => {
   const handleSetContract = (key, value) => {
     if (
       (key == 'defaultElectric' && checkValueNumberInput(key, value)) ||
-      key !== 'defaultElectric'
+      key !== 'defaultElectric' ||
+      (key == 'daySignContract' && value <= contractState.dayEndContract) ||
+      (key == 'dayEndContract' && value >= contractState.daySignContract)
     ) {
       if (key == 'defaultElectric' && value === '') {
         value = 0;
@@ -188,6 +195,7 @@ export const RoomProvider = ({ children }) => {
       ) {
         value = value.slice(1);
       }
+
       dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
     }
   };
@@ -665,7 +673,11 @@ export const RoomProvider = ({ children }) => {
     }
   };
 
-  const exportBill = async (data: exportBillProps, refetch: () => void) => {
+  const exportBill = async (
+    data: exportBillProps,
+    refetch: () => void,
+    download: () => void,
+  ) => {
     const formData = new FormData();
     const dataKey = Object.keys(data);
     for (let i = 0; i < dataKey.length; i++) {
@@ -680,11 +692,14 @@ export const RoomProvider = ({ children }) => {
         method: 'POST',
         body: formData,
       });
-      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
+      if (res?.message == RETURNED_MESSAGES.BILL.BILL_CREATED.ENG) {
         toast.success('Xuất hóa đơn thành công');
+        download();
         refetch();
-      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
-        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+      } else if (
+        res?.message == RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.VIE);
       } else {
         toast.error('Xuất hóa đơn thất bại');
       }
@@ -701,7 +716,6 @@ export const RoomProvider = ({ children }) => {
       });
       if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.ENG) {
         toast.success(RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.VIE);
-        resetContractState();
         onClose();
       } else if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.ENG) {
         toast.error(RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.VIE);
@@ -750,11 +764,41 @@ export const RoomProvider = ({ children }) => {
       toast.error('Xóa phòng thất bại');
     }
   };
+  const getContract = async ({ roomId }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/contract/find/${roomId}`,
+        method: 'GET',
+      });
+      return res?.data;
+    } catch (error) {
+      console.log('🚀 ~ getContract ~ error:', error);
+    }
+  };
+  const deleteBill = async ({ data, refetch }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/bill/${data?.id}`,
+        method: 'DELETE',
+      });
+      if (res?.message == RETURNED_MESSAGES.BILL.BILL_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.BILL.BILL_DELETED.VIE);
+        refetch();
+      } else if (res?.message == RETURNED_MESSAGES.BILL.BILL_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.BILL.BILL_NOT_FOUND.VIE);
+      } else {
+        toast.error('Xóa hóa đơn thất bại');
+      }
+    } catch (error) {
+      toast.error('Xóa hóa đơn thất bại');
+    }
+  };
   return (
     <RoomContext.Provider
       value={{
         state,
         dispatch,
+        getContract,
         contractState,
         dispatchContract,
         handleSetValue,
@@ -772,6 +816,7 @@ export const RoomProvider = ({ children }) => {
         resetContractState,
         updateRoom,
         deleteRoom,
+        deleteBill,
       }}
     >
       {children}

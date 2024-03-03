@@ -1,4 +1,4 @@
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ export const useEmployeeScroll = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const { getEmployees } = useEmployee();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
 
   const {
     data: employees,
@@ -19,7 +20,7 @@ export const useEmployeeScroll = () => {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery(
-    [queryKey.EMPLOYEES, { currentPage, limit: 10 }],
+    [queryKey.EMPLOYEES, { currentPage, limit: 10, userId }],
     ({ pageParam = 0 }) =>
       getEmployees({
         page: pageParam + 1,

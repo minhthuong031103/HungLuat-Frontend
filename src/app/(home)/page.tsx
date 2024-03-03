@@ -7,7 +7,7 @@ import { useApartment } from '@/hooks/useApartment';
 import { ChevronDown } from 'lucide-react';
 import { Pagination, Spinner } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { Apartment } from '@/types';
 import Loader from '@/components/Loader';
 interface ResponseProps {
@@ -20,7 +20,7 @@ const page = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { getApartments } = useApartment();
-
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
   const {
     data: apartments,
     isLoading,
@@ -28,7 +28,7 @@ const page = () => {
   } = useQuery<ResponseProps>({
     queryKey: [
       queryKey.APARTMENTS,
-      { currentPage, limit: 10, searchValue, searchField: 'name' },
+      { currentPage, limit: 10, searchValue, searchField: 'name', userId },
     ],
     queryFn: async () => {
       const res = await getApartments({

@@ -11,13 +11,18 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 
 import { EModalType } from '@/lib/constant';
+import { useRoom } from '@/hooks/useRoom';
 
 const DeleteBillModal = () => {
   const { isOpen, onClose, type, onAction, data } = useModal();
 
   const isModalOpen = isOpen && type === EModalType.BILL_DELETE;
-
+  const { deleteBill } = useRoom();
   const handleDeleteBill = async () => {
+    await deleteBill({
+      data,
+      refetch: onAction,
+    });
     onClose();
   };
   return (

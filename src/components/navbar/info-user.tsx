@@ -13,7 +13,6 @@ import { CiLogout } from 'react-icons/ci';
 const InfoUser = () => {
   const { onLogout } = useAuth();
   const user = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
-  console.log(user);
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -25,7 +24,8 @@ const InfoUser = () => {
           <Avatar
             className="border-2 rounded-full"
             size="sm"
-            src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+            showFallback
+            name={user?.name ? user?.name : 'USER'}
           />
         </Button>
       </DropdownTrigger>

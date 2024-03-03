@@ -6,7 +6,7 @@ import { VerticalDotsIcon } from '@/components/datatable/VerticalDotsIcon';
 import { useModal } from '@/hooks/useModalStore';
 
 import { useStatistics } from '@/hooks/useStatistics';
-import { EModalType, queryKey } from '@/lib/constant';
+import { EModalType, KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { IncomeProps } from '@/lib/interface';
 import { convertPrice, convertPrismaTimeToDateTime } from '@/lib/utils';
 import {
@@ -83,12 +83,14 @@ const UserPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const { getAllBill } = useStatistics();
   const { onOpen } = useModal();
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
+
   const {
     data: bills,
     isLoading,
     refetch,
   } = useQuery<ResponseProps>({
-    queryKey: [queryKey.BILL, { currentPage, limit }],
+    queryKey: [queryKey.BILL, { currentPage, limit, userId }],
     queryFn: async () => {
       const res = await getAllBill({
         page: currentPage,

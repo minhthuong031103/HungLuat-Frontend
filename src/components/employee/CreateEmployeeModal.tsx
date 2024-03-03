@@ -21,7 +21,7 @@ import { checkValueNumberInput } from '@/lib/utils';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
 import { useApartment } from '@/hooks/useApartment';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { queryKey } from '@/lib/constant';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { Apartment } from '@/types';
 import { useEmployee } from '@/hooks/useEmployee';
 import toast from 'react-hot-toast';
@@ -83,6 +83,7 @@ const CreateEmployeeModal = () => {
   const { getApartments } = useApartment();
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenSelect, setIsOpenSelect] = useState(false);
+  const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
 
   const {
     data: apartments,
@@ -91,7 +92,7 @@ const CreateEmployeeModal = () => {
 
     isFetching,
   } = useInfiniteQuery(
-    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10 }],
+    [queryKey.APARTMENTS_SELECT, { currentPage, limit: 10, userId }],
     ({ pageParam = 0 }) =>
       getApartments({
         page: pageParam,
