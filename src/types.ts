@@ -19,7 +19,7 @@ export type Room = {
   name: string;
   roomPrice: number;
   netProceeds: number;
-  status: boolean;
+  roomStatus: string;
   suspenseMoney: number;
 };
 export type Customer = {

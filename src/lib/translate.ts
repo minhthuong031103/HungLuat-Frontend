@@ -159,4 +159,22 @@ export const RETURNED_MESSAGES = {
       VIE: 'Không tìm thấy hợp đồng',
     },
   },
+  PAYMENT: {
+    PAYMENT_CREATED: {
+      ENG: 'Payment created',
+      VIE: 'Tạo phiếu chi thành công',
+    },
+    PAYMENT_UPDATED: {
+      ENG: 'Payment updated',
+      VIE: 'Cập nhật phiếu chi thành công',
+    },
+    PAYMENT_NOT_FOUND: {
+      ENG: 'Payment not found',
+      VIE: 'Không tìm thấy phiếu chi',
+    },
+    PAYMENT_DELETED: {
+      ENG: 'Payment deleted',
+      VIE: 'Xoá phiếu chi thành công',
+    },
+  },
 };
