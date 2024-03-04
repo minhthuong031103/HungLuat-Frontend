@@ -61,16 +61,14 @@ export const useStatistics = () => {
         method: 'POST',
         body: data,
       });
-      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
-        toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE);
+      if (res?.message == RETURNED_MESSAGES.PAYMENT.PAYMENT_CREATED.ENG) {
+        toast.success(RETURNED_MESSAGES.PAYMENT.PAYMENT_CREATED.VIE);
         refetch();
-      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
-        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
       } else {
-        toast.error('Cập nhật phòng thất bại');
+        toast.error('Tạo phiếu chi thất bại');
       }
     } catch (error) {
-      toast.error('Cập nhật phòng thất bại');
+      toast.error('Tạo phiếu chi thất bại');
     }
   };
   const editPay = async ({ data, refetch }: updateBillProps) => {
@@ -81,18 +79,30 @@ export const useStatistics = () => {
         body: data,
       });
       refetch();
+      if (res?.message == RETURNED_MESSAGES.PAYMENT.PAYMENT_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.PAYMENT.PAYMENT_UPDATED.VIE);
+        refetch();
+      } else {
+        toast.error('Cập nhật phiếu chi thất bại');
+      }
       return res;
     } catch (error) {
       console.log('🚀 ~ createBill ~ error:', error);
     }
   };
-  const deletePay = async ({ roomId, refetch }) => {
+  const deletePay = async ({ paymentId, refetch }) => {
     try {
       const res = await requestApi({
-        endPoint: `/bill/${roomId}`,
+        endPoint: `/payment/delete/${paymentId}`,
         method: 'DELETE',
       });
-      refetch();
+      if (res?.message == RETURNED_MESSAGES.PAYMENT.PAYMENT_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.PAYMENT.PAYMENT_DELETED.VIE);
+        refetch();
+      } else {
+        toast.error('Xóa phiếu chi thất bại');
+      }
+
       return res;
     } catch (error) {
       console.log('🚀 ~ createBill ~ error:', error);
@@ -119,11 +129,38 @@ export const useStatistics = () => {
       console.log('🚀 ~ getEmployees ~ error:', error);
     }
   };
+
+  const getDataPieChart = async ({ data }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/chart/revenue-and-payment/month`,
+        method: 'POST',
+        body: data,
+      });
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ getData ~ error:', error);
+    }
+  };
+  const getDataBarChart = async ({ data }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/chart/revenue-and-payment/year`,
+        method: 'POST',
+        body: data,
+      });
+      return res;
+    } catch (error) {
+      console.log('🚀 ~ getData ~ error:', error);
+    }
+  };
   return {
     getAllBill,
     createPay,
     editPay,
     deletePay,
     getAllPay,
+    getDataPieChart,
+    getDataBarChart,
   };
 };

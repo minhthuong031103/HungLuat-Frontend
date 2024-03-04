@@ -245,3 +245,27 @@ export function insertSpaceEveryThreeCharacters(inputString) {
   }
   return result.split('').reverse().join('');
 }
+
+export const getYearsArrayFrom2000ToNow = () => {
+  const currentYear = new Date().getFullYear();
+  const years = [] as any;
+  for (let i = 2000; i <= currentYear; i++) {
+    years.push({
+      id: i,
+      name: `Năm ${i}`,
+    });
+  }
+  return years;
+};
+
+export const getMonthsArray = () => {
+  const currentMonth = new Date().getMonth() + 1;
+  const month = [] as any;
+  for (let i = 1; i <= currentMonth; i++) {
+    month.push({
+      id: i,
+      name: `Tháng ${i}`,
+    });
+  }
+  return month;
+};

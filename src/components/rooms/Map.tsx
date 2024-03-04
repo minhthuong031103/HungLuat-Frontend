@@ -18,6 +18,12 @@ const Map = ({ apartmentId }: RoomCardProps) => {
       handleGetRooms();
     }
   }, [apartmentId]);
+  const bgColors = {
+    'Đã thuê': 'bg-room-green',
+    'Đang sửa chữa': 'bg-room-red',
+    'Đang trống': 'bg-room-empty',
+  };
+
   return (
     <>
       {!!floors?.length &&
@@ -30,7 +36,9 @@ const Map = ({ apartmentId }: RoomCardProps) => {
               <div className="flex gap-[2px] w-full flex-wrap flex-1">
                 {floor.rooms.map(room => {
                   return (
-                    <div className="w-[100px] h-[100px] bg-room-red items-center justify-center flex border-1 border-room-borderColor">
+                    <div
+                      className={`w-[100px] h-[100px] ${bgColors[room?.roomStatus ? room?.roomStatus : 'Đang trống']} items-center justify-center flex border-1 border-room-borderColor`}
+                    >
                       <span className="font-semibold text-sm text-white w-full px-2 text-center truncate">
                         {room.name}
                       </span>

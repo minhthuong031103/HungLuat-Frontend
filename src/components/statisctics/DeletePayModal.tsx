@@ -11,13 +11,18 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 
 import { EModalType } from '@/lib/constant';
+import { useStatistics } from '@/hooks/useStatistics';
 
 const DeletePayModal = () => {
-  const { isOpen, onClose, type, onAction, data } = useModal();
+  const { isOpen, onClose, type, data, onAction } = useModal();
 
   const isModalOpen = isOpen && type === EModalType.PAY_DELETE;
-
+  const { deletePay } = useStatistics();
   const handleDeletePay = async () => {
+    await deletePay({
+      paymentId: data?.id,
+      refetch: onAction,
+    });
     onClose();
   };
   return (
@@ -30,10 +35,15 @@ const DeletePayModal = () => {
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="text-center">
-                Bạn có đồng ý xóa phiếu chi{' '}
+                Bạn có đồng ý xóa phiếu chi
+                {' phòng '}
                 <span className="text-gray font-bold text-base">
-                  {data?.name}
+                  {data?.roomName}
                 </span>{' '}
+                ngày{' '}
+                <span className="text-gray font-bold text-base">
+                  {data?.payDay}
+                </span>
                 ?
               </div>
             </ModalBody>

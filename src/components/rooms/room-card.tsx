@@ -16,6 +16,11 @@ interface RoomCardProps {
   getRooms: () => void;
 }
 const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
+  const bgColors = {
+    'Đã thuê': 'bg-room-green',
+    'Đang sửa chữa': 'bg-room-red',
+    'Đang trống': 'bg-room-empty',
+  };
   const router = useRouter();
   return (
     <Card
@@ -26,7 +31,9 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
       }}
     >
       <CardHeader onClick={() => router.push(`/rooms/${room.id}`)}>
-        <div className="w-[190px] h-[10px] bg-room-green cursor-pointer"></div>
+        <div
+          className={`w-[190px] h-[10px] ${bgColors[room?.roomStatus ? room?.roomStatus : 'Đang trống']} cursor-pointer`}
+        ></div>
         <RoomDropdown
           className="absolute top-[18px] right-2 z-50 cursor-pointer hover:scale-105 border-1 rounded-full drop-shadow"
           actionType="Room"
@@ -88,7 +95,7 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
           onAction={() => {
             router.push(`/rooms/${room.id}`);
           }}
-          status={true}
+          status={room?.roomStatus}
         />
       </CardFooter>
     </Card>

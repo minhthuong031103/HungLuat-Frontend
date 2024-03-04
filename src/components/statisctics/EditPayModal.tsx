@@ -26,7 +26,6 @@ const AddPayModal = () => {
   const [flag, setFlag] = useState(true);
   useEffect(() => {
     if (data) {
-      console.log(data);
       setPayType(data?.paymentType);
       setPayDay(
         new Date(data?.payDayDefault ? data?.payDayDefault : new Date()),
@@ -43,6 +42,7 @@ const AddPayModal = () => {
     setRoomId('');
     setApartmentChosen('');
     setEmployeeChosen('');
+    setFlag(true);
     onClose();
     onAction();
   };

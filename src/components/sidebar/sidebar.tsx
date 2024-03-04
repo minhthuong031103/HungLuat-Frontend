@@ -38,7 +38,7 @@ export const SidebarWrapper = () => {
               items={[
                 { name: 'Quản lý thu', link: '/income' },
                 { name: 'Quản lý chi', link: '/pay' },
-                { name: 'Thống kê', link: '/5' },
+                { name: 'Thống kê', link: '/statistics' },
               ]}
               title="Thống kê"
             />
