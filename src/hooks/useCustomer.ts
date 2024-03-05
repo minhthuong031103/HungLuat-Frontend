@@ -191,11 +191,13 @@ export const useCustomer = () => {
         endPoint: `/customer/delete/${data.id}`,
         method: 'DELETE',
       });
-      if (res?.message == RETURNED_MESSAGES.AUTH.USER_DELETED.ENG) {
-        toast.success(RETURNED_MESSAGES.AUTH.USER_DELETED.VIE);
+      if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_DELETED.ENG) {
+        toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_DELETED.VIE);
         refetch();
-      } else if (res?.message == RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.ENG) {
-        toast.error(RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.VIE);
+      } else if (
+        res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_NOT_FOUND.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_NOT_FOUND.VIE);
       } else {
         toast.error('Xóa khách trọ thất bại');
       }

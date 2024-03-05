@@ -125,7 +125,10 @@ export const RETURNED_MESSAGES = {
       ENG: 'Customer created',
       VIE: 'Tạo khách hàng thành công',
     },
-
+    CUSTOMER_DELETED: {
+      ENG: 'Customer deleted',
+      VIE: 'Xoá tài khoản thành công',
+    },
     CUSTOMER_NOT_FOUND: {
       ENG: 'Customer not found',
       VIE: 'Không tìm thấy khách hàng',
