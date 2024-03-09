@@ -678,33 +678,92 @@ export const RoomProvider = ({ children }) => {
     refetch: () => void,
     download: () => void,
   ) => {
-    const formData = new FormData();
-    const dataKey = Object.keys(data);
-    for (let i = 0; i < dataKey.length; i++) {
-      formData.append(dataKey[i], data[dataKey[i]]);
-    }
-    const base64 = (await blobToBase64(data.files[0])) as string;
-    formData.append('files', base64);
+    if (checkUpdateState()) {
+      const dataUpdate = {
+        roomId: Number(data?.roomId),
+        roomStatus: state.roomStatus,
+        depositPrice: Number(state.depositPrice),
+        roomPrice: Number(state.roomPrice),
+        internetPrice: Number(state.internetPrice),
+        vehicleAmount: Number(state.vehicleAmount),
+        parkingPrice: Number(state.parkingPrice),
+        suspenseMoney: Number(state.netProceeds - state.newDebt),
+        dayStayed: Number(state.dayStayed),
+        peopleAmount: Number(state.peopleAmount),
+        electricPrice: Number(state.electricPrice),
+        defaultElectric: Number(state.defaultElectric),
+        oldElectric: Number(state.oldElectric),
+        oldDebt: Number(state.oldDebt),
+        newDebt: Number(state.newDebt),
+        newElectric: Number(state.newElectric),
+        otherPrice: Number(state.otherPrice),
+        surcharge: Number(state.surcharge),
+        peopleRealStayed: Number(state.peopleRealStayed),
+        servicePrice: Number(state.servicePrice),
+        elevatorPrice: Number(state.elevatorPrice),
+        totalElectricPrice: Number(state.totalElectricPrice),
+        waterPrice: Number(state.waterPrice),
+        netProceeds: Number(state.netProceeds),
+        totalParkingPrice: Number(state.totalParkingPrice),
+        totalWaterPrice: Number(state.totalWaterPrice),
+        totalElevatorPrice: Number(state.totalElevatorPrice),
+        startDate: state.startDate,
+        endDate: state.endDate,
+        note: state.note,
+      };
+      try {
+        const resUpdate = await requestApi({
+          endPoint: `/room/info/update`,
+          method: 'PUT',
+          body: dataUpdate,
+        });
+        if (resUpdate?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
+          const formData = new FormData();
+          const dataKey = Object.keys(data);
+          for (let i = 0; i < dataKey.length; i++) {
+            formData.append(dataKey[i], data[dataKey[i]]);
+          }
+          const base64 = (await blobToBase64(data.files[0])) as string;
+          formData.append('files', base64);
+          try {
+            const resExport = await requestApi({
+              endPoint: `/bill/export`,
+              method: 'POST',
+              body: formData,
+            });
 
-    try {
-      const res = await requestApi({
-        endPoint: `/bill/export`,
-        method: 'POST',
-        body: formData,
-      });
-      if (res?.message == RETURNED_MESSAGES.BILL.BILL_CREATED.ENG) {
-        toast.success('Xuất hóa đơn thành công');
-        download();
-        refetch();
-      } else if (
-        res?.message == RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.ENG
-      ) {
-        toast.error(RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.VIE);
-      } else {
-        toast.error('Xuất hóa đơn thất bại');
+            if (resExport?.message == RETURNED_MESSAGES.BILL.BILL_CREATED.ENG) {
+              toast.success('Xuất hóa đơn thành công');
+              download();
+              refetch();
+            } else if (
+              resExport?.message ==
+              RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.ENG
+            ) {
+              toast.error(RETURNED_MESSAGES.CONTRACT.CONTRACT_NOT_FOUND.VIE);
+            } else {
+              toast.error('Xuất hóa đơn thất bại');
+            }
+          } catch (error) {
+            toast.error('Xuất hóa đơn thất bại');
+          }
+        } else if (
+          resUpdate?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG
+        ) {
+          toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+        } else {
+          toast.error('Cập nhật phòng thất bại');
+        }
+      } catch (error) {
+        toast.error('Cập nhật phòng thất bại');
       }
-    } catch (error) {
-      toast.error('Xuất hóa đơn thất bại');
+    } else {
+      if (state.newElectric < state.oldElectric) {
+        toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
+        return;
+      }
+      toast.error('Vui lòng nhập đầy đủ thông tin');
+      return;
     }
   };
   const createContract = async ({ data, onClose }) => {

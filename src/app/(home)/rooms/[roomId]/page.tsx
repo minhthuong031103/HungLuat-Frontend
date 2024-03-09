@@ -45,6 +45,12 @@ const RoomDetailPage = () => {
       },
     },
     {
+      content: 'Xóa hợp đồng',
+      action: () => {
+        onOpen('deleteContract', roomDetail, refetch);
+      },
+    },
+    {
       content: 'Xuất phiếu',
       action: () => {
         onOpen('exportBill', { roomId: Number(roomId) }, refetch);
@@ -64,7 +70,6 @@ const RoomDetailPage = () => {
   useEffect(() => {
     const handleGetContract = async () => {
       const res = await getContract({ roomId });
-      console.log(res);
       if (res?.data) {
         handleSetContract('note', res?.data?.note);
         handleSetContract(

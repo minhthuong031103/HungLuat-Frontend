@@ -6,30 +6,39 @@ interface CustomInputProps {
   value: string;
   setValue: (e: string) => void;
   type?: string;
+  className?: string;
   disabled?: boolean;
   isRequired?: boolean;
   readonly?: boolean;
   isInvalid?: boolean;
   errorMessage?: string;
+  labelPlacement?: 'inside' | 'outside' | 'outside-left';
+  isClearable?: boolean;
 }
 
 export const CustomInput = ({
   label,
   placeholder,
   value,
+  className,
+  isClearable,
   setValue,
   disabled = false,
   isRequired = true,
   readonly = false,
   isInvalid = false,
   errorMessage,
+  labelPlacement = 'outside',
   type,
 }: CustomInputProps) => {
   return (
     <Input
       type={type}
       label={label}
-      isClearable={disabled || readonly ? false : true}
+      className={className}
+      isClearable={
+        disabled || readonly || type === 'number' || isClearable ? false : true
+      }
       variant="bordered"
       isDisabled={disabled}
       isRequired={isRequired}
@@ -41,7 +50,7 @@ export const CustomInput = ({
         setValue(e);
       }}
       placeholder={placeholder}
-      labelPlacement="outside"
+      labelPlacement={labelPlacement}
       classNames={{
         label: 'text-black ',
         input: [],
