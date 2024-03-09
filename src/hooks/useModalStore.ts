@@ -21,6 +21,7 @@ export type ModalType =
   | 'editEmployee'
   | 'updatePassword'
   | 'deleteEmployee'
+  | 'deleteContract'
   | 'addPay'
   | 'editPay'
   | EModalType.PAY_DELETE

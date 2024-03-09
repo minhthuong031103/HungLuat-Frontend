@@ -59,7 +59,7 @@ const ExportBillModal = () => {
       files: [blob],
       note: state.note,
     };
-    await updateRoomStates({ roomId, refetch: () => {} });
+    // await updateRoomStates({ roomId, refetch: () => {} });
     await exportBill(data, onAction, () => {
       saveAs(
         blob,

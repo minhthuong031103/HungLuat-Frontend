@@ -21,11 +21,19 @@ const montserrat = Montserrat({
 
 const metadata: Metadata = {
   title: 'HUNGLUAT APARTMENT',
+  metadataBase: new URL('http://localhost:3000'),
   description: 'Real Estate By UIT',
   openGraph: {
     images: [
       'https://wallpapers.com/images/hd/house-corner-architecture-7vl0mtz3dfxod0fd.webp',
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@eMartiiin94',
+    title: 'Title webtsite',
+    description: 'this is the desciption',
+    images: ['url/image.png'],
   },
 };
 

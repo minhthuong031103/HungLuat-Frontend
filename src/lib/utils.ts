@@ -269,3 +269,12 @@ export const getMonthsArray = () => {
   }
   return month;
 };
+
+export const returnValue = value => {
+  if (checkValueNumberInput('temp', value)) {
+    if (value === '') return '0';
+    if (value[0] === '0' && value.length > 1) return value.slice(1);
+    return value;
+  }
+  return null;
+};
