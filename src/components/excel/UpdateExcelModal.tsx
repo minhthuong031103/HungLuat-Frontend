@@ -11,16 +11,18 @@ import {
 import { useModal } from '@/hooks/useModalStore';
 
 import { EModalType } from '@/lib/constant';
-import { useCustomer } from '@/hooks/useCustomer';
+import { useRoom } from '@/hooks/useRoom';
 
 const UpdateExcelModal = () => {
   const { isOpen, onClose, type, onAction, data } = useModal();
 
   const isModalOpen = isOpen && type === EModalType.UPDATE_EXCEL;
-
+  const { updateExcel } = useRoom();
   const handleUpdateExcel = async () => {
-    console.log(data);
-    onClose();
+    await updateExcel({
+      data: data,
+      onClose: onClose,
+    });
   };
   return (
     <Modal size="2xl" isOpen={isModalOpen} onOpenChange={onClose}>

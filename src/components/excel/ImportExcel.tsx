@@ -7,6 +7,28 @@ import { CiTrash } from 'react-icons/ci';
 import { useModal } from '@/hooks/useModalStore';
 import { EModalType } from '@/lib/constant';
 const ImportExcel = () => {
+  const headerExcel = {
+    'Mã phòng': 'id',
+    'Giá phòng': 'roomPrice',
+    'Tiền cọc': 'depositPrice',
+    'Nợ cũ': 'oldDebt',
+    'Nợ mới': 'newDebt',
+    'Số lượng người ở thực tế': 'peopleRealStayed',
+    'Phụ thu (VND/người)': 'surcharge',
+    'Chỉ số điện lúc bàn giao (KWh)': 'defaultElectric',
+    'Chỉ số điện cũ (KWh)': 'oldElectric',
+    'Giá điện (VND/KWh)': 'electricPrice',
+    'Chỉ số điện mới (KWh)': 'newElectric',
+    'Số lượng người sử dụng dịch vụ': 'peopleAmount',
+    'Tiền nước (VND/người)': 'waterPrice',
+    'Tiền thang máy (VND/người)': 'elevatorPrice',
+    'Chi phí phát sinh': 'otherPrice',
+    'Tiền internet (VND/người)': 'internetPrice',
+    'Tiền dịch vụ (VND/phòng)': 'servicePrice',
+    'Số lượng xe': 'vehicleAmount',
+    'Tiền giữ xe (VND/xe)': 'parkingPrice',
+  };
+
   const [data, setData] = useState([]);
   const [excelName, setExcelName] = useState('');
   const { onOpen } = useModal();
@@ -35,7 +57,15 @@ const ImportExcel = () => {
       // const heads = headers.map((head) => head.replace(/ /g, '_'))
       const rows = fileData.slice(1);
       const jsonData = convertToJson(headers, rows);
-      setData(jsonData);
+      setData(
+        jsonData?.map(item => {
+          const newItem = {} as any;
+          Object.keys(item).forEach(key => {
+            newItem[headerExcel[key]] = item[key];
+          });
+          return newItem;
+        }),
+      );
     };
     return reader.readAsBinaryString(file);
   };
@@ -48,6 +78,7 @@ const ImportExcel = () => {
       onOpen(EModalType.UPDATE_EXCEL, data);
     }
   }, [data]);
+
   return (
     <div className="ml-4 flex items-center gap-4">
       {data.length > 0 && excelName ? (
