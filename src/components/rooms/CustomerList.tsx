@@ -138,7 +138,7 @@ const CustomerList = ({ roomId }) => {
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem
-                    onClick={() => onOpen(EModalType.CUSTOMER_EDIT)}
+                    onClick={() => onOpen(EModalType.CUSTOMER_EDIT, user)}
                   >
                     Chỉnh sửa
                   </DropdownItem>

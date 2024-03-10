@@ -4,11 +4,12 @@ import { GoUpload } from 'react-icons/go';
 import { useEffect } from 'react';
 import { Button, Tooltip } from '@nextui-org/react';
 import { CiTrash } from 'react-icons/ci';
-const ImportExcel = ({ getData }) => {
+import { useModal } from '@/hooks/useModalStore';
+import { EModalType } from '@/lib/constant';
+const ImportExcel = () => {
   const [data, setData] = useState([]);
-  const [updateData, setUpdateData] = useState([]);
   const [excelName, setExcelName] = useState('');
-
+  const { onOpen } = useModal();
   const convertToJson = (headers, data) => {
     const rows = [] as any;
     data.forEach(row => {
@@ -38,17 +39,18 @@ const ImportExcel = ({ getData }) => {
     };
     return reader.readAsBinaryString(file);
   };
+
+  const handleUpdateListProductItems = async () => {
+    onOpen(EModalType.UPDATE_EXCEL, data);
+  };
   useEffect(() => {
-    if (data) {
-      setUpdateData([...data]);
+    if (data.length > 0) {
+      onOpen(EModalType.UPDATE_EXCEL, data);
     }
   }, [data]);
-  const handleUpdateListProductItems = async () => {
-    //
-  };
   return (
     <div className="ml-4 flex items-center gap-4">
-      {updateData.length > 0 && excelName ? (
+      {data.length > 0 && excelName ? (
         <div
           className="flex items-center text-base cursor-pointer text-link underline"
           onClick={handleUpdateListProductItems}
@@ -60,7 +62,11 @@ const ImportExcel = ({ getData }) => {
             <div>
               <CiTrash
                 className="ml-2 h-5 w-5 text-red-600"
-                onClick={() => setExcelName('')}
+                onClick={e => {
+                  e.stopPropagation();
+                  setData([]);
+                  setExcelName('');
+                }}
               />
             </div>
           </Tooltip>

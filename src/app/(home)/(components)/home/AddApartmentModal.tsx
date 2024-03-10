@@ -86,7 +86,9 @@ const AddApartmentModal = () => {
                     placeholder="Nhập số tầng"
                     type="number"
                     value={apartmentFloor}
-                    setValue={setApartmentFloor}
+                    setValue={value => {
+                      if (Number(value) >= 0) setApartmentFloor(value);
+                    }}
                   />
                 </div>
               </div>

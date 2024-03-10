@@ -186,7 +186,7 @@ const RoomDetailPage = () => {
         ) : flag === 'customerList' ? (
           <CustomerList roomId={roomId} />
         ) : (
-          <RoomSetting />
+          <RoomSetting roomId={roomId} />
         )}
       </div>
     </div>

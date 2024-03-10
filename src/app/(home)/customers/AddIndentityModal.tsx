@@ -117,7 +117,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
       files.forEach(file => URL.revokeObjectURL(file?.preview || file?.url));
     };
   }, []);
-  const { upLoadImage, handleSetCustomerValue } = useCustomer();
+  const { upLoadImage } = useCustomer();
   const [isLoading, setIsLoading] = React.useState(false);
   const handleUpload = async () => {
     setIsLoading(true);

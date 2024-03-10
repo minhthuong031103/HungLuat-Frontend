@@ -29,7 +29,10 @@ const RevenueBarChart = ({ year }) => {
           year: Number(year),
         },
       });
-      return res?.data;
+      return res?.data.map(item => ({
+        ...item,
+        'Tổng lợi nhuận': item['Tổng thu'] - item['Tổng chi'],
+      }));
     },
   });
 

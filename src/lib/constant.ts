@@ -42,6 +42,7 @@ export enum EModalType {
   CUSTOMER_DELETE = 'CUSTOMER_DELETE',
   BILL_DELETE = 'BILL_DELETE',
   PAY_DELETE = 'PAY_DELETE',
+  UPDATE_EXCEL = 'UPDATE_EXCEL',
 }
 
 export const payTypes = [
@@ -62,3 +63,17 @@ export const payTypes = [
     value: 'Phí môi giới',
   },
 ];
+
+export const roomSettingValue = {
+  airConditioner: 'Máy lạnh',
+  stove: 'Bếp hồng ngoại',
+  television: 'Tivi',
+  refrigeratorBig: 'Tủ lạnh lớn',
+  refrigeratorSmall: 'Tủ lạnh nhỏ',
+  washingMachine: 'Máy giặt',
+  sofa: 'Sofa',
+  table: 'Bàn ăn',
+  shelve: 'Kệ gỗ',
+  tableAndChair: 'Bộ bàn ghế',
+  picture: 'Tranh',
+};

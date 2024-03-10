@@ -17,7 +17,7 @@ interface ApartmentCardProps {
 const ApartmentCard = ({ apartment, refresh }: ApartmentCardProps) => {
   return (
     <Card
-      className="max-w-[383px] h-[555px]"
+      className="max-w-[383px] h-[555px] cursor-pointer"
       classNames={{
         header: 'p-0 flex relative',
         base: 'rounded-none',
