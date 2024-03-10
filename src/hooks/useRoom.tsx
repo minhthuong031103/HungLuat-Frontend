@@ -112,6 +112,7 @@ interface IRoomContext {
   exportBill: any;
   deleteBill: any;
   resetContractState: any;
+  updateExcel: any;
 }
 interface StateContractProps {
   roomId: string;
@@ -852,6 +853,26 @@ export const RoomProvider = ({ children }) => {
       toast.error('Xóa hóa đơn thất bại');
     }
   };
+  const updateExcel = async ({ data, onClose }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/contract/create`,
+        method: 'POST',
+        body: data,
+      });
+      if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.VIE);
+        onClose();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.VIE);
+      } else {
+        toast.error('Tạo hợp đồng thất bại');
+      }
+      return res;
+    } catch (error) {
+      toast.error('Tạo hợp đồng thất bại');
+    }
+  };
   return (
     <RoomContext.Provider
       value={{
@@ -876,6 +897,7 @@ export const RoomProvider = ({ children }) => {
         updateRoom,
         deleteRoom,
         deleteBill,
+        updateExcel,
       }}
     >
       {children}

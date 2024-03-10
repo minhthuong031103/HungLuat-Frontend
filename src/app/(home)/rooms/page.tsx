@@ -295,7 +295,7 @@ const RoomsPage = () => {
                   <ListRooms
                     floors={floors}
                     getRooms={handleGetRooms}
-                    numberFloor={apartment.numberFloor}
+                    numberFloor={apartment?.numberFloor}
                   />
                 ) : (
                   <BuildingPlan apartmentId={apartmentChosen} />

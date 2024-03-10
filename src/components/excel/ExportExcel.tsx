@@ -84,7 +84,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
   return (
     <CSVLink
       data={exportData}
-      filename={fileName.toUpperCase()}
+      filename={fileName?.toUpperCase()}
       headers={headers}
     >
       <Button className="rounded-[8px] bg-blueButton ml-4">
