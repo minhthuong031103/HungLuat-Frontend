@@ -17,6 +17,7 @@ import { CustomSelect } from '../(components)/home/custom-select';
 import { SearchBar } from '../(components)/home/searchbar';
 import ImportExcel from '@/components/excel/ImportExcel';
 import ExportExcel from '@/components/excel/ExportExcel';
+import { useSearchParams } from 'next/navigation';
 
 interface ResponseProps {
   items: any;
@@ -30,7 +31,10 @@ const RoomsPage = () => {
   const [electricityPrice, setElectricityPrice] = useState('');
   const [statusRoom, setStatusRoom] = useState('');
   const [statusPayment, setStatusPayment] = useState('');
-  const [apartmentChosen, setApartmentChosen] = useState('');
+  const searchParams = useSearchParams();
+  const [apartmentChosen, setApartmentChosen] = useState(
+    searchParams.get('apartmentId') || '',
+  );
   const [apartmentName, setApartmentName] = useState('');
   const { onOpen } = useModal();
   const [currentPage, setCurrentPage] = useState(1);
@@ -271,7 +275,7 @@ const RoomsPage = () => {
                     </div>
                   </Button>
                   <ExportExcel data={floors as any} fileName={apartmentName} />
-                  <ImportExcel getData={{}} />
+                  <ImportExcel />
                 </div>
               )}
             </div>

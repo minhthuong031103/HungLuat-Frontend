@@ -1,10 +1,11 @@
 'use client';
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { useSettingRoom } from '@/hooks/useSettingRoom';
+import { roomSettingValue } from '@/lib/constant';
 import { returnValue } from '@/lib/utils';
 import { Button, Spinner } from '@nextui-org/react';
 
-import { useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 
 const initRoomSettingState = {
   airConditioner: '0',
@@ -43,20 +44,7 @@ const roomSettingReducer = (state: RoomSettingState, action) => {
   }
 };
 
-const roomSettingValue = {
-  airConditioner: 'Máy lạnh',
-  stove: 'Bếp hồng ngoại',
-  television: 'Tivi',
-  refrigeratorBig: 'Tủ lạnh lớn',
-  refrigeratorSmall: 'Tủ lạnh nhỏ',
-  washingMachine: 'Máy giặt',
-  sofa: 'Sofa',
-  table: 'Bàn ăn',
-  shelve: 'Kệ gỗ',
-  tableAndChair: 'Bộ bàn ghế',
-  picture: 'Tranh',
-};
-const RoomSetting = () => {
+const RoomSetting = ({ roomId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [floorArea, setFloorArea] = useState('0');
   const [subArea, setSubArea] = useState('0');
@@ -70,7 +58,33 @@ const RoomSetting = () => {
   const handleSetState = payload => {
     dispatch({ type: 'SET_STATE', payload });
   };
-  console.log(state);
+  const { configRoom, getConfigRoom } = useSettingRoom();
+  const handleConfigRoom = async () => {
+    setIsLoading(true);
+    const configData = {
+      floorArea: Number(floorArea),
+      subArea: Number(subArea),
+      furniture: JSON.stringify(state),
+    };
+
+    await configRoom({ data: configData, roomId: Number(roomId) });
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    const handleGetConfigRoom = async () => {
+      setIsLoading(true);
+      const res = await getConfigRoom({ roomId: Number(roomId) });
+      if (res?.data) {
+        setFloorArea(res?.data?.floorArea.toString());
+        setSubArea(res?.data?.subArea.toString());
+        handleSetState(JSON.parse(res?.data?.furniture));
+      }
+      setIsLoading(false);
+    };
+    if (roomId) {
+      handleGetConfigRoom();
+    }
+  }, [roomId]);
   return (
     <>
       {isLoading ? (
@@ -142,7 +156,7 @@ const RoomSetting = () => {
           <div className="flex justify-end w-full">
             <Button
               className="rounded-[8px] px-4 py-4 bg-blueButton"
-              onPress={() => {}}
+              onPress={handleConfigRoom}
             >
               <div className="flex flex-row items-center gap-x-[8px] ">
                 <div className="text-white mt-[1px] font-medium">Cập nhật</div>

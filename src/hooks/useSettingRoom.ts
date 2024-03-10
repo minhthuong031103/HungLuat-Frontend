@@ -1,65 +1,29 @@
+import { useApiAxios } from '@/components/providers/ApiProvider';
 import { useReducer } from 'react';
-
-interface SettingRoomProps {
-  typeRoom: string;
-  place: string;
-  floorArea: number;
-  ceilingArea: number;
-  totalArea: number;
-  toilet: string;
-  dryingYard: string;
-  washer: string;
-  parking: string;
-  typeLock: string;
-  pet: string;
-  furniture: string[];
-}
-
-const initSettingRoom: SettingRoomProps = {
-  typeRoom: '',
-  place: '',
-  floorArea: 0,
-  ceilingArea: 0,
-  totalArea: 0,
-  toilet: '',
-  dryingYard: '',
-  washer: '',
-  parking: '',
-  typeLock: '',
-  pet: '',
-  furniture: [],
-};
-
-const reducerContract = (state: SettingRoomProps, action) => {
-  switch (action.type) {
-    case 'SET_VALUES':
-      return { ...state, ...action.payload };
-    case 'RESET':
-      return { ...initSettingRoom };
-    default:
-      return state;
-  }
-};
+import toast from 'react-hot-toast';
 
 export const useSettingRoom = () => {
-  // const { requestApi } = useApiAxios()
-  const [settingRoomState, dispatchContract]: [SettingRoomProps, any] =
-    useReducer(reducerContract, initSettingRoom);
-
-  const handleSetSettingRoom = <K extends keyof SettingRoomProps>(
-    key: K,
-    value: SettingRoomProps[K],
-  ) => {
-    dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
+  const { requestApi } = useApiAxios();
+  const configRoom = async ({ roomId, data }) => {
+    const res = await requestApi({
+      endPoint: `/room/config/${roomId}`,
+      method: 'PUT',
+      body: data,
+    });
+    if (res?.message === 'Room updated')
+      toast.success('Cấu hình phòng thành công');
+    else toast.error('Cấu hình phòng thất bại');
+    return res;
   };
-
-  const resetSettingRoomState = () => {
-    dispatchContract({ type: 'RESET' });
+  const getConfigRoom = async ({ roomId }) => {
+    const res = await requestApi({
+      endPoint: `/room/config/${roomId}`,
+      method: 'GET',
+    });
+    return res;
   };
-
   return {
-    settingRoomState,
-    handleSetSettingRoom,
-    resetSettingRoomState,
+    configRoom,
+    getConfigRoom,
   };
 };
