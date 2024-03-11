@@ -15,6 +15,7 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const RoomDetailPage = () => {
   const { roomId } = useParams();
@@ -162,29 +163,30 @@ const RoomDetailPage = () => {
           </div>
         ))}
         <div className="ml-auto gap-3 flex">
-          {buttonRender?.map(item => {
-            if (
-              (item?.content === 'Xuất phiếu' &&
-                (roomDetail?.billStatus === 'Đã thu' ||
-                  !roomDetail?.billStatus)) ||
-              item?.content !== 'Xuất phiếu'
-            ) {
-              return (
-                <div key={item.content}>
-                  <Button
-                    className="rounded-[8px] px-4 py-2 bg-blueButton"
-                    onPress={item.action}
-                  >
-                    <div className="flex flex-row items-center gap-x-[8px] ">
-                      <div className="text-white mt-[1px] font-medium">
-                        {item.content}
-                      </div>
-                    </div>
-                  </Button>
+          {buttonRender?.map(item => (
+            <div key={item.content}>
+              <Button
+                className="rounded-[8px] px-4 py-2 bg-blueButton"
+                onPress={() => {
+                  if (
+                    item?.content === 'Xuất phiếu' &&
+                    roomDetail?.billStatus === 'Chờ thu'
+                  ) {
+                    return toast?.error(
+                      `Bạn đã xuất hóa đơn phòng ${roomDetail?.name}. Vui lòng xác nhận trước khi xuất hóa đơn mới!`,
+                    );
+                  }
+                  return item.action();
+                }}
+              >
+                <div className="flex flex-row items-center gap-x-[8px] ">
+                  <div className="text-white mt-[1px] font-medium">
+                    {item.content}
+                  </div>
                 </div>
-              );
-            }
-          })}
+              </Button>
+            </div>
+          ))}
         </div>
       </div>
       <Divider className="mt-8" />
