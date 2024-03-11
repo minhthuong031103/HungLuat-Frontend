@@ -98,7 +98,11 @@ const CustomerList = ({ roomId }) => {
   const { onOpen } = useModal();
   const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
 
-  const { data: customers, isLoading } = useQuery<ResponseProps>({
+  const {
+    data: customers,
+    isLoading,
+    refetch,
+  } = useQuery<ResponseProps>({
     queryKey: [queryKey.CUSTOMERS, { currentPage, limit, search, userId }],
     queryFn: async () => {
       const res = await getCustomersByRoom({
@@ -138,11 +142,19 @@ const CustomerList = ({ roomId }) => {
                 </DropdownTrigger>
                 <DropdownMenu>
                   <DropdownItem
-                    onClick={() => onOpen(EModalType.CUSTOMER_EDIT, user)}
+                    onClick={() =>
+                      onOpen(EModalType.CUSTOMER_EDIT, user, refetch)
+                    }
                   >
                     Chỉnh sửa
                   </DropdownItem>
-                  <DropdownItem>Xóa</DropdownItem>
+                  <DropdownItem
+                    onClick={() =>
+                      onOpen(EModalType.CUSTOMER_DELETE, user, refetch)
+                    }
+                  >
+                    Xóa
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>

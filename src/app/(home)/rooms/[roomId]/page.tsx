@@ -54,7 +54,15 @@ const RoomDetailPage = () => {
     {
       content: 'Xuất phiếu',
       action: () => {
-        onOpen('exportBill', { roomId: Number(roomId) }, refetch);
+        onOpen(
+          'exportBill',
+          {
+            roomId: Number(roomId),
+            apartmentName: roomDetail?.apartment?.name,
+            address: roomDetail?.apartment?.address,
+          },
+          refetch,
+        );
       },
     },
     {
@@ -136,7 +144,6 @@ const RoomDetailPage = () => {
       return res?.data;
     },
   });
-
   return (
     <div className="pt-2 space-y-4">
       <Breadcrumbs>

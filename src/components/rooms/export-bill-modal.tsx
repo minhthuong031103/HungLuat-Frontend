@@ -19,8 +19,8 @@ import { Textarea } from '../ui/text-area';
 import { KEY_CONTEXT } from '@/lib/constant';
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
-  const { roomId } = data;
-  const { state, exportBill, contractState, updateRoomStates } = useRoom();
+  const { roomId, address, apartmentName } = data;
+  const { state, exportBill, contractState } = useRoom();
   const [isLoading, setIsLoading] = useState(false);
   const isModalOpen = isOpen && type === 'exportBill';
   const handleExportBill = async blob => {
@@ -105,7 +105,6 @@ const ExportBillModal = () => {
   const renderInputRow = inputs => (
     <div className="w-full flex items-center gap-5">{inputs}</div>
   );
-
   const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
     <Modal
@@ -226,9 +225,12 @@ const ExportBillModal = () => {
                   bank: userInfo?.bank,
                   bankNumber: userInfo?.bankNumber,
                   bankName: userInfo?.name,
+                  phoneNumber: userInfo?.phone,
                   clientName: contractState?.clientName,
                   clientPNumber: contractState?.clientPNumber,
                   daySigned: formatDateCustom(contractState?.daySignContract),
+                  apartmentName: apartmentName,
+                  address: address,
                 }}
               />
             }
