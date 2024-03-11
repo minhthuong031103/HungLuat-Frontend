@@ -165,7 +165,8 @@ const RoomDetailPage = () => {
           {buttonRender?.map(item => {
             if (
               (item?.content === 'Xuất phiếu' &&
-                roomDetail?.billStatus === 'Đã thu') ||
+                (roomDetail?.billStatus === 'Đã thu' ||
+                  !roomDetail?.billStatus)) ||
               item?.content !== 'Xuất phiếu'
             ) {
               return (
