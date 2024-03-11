@@ -856,8 +856,8 @@ export const RoomProvider = ({ children }) => {
   const updateExcel = async ({ data, refetch }) => {
     try {
       const res = await requestApi({
-        endPoint: `/contract/create`,
-        method: 'POST',
+        endPoint: `/room/update-many`,
+        method: 'PUT',
         body: data,
       });
       if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
