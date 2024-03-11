@@ -860,8 +860,8 @@ export const RoomProvider = ({ children }) => {
         method: 'PUT',
         body: data,
       });
-      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
-        toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE);
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOMS_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOMS_UPDATED.VIE);
         refetch();
       } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
         toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
