@@ -140,7 +140,7 @@ export const RETURNED_MESSAGES = {
     },
     CUSTOMER_DELETED: {
       ENG: 'Customer deleted',
-      VIE: 'Xoá tài khoản thành công',
+      VIE: 'Xoá khách thuê thành công',
     },
     CUSTOMER_NOT_FOUND: {
       ENG: 'Customer not found',

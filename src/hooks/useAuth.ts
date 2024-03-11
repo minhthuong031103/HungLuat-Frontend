@@ -52,7 +52,7 @@ export const useAuth = () => {
   };
 
   const onLogout = async () => {
-    const res = await axiosClient.put('/auth/logout');
+    // const res = await axiosClient.put('/auth/logout');
     removeKeySite();
     dispatchActions({ type: EUserType.LOGOUT, payload: {} }, userDispatch);
   };

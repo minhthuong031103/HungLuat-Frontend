@@ -132,7 +132,6 @@ const Invoice = ({ data }) => {
       borderLeftWidth: 1,
     },
   });
-
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
       <View style={styles.spaceBetween}>
@@ -143,9 +142,10 @@ const Invoice = ({ data }) => {
                 fontSize: 12,
                 fontWeight: 700,
                 textDecoration: 'underline',
+                textTransform: 'uppercase',
               }}
             >
-              HÙNG LUẬT GROUP
+              {data?.apartmentName}
             </Text>
           </View>
           <View>
@@ -154,7 +154,7 @@ const Invoice = ({ data }) => {
                 fontSize: 10,
               }}
             >
-              Địa chỉ: 123, Mai Phú Thọ, Q.2, TPHCM.
+              Địa chỉ: {data?.address}
             </Text>
           </View>
           <View>
@@ -164,7 +164,9 @@ const Invoice = ({ data }) => {
               }}
             >
               Điện thoại:{' '}
-              <Text style={{ color: 'blue' }}>0963618637 (Mr Bình)</Text>
+              <Text style={{ color: 'blue' }}>
+                {data?.phoneNumber} ({data?.bankName})
+              </Text>
             </Text>
           </View>
         </View>
