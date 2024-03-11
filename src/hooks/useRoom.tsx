@@ -91,6 +91,13 @@ const initContractState: StateContractProps = {
 };
 
 interface IRoomContext {
+  confirmBill: ({
+    roomId,
+    action,
+  }: {
+    roomId: string | number;
+    action: () => void;
+  }) => void;
   state: any;
   dispatch: any;
   contractState: any;
@@ -873,6 +880,24 @@ export const RoomProvider = ({ children }) => {
       toast.error('Cập nhật phòng thất bại');
     }
   };
+  const confirmBill = async ({ roomId, action }) => {
+    try {
+      const res = await requestApi({
+        endPoint: `/room/bill-confirm/${roomId}`,
+        method: 'PUT',
+      });
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOM_UPDATED.VIE);
+        action();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
+      } else {
+        toast.error('Xác nhận hóa đơn thất bại');
+      }
+    } catch (error) {
+      toast.error('Xác nhận hóa đơn thất bại');
+    }
+  };
   return (
     <RoomContext.Provider
       value={{
@@ -898,6 +923,7 @@ export const RoomProvider = ({ children }) => {
         deleteRoom,
         deleteBill,
         updateExcel,
+        confirmBill,
       }}
     >
       {children}

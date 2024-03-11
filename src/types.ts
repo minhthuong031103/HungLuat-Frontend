@@ -10,7 +10,6 @@ export type Apartment = {
 };
 export type Room = {
   apartmentId: string;
-  billStatus: boolean;
   oldDebt: number;
   depositPrice: number;
   note: string;
@@ -20,6 +19,7 @@ export type Room = {
   roomPrice: number;
   netProceeds: number;
   roomStatus: string;
+  billStatus: string;
   suspenseMoney: number;
 };
 export type Customer = {

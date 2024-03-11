@@ -94,7 +94,6 @@ const RoomDetailPage = () => {
     }
   }, [roomId]);
   const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
-
   const {
     data: roomDetail,
     refetch,
@@ -136,6 +135,7 @@ const RoomDetailPage = () => {
       return res?.data;
     },
   });
+
   return (
     <div className="pt-2 space-y-4">
       <Breadcrumbs>
@@ -162,20 +162,28 @@ const RoomDetailPage = () => {
           </div>
         ))}
         <div className="ml-auto gap-3 flex">
-          {buttonRender?.map(item => (
-            <div key={item.content}>
-              <Button
-                className="rounded-[8px] px-4 py-2 bg-blueButton"
-                onPress={item.action}
-              >
-                <div className="flex flex-row items-center gap-x-[8px] ">
-                  <div className="text-white mt-[1px] font-medium">
-                    {item.content}
-                  </div>
+          {buttonRender?.map(item => {
+            if (
+              (item?.content === 'Xuất phiếu' &&
+                roomDetail?.billStatus === 'Đã thu') ||
+              item?.content !== 'Xuất phiếu'
+            ) {
+              return (
+                <div key={item.content}>
+                  <Button
+                    className="rounded-[8px] px-4 py-2 bg-blueButton"
+                    onPress={item.action}
+                  >
+                    <div className="flex flex-row items-center gap-x-[8px] ">
+                      <div className="text-white mt-[1px] font-medium">
+                        {item.content}
+                      </div>
+                    </div>
+                  </Button>
                 </div>
-              </Button>
-            </div>
-          ))}
+              );
+            }
+          })}
         </div>
       </div>
       <Divider className="mt-8" />

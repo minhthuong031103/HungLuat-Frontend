@@ -9,19 +9,19 @@ import {
   Button,
 } from '@nextui-org/react';
 import { useModal } from '@/hooks/useModalStore';
-import { useContract } from '@/hooks/useContract';
+
+import { EModalType } from '@/lib/constant';
 import { useRoom } from '@/hooks/useRoom';
 
-const DeleteContractModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
-  const isModalOpen = isOpen && type === 'deleteContract';
-  const { deleteContract } = useContract();
-  const { resetContractState } = useRoom();
-  const handleDeleteContract = async () => {
-    await deleteContract({
-      contractId: data?.currentContractId,
+const ConfirmBillModal = () => {
+  const { isOpen, onClose, type, data, onAction } = useModal();
+  const isModalOpen = isOpen && type === EModalType.CONFIRM_BILL;
+  const { confirmBill } = useRoom();
+  const handleConfirmBill = async () => {
+    await confirmBill({
+      roomId: data?.roomId,
       action: () => {
-        resetContractState();
+        onAction();
         onClose();
       },
     });
@@ -32,11 +32,11 @@ const DeleteContractModal = () => {
         {() => (
           <>
             <ModalHeader className="flex justify-center items-center text-gray uppercase font-bold text-xl">
-              Xóa hợp đồng
+              Xác nhận thu tiền
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="text-center">
-                Bạn có đồng ý xóa hợp đồng phòng{' '}
+                Bạn có đồng ý xác nhận đã thu tiền phòng{' '}
                 <span className="text-gray font-bold text-base">
                   {data?.name}
                 </span>{' '}
@@ -52,9 +52,9 @@ const DeleteContractModal = () => {
               </Button>
               <Button
                 className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
-                onPress={handleDeleteContract}
+                onPress={handleConfirmBill}
               >
-                Xóa
+                Xác nhận
               </Button>
             </ModalFooter>
           </>
@@ -64,4 +64,4 @@ const DeleteContractModal = () => {
   );
 };
 
-export default DeleteContractModal;
+export default ConfirmBillModal;
