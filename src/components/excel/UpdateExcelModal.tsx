@@ -21,7 +21,10 @@ const UpdateExcelModal = () => {
   const handleUpdateExcel = async () => {
     await updateExcel({
       data: data,
-      onClose: onClose,
+      refetch: () => {
+        onAction();
+        onClose();
+      },
     });
   };
   return (

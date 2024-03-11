@@ -275,7 +275,7 @@ const RoomsPage = () => {
                     </div>
                   </Button>
                   <ExportExcel data={floors as any} fileName={apartmentName} />
-                  <ImportExcel />
+                  <ImportExcel refetch={handleGetRooms} />
                 </div>
               )}
             </div>
