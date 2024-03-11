@@ -43,6 +43,7 @@ export enum EModalType {
   BILL_DELETE = 'BILL_DELETE',
   PAY_DELETE = 'PAY_DELETE',
   UPDATE_EXCEL = 'UPDATE_EXCEL',
+  CONFIRM_BILL = 'CONFIRM_BILL',
 }
 
 export const payTypes = [

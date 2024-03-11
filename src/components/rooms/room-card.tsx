@@ -21,6 +21,7 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
     'Đang sửa chữa': 'bg-room-red',
     'Đang trống': 'bg-room-empty',
   };
+
   const router = useRouter();
   return (
     <Card
@@ -95,7 +96,10 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
           onAction={() => {
             router.push(`/rooms/${room.id}`);
           }}
-          status={room?.roomStatus}
+          refetch={getRooms}
+          roomId={room?.id}
+          name={room?.name}
+          status={room?.billStatus}
         />
       </CardFooter>
     </Card>

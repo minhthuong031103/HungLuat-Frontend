@@ -1,11 +1,23 @@
 import { CommonSvg } from '@/assets/CommonSvg';
+import { useModal } from '@/hooks/useModalStore';
+import { EModalType } from '@/lib/constant';
 
 interface RoomActionProps {
   status: string;
   onAction: () => void;
+  name: string;
+  roomId: string | number;
+  refetch?: () => void;
 }
-const RoomAction = ({ status, onAction }: RoomActionProps) => {
-  const renderStayed = () => {
+const RoomAction = ({
+  status,
+  onAction,
+  name,
+  refetch,
+  roomId,
+}: RoomActionProps) => {
+  const { onOpen } = useModal();
+  const renderExport = () => {
     return (
       <>
         <div className="py-2 px-4 flex items-center justify-center bg-room-red">
@@ -15,20 +27,28 @@ const RoomAction = ({ status, onAction }: RoomActionProps) => {
       </>
     );
   };
-  // const renderEmpty = () => {
-  //   return (
-  //     <>
-  //       <p className="text-room-empty text-sm font-bold ">Trống</p>
-  //       <div className="ml-[10px]">{CommonSvg.empty()}</div>
-  //     </>
-  //   );
-  // };
+  const renderPending = () => {
+    return (
+      <>
+        <div className="py-2 px-4 flex items-center justify-center bg-room-orange">
+          <p className="text-white text-sm font-bold ">Chờ thu</p>
+        </div>
+        <div className="ml-[10px]">{CommonSvg.pending()}</div>
+      </>
+    );
+  };
+  const handleAction = () => {
+    if (status === 'Chờ thu') {
+      return onOpen(EModalType.CONFIRM_BILL, { name, roomId }, refetch);
+    }
+    return onAction();
+  };
   return (
     <div
       className="flex items-center justify-center cursor-pointer"
-      onClick={onAction}
+      onClick={handleAction}
     >
-      {renderStayed()}
+      {status === 'Chờ thu' ? renderPending() : renderExport()}
     </div>
   );
 };

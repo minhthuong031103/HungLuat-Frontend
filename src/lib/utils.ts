@@ -131,6 +131,7 @@ export interface GetQueryParamsProps {
   limit?: string | number;
   sortDirection?: 'asc' | 'desc';
   sortBy?: string;
+  apartmentId?: string | number;
 }
 
 export const getQueryParams = ({

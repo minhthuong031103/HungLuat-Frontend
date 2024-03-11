@@ -22,6 +22,7 @@ import DeletePayModal from '../statisctics/DeletePayModal';
 import DeleteBillModal from '../statisctics/DeleteBillModal';
 import DeleteContractModal from '../rooms/DeleteContractModal';
 import UpdateExcelModal from '../excel/UpdateExcelModal';
+import ConfirmBillModal from '../rooms/ConfirmBillModal';
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -54,6 +55,7 @@ export const ModalProvider = () => {
       <DeletePayModal />
       <DeleteBillModal />
       <UpdateExcelModal />
+      <ConfirmBillModal />
     </>
   );
 };

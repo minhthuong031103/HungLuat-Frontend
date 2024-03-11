@@ -26,7 +26,9 @@ export type ModalType =
   | 'editPay'
   | EModalType.PAY_DELETE
   | EModalType.BILL_DELETE
-  | EModalType.UPDATE_EXCEL;
+  | EModalType.UPDATE_EXCEL
+  | EModalType.CONFIRM_BILL;
+
 interface ModalStore {
   type: ModalType | null;
   isOpen: boolean;

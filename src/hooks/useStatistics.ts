@@ -38,18 +38,32 @@ export const useStatistics = () => {
     limit = 10,
     sortBy = 'createdAt',
     sortDirection = 'asc',
+    apartmentId,
   }: GetQueryParamsProps) => {
     try {
-      const res = await requestApi({
-        endPoint: `/bill/all?${getQueryParams({
-          page,
-          limit,
-          sortBy,
-          sortDirection,
-        })}`,
-        method: 'GET',
-      });
-      return res;
+      if (apartmentId) {
+        const res = await requestApi({
+          endPoint: `/bill/all/${apartmentId}?${getQueryParams({
+            page,
+            limit,
+            sortBy,
+            sortDirection,
+          })}`,
+          method: 'GET',
+        });
+        return res;
+      } else {
+        const res = await requestApi({
+          endPoint: `/bill/all?${getQueryParams({
+            page,
+            limit,
+            sortBy,
+            sortDirection,
+          })}`,
+          method: 'GET',
+        });
+        return res;
+      }
     } catch (error) {
       console.log('🚀 ~ getEmployees ~ error:', error);
     }
@@ -113,18 +127,32 @@ export const useStatistics = () => {
     limit = 10,
     sortBy = 'createdAt',
     sortDirection = 'asc',
+    apartmentId,
   }: GetQueryParamsProps) => {
     try {
-      const res = await requestApi({
-        endPoint: `/payment/all?${getQueryParams({
-          page,
-          limit,
-          sortBy,
-          sortDirection,
-        })}`,
-        method: 'GET',
-      });
-      return res;
+      if (apartmentId) {
+        const res = await requestApi({
+          endPoint: `/payment/all/${apartmentId}?${getQueryParams({
+            page,
+            limit,
+            sortBy,
+            sortDirection,
+          })}`,
+          method: 'GET',
+        });
+        return res;
+      } else {
+        const res = await requestApi({
+          endPoint: `/payment/all?${getQueryParams({
+            page,
+            limit,
+            sortBy,
+            sortDirection,
+          })}`,
+          method: 'GET',
+        });
+        return res;
+      }
     } catch (error) {
       console.log('🚀 ~ getEmployees ~ error:', error);
     }

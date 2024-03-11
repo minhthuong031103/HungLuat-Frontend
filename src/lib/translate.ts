@@ -70,7 +70,16 @@ export const RETURNED_MESSAGES = {
       VIE: 'Xóa căn hộ thành công',
     },
   },
-
+  CONTRACT: {
+    CONTRACT_DELETED: {
+      ENG: 'Contract deleted',
+      VIE: 'Xóa hợp đồng thành công',
+    },
+    CONTRACT_NOT_FOUND: {
+      ENG: 'Contract not found',
+      VIE: 'Không tìm thấy hợp đồng',
+    },
+  },
   ROOM: {
     ROOM_EXISTED: {
       ENG: 'Room is existed',
@@ -160,12 +169,7 @@ export const RETURNED_MESSAGES = {
       VIE: 'Xoá hóa đơn thành công',
     },
   },
-  CONTRACT: {
-    CONTRACT_NOT_FOUND: {
-      ENG: 'Contract not found',
-      VIE: 'Không tìm thấy hợp đồng',
-    },
-  },
+
   PAYMENT: {
     PAYMENT_CREATED: {
       ENG: 'Payment created',
