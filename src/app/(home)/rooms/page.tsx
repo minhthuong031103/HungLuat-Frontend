@@ -80,6 +80,11 @@ const RoomsPage = () => {
       handleSetValue('apartmentId', apartments?.pages[0]?.data?.items[0]?.id);
     }
   }, [apartments]);
+  const apartment: Apartment = apartments?.pages?.map(page => {
+    return page?.data?.items?.find(
+      item => item.id.toString() === apartmentChosen,
+    );
+  })?.[0];
   useEffect(() => {
     if (apartmentChosen) {
       const apartment = apartments?.pages?.map(page => {
@@ -89,12 +94,7 @@ const RoomsPage = () => {
       })?.[0];
       setApartmentName(apartment?.name);
     }
-  }, [apartmentChosen]);
-  const apartment: Apartment = apartments?.pages?.map(page => {
-    return page?.data?.items?.find(
-      item => item.id.toString() === apartmentChosen,
-    );
-  })?.[0];
+  }, [apartmentChosen, apartment]);
 
   const [floors, setFloors] = useState([]);
   const handleGetRooms = async () => {
@@ -275,7 +275,7 @@ const RoomsPage = () => {
                     </div>
                   </Button>
                   <ExportExcel data={floors as any} fileName={apartmentName} />
-                  <ImportExcel />
+                  <ImportExcel refetch={handleGetRooms} />
                 </div>
               )}
             </div>

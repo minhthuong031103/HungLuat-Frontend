@@ -6,7 +6,7 @@ import { Button, Tooltip } from '@nextui-org/react';
 import { CiTrash } from 'react-icons/ci';
 import { useModal } from '@/hooks/useModalStore';
 import { EModalType } from '@/lib/constant';
-const ImportExcel = () => {
+const ImportExcel = ({ refetch }: { refetch: () => void }) => {
   const headerExcel = {
     'Mã phòng': 'id',
     'Giá phòng': 'roomPrice',
@@ -28,7 +28,6 @@ const ImportExcel = () => {
     'Số lượng xe': 'vehicleAmount',
     'Tiền giữ xe (VND/xe)': 'parkingPrice',
   };
-
   const [data, setData] = useState([]);
   const [excelName, setExcelName] = useState('');
   const { onOpen } = useModal();
@@ -71,11 +70,11 @@ const ImportExcel = () => {
   };
 
   const handleUpdateListProductItems = async () => {
-    onOpen(EModalType.UPDATE_EXCEL, data);
+    onOpen(EModalType.UPDATE_EXCEL, data, refetch);
   };
   useEffect(() => {
     if (data.length > 0) {
-      onOpen(EModalType.UPDATE_EXCEL, data);
+      onOpen(EModalType.UPDATE_EXCEL, data, refetch);
     }
   }, [data]);
 

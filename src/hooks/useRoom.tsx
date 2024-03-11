@@ -853,24 +853,24 @@ export const RoomProvider = ({ children }) => {
       toast.error('Xóa hóa đơn thất bại');
     }
   };
-  const updateExcel = async ({ data, onClose }) => {
+  const updateExcel = async ({ data, refetch }) => {
     try {
       const res = await requestApi({
         endPoint: `/room/update-many`,
         method: 'PUT',
         body: data,
       });
-      if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.ENG) {
-        toast.success(RETURNED_MESSAGES.ROOM.CONTRACT_CREATED.VIE);
-        onClose();
-      } else if (res?.message == RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.ENG) {
-        toast.error(RETURNED_MESSAGES.ROOM.CONTRACT_EXISTED.VIE);
+      if (res?.message == RETURNED_MESSAGES.ROOM.ROOMS_UPDATED.ENG) {
+        toast.success(RETURNED_MESSAGES.ROOM.ROOMS_UPDATED.VIE);
+        refetch();
+      } else if (res?.message == RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.ENG) {
+        toast.error(RETURNED_MESSAGES.ROOM.ROOM_NOT_FOUND.VIE);
       } else {
-        toast.error('Tạo hợp đồng thất bại');
+        toast.error('Cập nhật phòng thất bại');
       }
       return res;
     } catch (error) {
-      toast.error('Tạo hợp đồng thất bại');
+      toast.error('Cập nhật phòng thất bại');
     }
   };
   return (

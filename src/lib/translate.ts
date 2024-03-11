@@ -95,6 +95,10 @@ export const RETURNED_MESSAGES = {
       ENG: 'Room updated',
       VIE: 'Cập nhật phòng thành công',
     },
+    ROOMS_UPDATED: {
+      ENG: 'Rooms updated',
+      VIE: 'Cập nhật phòng từ excel thành công',
+    },
 
     ROOM_DELETED: {
       ENG: 'Room deleted',
