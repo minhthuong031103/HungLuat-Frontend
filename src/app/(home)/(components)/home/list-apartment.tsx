@@ -1,8 +1,8 @@
 'use client';
 
-import ApartmentCard from './apartment-card';
 import { Apartment } from '@/types';
 import { useRouter } from 'next/navigation';
+import ApartmentCard from './apartment-card';
 
 interface ListApartmentProps {
   apartments: Apartment[];
