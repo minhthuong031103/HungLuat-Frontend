@@ -13,12 +13,12 @@ import { checkValueNumberInput } from '@/lib/utils';
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IndentityModal from './AddIndentityModal';
 import toast from 'react-hot-toast';
 
 const CustomerAddModal = () => {
-  const { isOpen, onClose, type, onAction } = useModal();
+  const { isOpen, onClose, type, onAction, data } = useModal();
   const [identityModal, setIdentityModal] = useState(false);
   const [identityBackModal, setIdentityBackModal] = useState(false);
 
@@ -62,7 +62,12 @@ const CustomerAddModal = () => {
       toast.error('Vui lòng điền đầy đủ thông tin');
     }
   };
-
+  useEffect(() => {
+    if (data) {
+      setApartmentChosen(data?.apartmentId?.toString());
+      handleSetCustomerValue('roomId', data?.roomId?.toString());
+    }
+  }, [data]);
   const {
     apartmentChosen,
     setApartmentChosen,
@@ -182,7 +187,7 @@ const CustomerAddModal = () => {
               placeholder="Chọn phòng"
               className="max-w-[100%] "
               disallowEmptySelection
-              isDisabled={!apartmentChosen.length}
+              isDisabled={!apartmentChosen?.length}
               selectedKeys={customerState.roomId ? [customerState.roomId] : []}
               onChange={e => {
                 handleSetCustomerValue('roomId', e.target.value);

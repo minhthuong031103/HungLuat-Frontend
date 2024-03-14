@@ -13,7 +13,7 @@ import {
   Divider,
 } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -23,7 +23,7 @@ const RoomDetailPage = () => {
   const classNameNotChosen = 'font-medium text-sm text-black';
   const [flag, setFlag] = useState('finance');
   const { onOpen } = useModal();
-
+  const router = useRouter();
   const render = [
     {
       name: 'Tài chính phòng',
@@ -66,12 +66,15 @@ const RoomDetailPage = () => {
       },
     },
     {
-      content: 'Đổi phòng',
+      content: 'Phòng trước',
       action: () => {
-        onOpen('createRoom', {
-          numberFloor: 5,
-          apartmentId: 1,
-        });
+        router?.push(`/rooms/${roomDetail?.roomBefore?.id}`);
+      },
+    },
+    {
+      content: 'Phòng kế',
+      action: () => {
+        router?.push(`/rooms/${roomDetail?.roomAfter?.id}`);
       },
     },
   ];
@@ -174,6 +177,7 @@ const RoomDetailPage = () => {
             <div key={item.content}>
               <Button
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
+                isDisabled={(item.content === 'Phòng kế' && !roomDetail?.roomAfter) || (item.content === 'Phòng trước' && !roomDetail?.roomBefore)}
                 onPress={() => {
                   if (
                     item?.content === 'Xuất phiếu' &&
@@ -202,7 +206,7 @@ const RoomDetailPage = () => {
         {flag === 'finance' ? (
           <RoomInfo roomId={roomId} refetch={refetch} isLoading={isLoading} />
         ) : flag === 'customerList' ? (
-          <CustomerList roomId={roomId} />
+          <CustomerList roomId={roomId} apartmentId={roomDetail?.apartmentId}/>
         ) : (
           <RoomSetting roomId={roomId} />
         )}

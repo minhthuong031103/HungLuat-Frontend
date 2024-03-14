@@ -5,11 +5,13 @@ import ListApartment from './(components)/home/list-apartment';
 import { useEffect, useState } from 'react';
 import { useApartment } from '@/hooks/useApartment';
 import { ChevronDown } from 'lucide-react';
-import { Pagination, Spinner } from '@nextui-org/react';
+import { Button, Pagination, Spinner } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { Apartment } from '@/types';
 import Loader from '@/components/Loader';
+import { CommonSvg } from '@/assets/CommonSvg';
+import { useModal } from '@/hooks/useModalStore';
 interface ResponseProps {
   items: Apartment[];
   totalItems: number;
@@ -40,7 +42,8 @@ const page = () => {
       return res?.data;
     },
   });
-
+  const { onOpen } = useModal();
+  const user = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}');
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -59,6 +62,18 @@ const page = () => {
             size={18}
           />
         </div>
+      </div>
+      <div className="flex justify-between mt-3">
+        <p className="font-semibold font-lg text-gray">Danh sách căn hộ</p>
+        {user?.roleName === 'Admin' && (<Button
+          onPress={() => onOpen('createApartment', {}, refetch)}
+          className="rounded-[8px] px-4 py-2 bg-blueButton"
+        >
+          <div className="flex flex-row items-center gap-x-[8px] ">
+            <div>{CommonSvg.plus()}</div>
+            <div className="text-white mt-[1px] font-medium">Thêm mới</div>
+          </div>
+        </Button>)}
       </div>
       {isLoading ? (
         <div className="w-full flex justify-center items-center h-[200px]">
