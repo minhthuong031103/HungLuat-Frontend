@@ -1,25 +1,23 @@
 'use client';
 
-import { CommonSvg } from '@/assets/CommonSvg';
-import Loader from '@/components/Loader';
+import { SearchBar } from './(components)/home/searchbar';
+import ListApartment from './(components)/home/list-apartment';
+import { useEffect, useState } from 'react';
 import { useApartment } from '@/hooks/useApartment';
-import { useModal } from '@/hooks/useModalStore';
-import { KEY_CONTEXT, queryKey } from '@/lib/constant';
-import { Apartment } from '@/types';
+import { ChevronDown } from 'lucide-react';
 import { Button, Pagination, Spinner } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronDown } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import ListApartment from './(components)/home/list-apartment';
-import { SearchBar } from './(components)/home/searchbar';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
+import { Apartment } from '@/types';
+import Loader from '@/components/Loader';
+import { CommonSvg } from '@/assets/CommonSvg';
+import { useModal } from '@/hooks/useModalStore';
 interface ResponseProps {
   items: Apartment[];
   totalItems: number;
   totalPages: number;
 }
 const page = () => {
-  const { onOpen } = useModal();
-
   const [searchValue, setSearchValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -44,7 +42,8 @@ const page = () => {
       return res?.data;
     },
   });
-
+  const { onOpen } = useModal();
+  const user = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}');
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -64,9 +63,9 @@ const page = () => {
           />
         </div>
       </div>
-      <div className="flex justify-between mr-5 mt-5">
+      <div className="flex justify-between mt-3">
         <p className="font-semibold font-lg text-gray">Danh sách căn hộ</p>
-        <Button
+        {user?.roleName === 'Admin' && (<Button
           onPress={() => onOpen('createApartment', {}, refetch)}
           className="rounded-[8px] px-4 py-2 bg-blueButton"
         >
@@ -74,7 +73,7 @@ const page = () => {
             <div>{CommonSvg.plus()}</div>
             <div className="text-white mt-[1px] font-medium">Thêm mới</div>
           </div>
-        </Button>
+        </Button>)}
       </div>
       {isLoading ? (
         <div className="w-full flex justify-center items-center h-[200px]">

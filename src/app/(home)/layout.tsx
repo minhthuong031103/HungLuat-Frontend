@@ -4,11 +4,13 @@ import { NavbarComponent } from '@/components/navbar/navbar';
 import { SidebarWrapper } from '@/components/sidebar/sidebar';
 import { useUserState } from '@/context/UserProvider';
 import { useAuth } from '@/hooks/useAuth';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 const layout = ({ children }) => {
   const { useCheckNotLoggedIn, loading } = useAuth();
-  useCheckNotLoggedIn();
+  const pathname = usePathname();
+  useCheckNotLoggedIn({pathname});
   if (loading) return null;
 
   return (

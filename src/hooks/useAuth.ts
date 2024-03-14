@@ -7,7 +7,7 @@ import {
 } from '@/context/UserProvider';
 import { LoginProps } from '@/lib/interface';
 import toast from 'react-hot-toast';
-import { EUserType } from '@/lib/constant';
+import { EUserType, KEY_CONTEXT } from '@/lib/constant';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { axiosClient } from '@/lib/axios';
@@ -62,7 +62,7 @@ export const useAuth = () => {
     dispatchActions({ type: EUserType.LOGOUT, payload: {} }, userDispatch);
   };
 
-  const useCheckNotLoggedIn = () => {
+  const useCheckNotLoggedIn = ({pathname}) => {
     useEffect(() => {
       if (!isAuth) {
         router.push('/auth/login');
@@ -72,9 +72,19 @@ export const useAuth = () => {
           setLoading(false);
         }, 1000);
       } else {
-        setLoading(false);
+        const user = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
+        if(pathname === '/users' && user?.roleName !== 'Admin') {
+        router.push('/');
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+        }
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000); 
       }
-    }, [isAuth]);
+    
+    }, [isAuth, pathname]);
   };
 
   const useCheckLoggedIn = () => {

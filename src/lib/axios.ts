@@ -58,7 +58,6 @@ const useApi = () => {
     instance.interceptors.request.use(
       config => {
         const token = getKey(KEY_CONTEXT.TOKEN);
-        console.log('🚀 ~ requestApi ~ token:', token);
         if (token) {
           config.headers['Authorization'] = `Bearer ${token}`;
         }

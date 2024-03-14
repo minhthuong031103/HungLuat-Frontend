@@ -198,6 +198,10 @@ export const useCustomer = () => {
         res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_NOT_FOUND.ENG
       ) {
         toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_NOT_FOUND.VIE);
+      }else if (
+        res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_HAS_CONTRACT.ENG
+      ) {
+        toast.error(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_HAS_CONTRACT.VIE);
       } else {
         toast.error('Xóa khách trọ thất bại');
       }

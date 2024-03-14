@@ -150,6 +150,10 @@ export const RETURNED_MESSAGES = {
       ENG: 'Customer updated',
       VIE: 'Cập nhật thông tin khách trọ thành công',
     },
+    CUSTOMER_HAS_CONTRACT: {
+      ENG: 'Customer has contract',
+      VIE: 'Khách hàng đã có hợp đồng, Không thể xóa',
+    },
   },
   BILL: {
     BILL_CREATED: {

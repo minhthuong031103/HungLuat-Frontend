@@ -1,8 +1,6 @@
 'use client';
-import { CommonSvg } from '@/assets/CommonSvg';
-import { useModal } from '@/hooks/useModalStore';
+
 import { Apartment } from '@/types';
-import { Button } from '@nextui-org/react';
 import { useRouter } from 'next/navigation';
 import ApartmentCard from './apartment-card';
 

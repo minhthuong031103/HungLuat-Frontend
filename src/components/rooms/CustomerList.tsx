@@ -89,7 +89,7 @@ const NormalRenderCell = ({ cellValue }) => {
     </div>
   );
 };
-const CustomerList = ({ roomId }) => {
+const CustomerList = ({ roomId, apartmentId }) => {
   const [limit, setLimit] = useState('10');
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState(null);
@@ -172,7 +172,7 @@ const CustomerList = ({ roomId }) => {
           renderHeader={() => {
             return (
               <Button
-                onPress={() => onOpen(EModalType.CUSTOMER_CREATE)}
+                onPress={() => onOpen(EModalType.CUSTOMER_CREATE,  {roomId, apartmentId})}
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
               >
                 <div className="flex flex-row items-center gap-x-[8px] ">
