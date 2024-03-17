@@ -67,12 +67,6 @@ const columns = [
     title: 'Số CMND',
     sortable: true,
   },
-
-  {
-    id: columnKeys.registeredTemporaryResidence,
-    title: 'Tạm trú',
-    sortable: true,
-  },
   {
     id: columnKeys.roomId,
     title: 'Phòng',
@@ -125,16 +119,6 @@ const CustomerTable = () => {
       const cellValue = user[columnKey];
 
       switch (columnKey) {
-        case columnKeys.registeredTemporaryResidence:
-          return (
-            <div className="flex items-center justify-start ml-3">
-              <Checkbox
-                color="success"
-                disabled
-                isSelected={cellValue}
-              ></Checkbox>
-            </div>
-          );
         case columnKeys.action:
           return (
             <div className="relative flex w-24 ml-2 items-center gap-2">
