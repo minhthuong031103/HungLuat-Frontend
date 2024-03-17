@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useCustomer } from './useCustomer';
 import { useDebounce } from './useDebounce';
 
-export const useCustomerByRoomScroll = ({ roomId }) => {
+export const useCustomerByRoomScroll = ({ roomId, isOpen }) => {
   const [customerChosen, setCustomerChosen] = useState('');
   const [searchValue, setSearchValue] = useState('');
 
@@ -15,7 +15,6 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
   const { getCustomersByRoom } = useCustomer();
   const { debounceValue } = useDebounce(searchValue, 500);
   const userId = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) || '{}')?.id;
-
   const {
     data: customers,
     fetchNextPage,
@@ -26,7 +25,7 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
   } = useInfiniteQuery(
     [
       queryKey.CUSTOMERS_SELECT,
-      { currentPage, limit: 10, debounceValue, roomId, userId },
+      { currentPage, limit: 10, debounceValue, roomId, userId, isOpen },
     ],
     ({ pageParam = 0 }) =>
       getCustomersByRoom({
@@ -39,7 +38,6 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
     {
       staleTime: 1000 * 60 * 0.1, //  0.1 minutes=6 seconds
       keepPreviousData: true,
-      refetchOnWindowFocus: true,
       getNextPageParam: (lastPage, pages) => {
         if (
           lastPage?.data.currentPage === 1 &&
@@ -61,7 +59,6 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
       fetchNextPage();
     },
   });
-
   return {
     customerChosen,
     setCustomerChosen,

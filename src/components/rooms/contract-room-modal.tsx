@@ -8,9 +8,7 @@ import { Customer } from '@/types';
 import {
   Autocomplete,
   AutocompleteItem,
-  Button,
-  Select,
-  SelectItem,
+  Button
 } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
 import ModalCus from '../modalCus/ModalCus';
@@ -33,7 +31,7 @@ const ContractRoomModal = () => {
     isFetching,
     setIsScrollOpen,
     scrollerRef,
-  } = useCustomerByRoomScroll({ roomId });
+  } = useCustomerByRoomScroll({ roomId, isOpen: isModalOpen });
 
   const handleCreateContract = async () => {
     const data = {
