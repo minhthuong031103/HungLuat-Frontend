@@ -9,7 +9,6 @@ import { Button, Pagination, Spinner } from '@nextui-org/react';
 import { useQuery } from '@tanstack/react-query';
 import { KEY_CONTEXT, queryKey } from '@/lib/constant';
 import { Apartment } from '@/types';
-import Loader from '@/components/Loader';
 import { CommonSvg } from '@/assets/CommonSvg';
 import { useModal } from '@/hooks/useModalStore';
 interface ResponseProps {

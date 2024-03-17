@@ -48,8 +48,13 @@ const initialState = {
   oldElectric: 0,
   newElectric: 0,
 
+  waterType: 'Nước khoáng',
+  waterPrice: 4000,
+
+  oldWater: 0,
+  newWater: 0,
+
   elevatorPrice: 0,
-  waterPrice: 100000,
   servicePrice: 150000,
   internetPrice: 0,
   peopleAmount: 0,
@@ -105,7 +110,8 @@ interface IRoomContext {
   dispatchContract: any;
   handleSetValue: any;
   handleSetContract: any;
-  roomInfo: any;
+  roomInfo1: any;
+  roomInfo2: any;
   getRooms: any;
   getBills: any;
   updateRoom: any;
@@ -150,6 +156,8 @@ export interface exportBillProps {
   oldDebt: number;
   newElectric: number;
   oldElectric: number;
+  newWater?: number;
+  oldWater?: number;
   files: any[];
   fileName: string;
   userName: string;
@@ -215,7 +223,7 @@ export const RoomProvider = ({ children }) => {
     handleSetValue('dayStayed', diffDays + 1);
   }, [state.startDate, state.endDate]);
 
-  const roomInfo = [
+  const roomInfo1 = [
     {
       id: 1,
       contents: [
@@ -442,6 +450,255 @@ export const RoomProvider = ({ children }) => {
       ],
     },
   ];
+   const roomInfo2 = [
+    {
+      id: 1,
+      contents: [
+        {
+          label: 'Tiền cọc',
+          type: 'text',
+          placeholder: 'Nhập tiền cọc',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.depositPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('depositPrice', tempValue);
+          },
+        },
+        {
+          label: 'Số ngày ở trong tháng',
+          type: 'text',
+          placeholder: 'Nhập số ngày ở trong tháng',
+          isRequired: true,
+          isDisabled: true,
+          value: state.dayStayed,
+          setValue: value => handleSetValue('dayStayed', value),
+        },
+      ],
+    },
+    {
+      id: 2,
+      contents: [
+        {
+          label: 'Nợ cũ',
+          type: 'text',
+          placeholder: 'Nhập tiền nợ cũ',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.oldDebt),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('oldDebt', tempValue);
+          },
+        },
+        {
+          label: 'Nợ mới',
+          type: 'text',
+          placeholder: 'Nhập số ngày ở trong tháng',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.newDebt),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('newDebt', tempValue);
+          },
+        },
+      ],
+    },
+    {
+      id: 3,
+      contents: [
+        {
+          label: 'Phụ thu (VND / người)',
+          type: 'text',
+          placeholder: 'Nhập tiền phụ thu',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.surcharge),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('surcharge', tempValue);
+          },
+        },
+        {
+          label: 'Số lượng người ở thực tế',
+          type: 'text',
+          placeholder: 'Nhập số lượng người ở thực tế',
+          isRequired: true,
+          value: state.peopleRealStayed,
+          setValue: value => handleSetValue('peopleRealStayed', value),
+        },
+      ],
+    },
+    {
+      id: 4,
+      contents: [
+        {
+          label: 'Chỉ số điện lúc bàn giao (KWh)',
+          type: 'text',
+          placeholder: 'Chỉ số điện lúc bàn giao',
+          isRequired: true,
+          isDisabled: true,
+          value: state.defaultElectric,
+          setValue: value => handleSetValue('defaultElectric', value),
+        },
+        {
+          label: 'Chỉ số điện cũ (KWh)',
+          type: 'text',
+          placeholder: 'Nhập chỉ số điện cũ',
+          isRequired: true,
+          isDisabled: true,
+          value: state.oldElectric,
+          setValue: value => handleSetValue('oldElectric', value),
+        },
+      ],
+    },
+    {
+      id: 5,
+      contents: [
+        {
+          label: 'Giá điện (VNĐ / KWh)',
+          type: 'text',
+          placeholder: 'Giá điện',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.electricPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('electricPrice', tempValue);
+          },
+        },
+
+        {
+          label: 'Chỉ số điện mới (KWh)',
+          type: 'text',
+          placeholder: 'Nhập chỉ số điện mới',
+          isRequired: true,
+          value: state.newElectric,
+          setValue: value => handleSetValue('newElectric', value),
+        },
+      ],
+    },
+    {
+      id: 6,
+      contents: [
+        {
+          label: 'Chỉ số nước cũ (m3)',
+          type: 'text',
+          placeholder: 'Nhập chỉ số nước cũ',
+          isRequired: true,
+          isDisabled: true,
+          value: state.oldWater,
+          setValue: value => handleSetValue('oldWater', value),
+        },
+        {
+          label: 'Giá nước (VND / m3)',
+          type: 'text',
+          placeholder: 'Giá nước',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.waterPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('waterPrice', tempValue);
+          },
+        },
+      ],
+    },
+    {
+      id: 7,
+      contents: [
+        {
+          label: 'Chỉ số nước mới (m3)',
+          type: 'text',
+          placeholder: 'Nhập chỉ số nước mới',
+          isRequired: true,
+          value: state.newWater,
+          setValue: value => handleSetValue('newWater', value),
+        },
+        {
+          label: 'Số lượng người sử dụng',
+          type: 'text',
+          placeholder: 'Nhập số lượng',
+          isRequired: true,
+          value: state.peopleAmount,
+          setValue: value => handleSetValue('peopleAmount', value),
+        }
+      ],
+    },
+    {
+      id: 8,
+      contents: [
+        {
+          label: 'Tiền thang máy (VND / người)',
+          type: 'text',
+          placeholder: 'Nhập tiền thang máy',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.elevatorPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('elevatorPrice', tempValue);
+          },
+        },
+        {
+          label: 'Chi phí phát sinh khác',
+          type: 'text',
+          placeholder: 'Nhập chi phí phát sinh',
+          value: insertSpaceEveryThreeCharacters(state.otherPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('otherPrice', tempValue);
+          },
+        },
+      ],
+    },
+    {
+      id: 9,
+      contents: [
+        {
+          label: 'Tiền Internet (VND / phòng)',
+          type: 'text',
+          placeholder: 'Nhập tiền Internet',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.internetPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('internetPrice', tempValue);
+          },
+        },
+        {
+          label: 'Tiền dịch vụ (VND / phòng)',
+          type: 'text',
+          placeholder: 'Nhập tiền dịch vụ',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.servicePrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('servicePrice', tempValue);
+          },
+        },
+      ],
+    },
+    {
+      id: 10,
+      contents: [
+        {
+          label: 'Số lượng xe',
+          type: 'text',
+          placeholder: 'Nhập số xe',
+          isRequired: true,
+          value: state.vehicleAmount,
+          setValue: value => handleSetValue('vehicleAmount', value),
+        },
+        {
+          label: 'Tiền gửi xe (VND / xe)',
+          type: 'text',
+          placeholder: 'Nhập tiền gửi xe',
+          isRequired: true,
+          value: insertSpaceEveryThreeCharacters(state.parkingPrice),
+          setValue: value => {
+            const tempValue = value.split(' ').join('');
+            handleSetValue('parkingPrice', tempValue);
+          },
+        },
+      ],
+    },
+  ];
   const getRooms = async ({
     apartmentId,
     search = '',
@@ -561,6 +818,7 @@ export const RoomProvider = ({ children }) => {
       state.newDebt >= 0 &&
       state.electricPrice >= 0 &&
       state.newElectric >= 0 &&
+      state.oldElectric >= 0 &&
       state.peopleAmount >= 0 &&
       state.waterPrice >= 0 &&
       state.elevatorPrice >= 0 &&
@@ -568,9 +826,13 @@ export const RoomProvider = ({ children }) => {
       state.servicePrice >= 0 &&
       state.internetPrice >= 0 &&
       state.vehicleAmount >= 0 &&
-      state.parkingPrice >= 0
+      state.parkingPrice >= 0 && 
+      (state.waterType === 'Nước khoáng' || (state.oldWater >= 0 && state.newElectric >= 0) ) 
     ) {
       if (state.oldElectric > state.newElectric) {
+        return false;
+      }
+      if(state.waterType !== 'Nước khoáng' && state.oldWater > state.newWater){
         return false;
       }
       return true;
@@ -588,7 +850,16 @@ export const RoomProvider = ({ children }) => {
               10) *
               Number(state.electricPrice),
           );
-    const WP = Number(state.waterPrice) * Number(state.peopleAmount);
+    const WP =state.waterType === 'Nước khoáng' ? ( Number(state.waterPrice) * Number(state.peopleAmount)):
+    ( Number(state.oldWater) >= Number(state.newWater)
+        ? 0
+        : Math.floor(
+            (Math.floor(
+              (Number(state.newWater) - Number(state.oldWater)) * 10,
+            ) /
+              10) *
+              Number(state.waterPrice),
+          ))
     const PP = Number(state.parkingPrice) * Number(state.vehicleAmount);
     const EPV = Number(state.elevatorPrice) * Number(state.peopleAmount);
     const SC =
@@ -639,6 +910,9 @@ export const RoomProvider = ({ children }) => {
         oldDebt: Number(state.oldDebt),
         newDebt: Number(state.newDebt),
         newElectric: Number(state.newElectric),
+        waterType : state.waterType,
+        oldWater: Number(state.oldWater),
+        newWater: Number(state.newWater),
         otherPrice: Number(state.otherPrice),
         surcharge: Number(state.surcharge),
         peopleRealStayed: Number(state.peopleRealStayed),
@@ -676,6 +950,10 @@ export const RoomProvider = ({ children }) => {
         toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }
+      if (state.waterType !== 'Nước khoáng' && state.newWater < state.oldWater) {
+        toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số điện cũ');
+        return;
+      }
       toast.error('Vui lòng nhập đầy đủ thông tin');
       return;
     }
@@ -704,6 +982,9 @@ export const RoomProvider = ({ children }) => {
         oldDebt: Number(state.oldDebt),
         newDebt: Number(state.newDebt),
         newElectric: Number(state.newElectric),
+        waterType : state.waterType,
+        oldWater: Number(state.oldWater),
+        newWater: Number(state.newWater),
         otherPrice: Number(state.otherPrice),
         surcharge: Number(state.surcharge),
         peopleRealStayed: Number(state.peopleRealStayed),
@@ -768,6 +1049,10 @@ export const RoomProvider = ({ children }) => {
     } else {
       if (state.newElectric < state.oldElectric) {
         toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
+        return;
+      }
+      if (state.waterType !== 'Nước khoáng' && state.newWater < state.oldWater) {
+        toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }
       toast.error('Vui lòng nhập đầy đủ thông tin');
@@ -908,7 +1193,8 @@ export const RoomProvider = ({ children }) => {
         dispatchContract,
         handleSetValue,
         handleSetContract,
-        roomInfo,
+        roomInfo1,
+        roomInfo2,
         getRooms,
         getAllBills,
         getBills,
