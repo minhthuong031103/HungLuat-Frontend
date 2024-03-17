@@ -172,7 +172,13 @@ const CustomerList = ({ roomId, apartmentId }) => {
           renderHeader={() => {
             return (
               <Button
-                onPress={() => onOpen(EModalType.CUSTOMER_CREATE,  {roomId, apartmentId})}
+                onPress={() =>
+                  onOpen(
+                    EModalType.CUSTOMER_CREATE,
+                    { roomId, apartmentId },
+                    refetch,
+                  )
+                }
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
               >
                 <div className="flex flex-row items-center gap-x-[8px] ">

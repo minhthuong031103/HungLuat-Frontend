@@ -2,7 +2,7 @@
 
 import { SearchBar } from './(components)/home/searchbar';
 import ListApartment from './(components)/home/list-apartment';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApartment } from '@/hooks/useApartment';
 import { ChevronDown } from 'lucide-react';
 import { Button, Pagination, Spinner } from '@nextui-org/react';

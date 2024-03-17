@@ -14,8 +14,8 @@ import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
-import IndentityModal from './AddIndentityModal';
 import toast from 'react-hot-toast';
+import IndentityModal from './AddIndentityModal';
 
 const CustomerAddModal = () => {
   const { isOpen, onClose, type, onAction, data } = useModal();
@@ -56,7 +56,7 @@ const CustomerAddModal = () => {
         apartmentId: Number(apartmentChosen),
       };
       await createCustomer(data, onClose);
-      onAction();
+      onAction?.();
       setIsLoading(false);
     } else {
       toast.error('Vui lòng điền đầy đủ thông tin');
