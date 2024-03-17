@@ -39,7 +39,7 @@ export const useCustomerByRoomScroll = ({ roomId }) => {
     {
       staleTime: 1000 * 60 * 0.1, //  0.1 minutes=6 seconds
       keepPreviousData: true,
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: true,
       getNextPageParam: (lastPage, pages) => {
         if (
           lastPage?.data.currentPage === 1 &&
