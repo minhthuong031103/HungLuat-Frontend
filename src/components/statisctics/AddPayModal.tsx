@@ -1,21 +1,21 @@
 'use client';
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { useApartmentScroll } from '@/hooks/useApartmentScroll';
+import { useEmployeeScroll } from '@/hooks/useEmployeeScroll';
 import { useModal } from '@/hooks/useModalStore';
+import { useStatistics } from '@/hooks/useStatistics';
+import { payTypes } from '@/lib/constant';
+import { EmployeeProps } from '@/lib/interface';
+import {
+  checkValueNumberInput,
+  insertSpaceEveryThreeCharacters,
+} from '@/lib/utils';
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { DatePicker } from '../ui/date-picker';
-import { payTypes } from '@/lib/constant';
-import { useEmployeeScroll } from '@/hooks/useEmployeeScroll';
-import { EmployeeProps } from '@/lib/interface';
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import {
-  checkValueNumberInput,
-  insertSpaceEveryThreeCharacters,
-} from '@/lib/utils';
-import { useStatistics } from '@/hooks/useStatistics';
 
 const AddPayModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
@@ -101,7 +101,17 @@ const AddPayModal = () => {
       <div className="flex flex-col gap-y-[20px]">
         <div className="flex gap-[20px] w-full items-end">
           <div className="w-[33%]">
-            <Select
+            <CustomInput
+              value={payType}
+              label="Loại chi"
+              type="text"
+              placeholder="Nhập loại chi"
+              isRequired
+              setValue={value => {
+                setPayType(value);
+              }}
+            />
+            {/* <Select
               label="Loại chi"
               labelPlacement="outside"
               isRequired={true}
@@ -120,7 +130,7 @@ const AddPayModal = () => {
                   </SelectItem>
                 );
               })}
-            </Select>
+            </Select> */}
           </div>
           <div className="w-[33%]">
             <Select
