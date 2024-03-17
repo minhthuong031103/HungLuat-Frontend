@@ -9,8 +9,8 @@ interface createBillProps {
     userName: string;
     paymentType: string;
     paymentAmount: number;
-    apartmentId: number;
-    roomId: number;
+    apartmentId: number | null;
+    roomId: number | null;
     payDay: Date;
   };
   refetch: () => void;

@@ -40,17 +40,15 @@ const AddPayModal = () => {
       payType &&
       payMoney &&
       payDay &&
-      employeesChosen &&
-      apartmentChosen &&
-      roomId
+      employeesChosen
     ) {
       await createPay({
         data: {
           userName: employeesChosen,
           paymentType: payType,
           paymentAmount: Number(payMoney),
-          apartmentId: Number(apartmentChosen),
-          roomId: Number(roomId),
+          apartmentId: apartmentChosen ? Number(apartmentChosen) : null,
+          roomId: roomId ? Number(roomId) : null,
           payDay: new Date(payDay),
         },
         refetch: resetState,
@@ -176,7 +174,7 @@ const AddPayModal = () => {
             <Select
               labelPlacement="outside"
               label="Căn hộ"
-              isRequired={true}
+              isRequired={false}
               placeholder="Chọn căn hộ"
               className="max-w-[100%]"
               selectedKeys={apartmentChosen ? [apartmentChosen] : []}
@@ -206,7 +204,7 @@ const AddPayModal = () => {
             <Select
               label="Phòng"
               labelPlacement="outside"
-              isRequired={true}
+              isRequired={false}
               placeholder="Chọn phòng"
               className="max-w-[100%] "
               disallowEmptySelection
