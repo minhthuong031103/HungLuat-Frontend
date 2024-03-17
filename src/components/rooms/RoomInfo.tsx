@@ -8,13 +8,26 @@ import {
   convertPriceNotVND,
   insertSpaceEveryThreeCharacters,
 } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
+interface IRoomInfo {
+  id: number;
+  contents: {
+    label: string;
+    type: string;
+    placeholder: string;
+    isRequired: boolean;
+    isDisabled: boolean;
+    value: string;
+    setValue: (value: string) => void;
+  }[];
+}
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
-  const { state, roomInfo, handleSetValue, updateRoomStates } = useRoom();
+  const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } = useRoom();
   const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>
-      {isLoading ? (
+      {(isLoading) ? (
         <div className="w-full h-[400px] flex items-center justify-center">
           <Spinner />
         </div>
@@ -55,7 +68,32 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   }}
                 />
               </div>
-              {roomInfo.slice(0, 3).map(item => (
+              {state.waterType !== 'Nước khoáng' ? roomInfo1.slice(0, 3).map(item => (
+                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
+                  {item.contents.map(content => (
+                    <div
+                      className="flex w-full items-center gap-3"
+                      key={content.label}
+                    >
+                      <CustomInput
+                        key={content.label}
+                        label={content.label}
+                        type={content.type}
+                        placeholder={content.placeholder}
+                        isRequired={content.isRequired}
+                        disabled={content.isDisabled}
+                        value={content.value}
+                        setValue={content.setValue}
+                      />
+                      {content.label === 'Số lượng người ở thực tế' && (
+                        <p className="text-black font-medium mt-6 text-base">
+                          /4
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )) : roomInfo2.slice(0, 3).map(item => (
                 <div className="w-[70%] flex gap-10 items-center" key={item.id}>
                   {item.contents.map(content => (
                     <div
@@ -84,7 +122,22 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
             </div>
             <div className="w-full space-y-5">
               <p className="text-gray text-base font-medium">Tiền dịch vụ</p>
-              {roomInfo.slice(3).map(item => (
+              {state.waterType !== 'Nước khoáng' ? roomInfo1.slice(3).map(item => (
+                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
+                  {item.contents.map(content => (
+                    <CustomInput
+                      key={content.label}
+                      label={content.label}
+                      type={content.type}
+                      placeholder={content.placeholder}
+                      isRequired={content.isRequired}
+                      disabled={content.isDisabled}
+                      value={content.value}
+                      setValue={content.setValue}
+                    />
+                  ))}
+                </div>
+              )) : roomInfo2.slice(3).map(item => (
                 <div className="w-[70%] flex gap-10 items-center" key={item.id}>
                   {item.contents.map(content => (
                     <CustomInput

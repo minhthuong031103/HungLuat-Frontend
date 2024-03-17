@@ -110,7 +110,7 @@ const ExportBillModal = () => {
     <Modal
       closeOnClickOutside={false}
       radius={15}
-      size={'auto'}
+      size='xl'
       title="Xuất phiếu thu"
       classNames={{
         header: 'flex justify-center items-center relative',
@@ -166,7 +166,7 @@ const ExportBillModal = () => {
               'Tổng tiền điện',
             ),
           ])}
-          {renderInputRow([
+          {state.waterType === 'Nước khoáng' ?  renderInputRow([
             renderNumberInput(
               'Tổng tiền nước',
               state.totalWaterPrice,
@@ -187,7 +187,44 @@ const ExportBillModal = () => {
               state.totalParkingPrice,
               'Tổng tiền giữ xe',
             ),
+          ]) : (<>
+          {renderInputRow([
+            renderNumberInput('Giá nước', state.waterPrice, 'Nhập giá nước'),
+            renderNumberInput(
+              'Nước tiêu thụ',
+              Number(state.oldWater) >= Number(state.newWater)
+                ? 0
+                : Math.floor(
+                    (Number(state.newWater) - Number(state.oldWater)) *
+                      10,
+                  ) / 10,
+
+              'Nước tiêu thụ',
+            ),
+            renderNumberInput(
+              'Tổng tiền nước',
+              state.totalWaterPrice,
+              'Tổng tiền nước',
+            )])}
+            { renderInputRow([
+            renderNumberInput(
+              'Tiền dịch vụ',
+              state.servicePrice,
+              'Tiền dịch vụ',
+            ),
+            renderNumberInput(
+              'Chi phí phát sinh khác',
+              state.otherPrice,
+              'Chi phí phát sinh',
+            ),
+            renderNumberInput(
+              'Tổng tiền giữ xe',
+              state.totalParkingPrice,
+              'Tổng tiền giữ xe',
+            )
           ])}
+            </>
+          )}
           <p className="text-gray font-semibold text-lg">Ghi chú</p>
           <Textarea
             value={state.note}

@@ -19,7 +19,7 @@ const EditRoomModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const [floor, setFloor] = useState([]);
   const [floorChosen, setFloorChosen] = useState(new Set<string>([]));
-
+  const [waterTypeChosen, setWaterTypeChosen] = useState(new Set<string>([]));
   useEffect(() => {
     if (data && floor.length === 0 && data.numberFloor) {
       for (let i = 1; i <= data.numberFloor; i++) {
@@ -27,6 +27,7 @@ const EditRoomModal = () => {
       }
     }
     setRoomName(data?.name || '');
+    setWaterTypeChosen(new Set([data?.waterType || 'Nước khoáng']));
   }, [data]);
   useEffect(() => {
     if (data && floor.length > 0 && data.floor) {
@@ -42,13 +43,15 @@ const EditRoomModal = () => {
     setFloorChosen(new Set<string>([]));
   };
   const handleEditRoom = async () => {
-    if (roomName === '' || Array.from(floorChosen)[0] === '') {
+    const waterType = Array.from(waterTypeChosen)[0];
+    if (roomName === '' || Array.from(floorChosen)[0] === '' || waterType === '') {
       toast.error('Vui lòng nhập đầy đủ thông tin');
       return;
     }
     await updateRoom({
       data: {
         name: roomName,
+        waterType: waterType,
         floor: Number(Array.from(floorChosen)[0].split(' ')[1]),
         roomId: data.roomId,
       },
@@ -81,6 +84,14 @@ const EditRoomModal = () => {
                   isRequired={true}
                 />
               </div>
+              <CustomSelect
+                  className="w-[33%]"
+                  label="Loại nước"
+                  value={waterTypeChosen}
+                  setValue={value => setWaterTypeChosen(new Set(value))}
+                  data={['Nước khoáng', 'Nước M3']}
+                  isRequired={true}
+                />
             </ModalBody>
             <ModalFooter>
               <Button
