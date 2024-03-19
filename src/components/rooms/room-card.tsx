@@ -1,15 +1,15 @@
+import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown';
+import { convertPriceNotVND } from '@/lib/utils';
 import { Room } from '@/types';
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
+  CardHeader,
   Divider,
 } from '@nextui-org/react';
-import RoomAction from './room-action';
-import RoomDropdown from '@/app/(home)/(components)/home/room-dropdown';
 import { useRouter } from 'next/navigation';
-import { convertPriceNotVND } from '@/lib/utils';
+import RoomAction from './room-action';
 interface RoomCardProps {
   room: Room;
   numberFloor: number;
@@ -43,6 +43,7 @@ const RoomCard = ({ room, numberFloor, getRooms }: RoomCardProps) => {
             numberFloor: numberFloor,
             name: room.name,
             floor: room.floor,
+            waterType: room.waterType,
           }}
           refecth={getRooms}
         />

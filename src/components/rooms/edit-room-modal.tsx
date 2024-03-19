@@ -1,22 +1,23 @@
 'use client';
 
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from '@nextui-org/react';
-import { useEffect, useState } from 'react';
-import { useModal } from '@/hooks/useModalStore';
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { CustomSelect } from '@/app/(home)/(components)/home/custom-select';
+import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from '@nextui-org/react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const EditRoomModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
+  console.log('🚀 ~ EditRoomModal ~ data:', data);
   const [floor, setFloor] = useState([]);
   const [floorChosen, setFloorChosen] = useState(new Set<string>([]));
   const [waterTypeChosen, setWaterTypeChosen] = useState(new Set<string>([]));
@@ -44,7 +45,11 @@ const EditRoomModal = () => {
   };
   const handleEditRoom = async () => {
     const waterType = Array.from(waterTypeChosen)[0];
-    if (roomName === '' || Array.from(floorChosen)[0] === '' || waterType === '') {
+    if (
+      roomName === '' ||
+      Array.from(floorChosen)[0] === '' ||
+      waterType === ''
+    ) {
       toast.error('Vui lòng nhập đầy đủ thông tin');
       return;
     }
@@ -85,13 +90,13 @@ const EditRoomModal = () => {
                 />
               </div>
               <CustomSelect
-                  className="w-[33%]"
-                  label="Loại nước"
-                  value={waterTypeChosen}
-                  setValue={value => setWaterTypeChosen(new Set(value))}
-                  data={['Nước khoáng', 'Nước M3']}
-                  isRequired={true}
-                />
+                className="w-[33%]"
+                label="Loại nước"
+                value={waterTypeChosen}
+                setValue={value => setWaterTypeChosen(new Set(value))}
+                data={['Nước khoáng', 'Nước M3']}
+                isRequired={true}
+              />
             </ModalBody>
             <ModalFooter>
               <Button

@@ -6,15 +6,16 @@ export interface LoginProps {
 }
 
 export interface ModalData {
-  roomId?: number;
-  name?: string;
-  city?: string;
-  floor?: number;
-  district?: string;
-  ward?: string;
-  numberFloor?: number;
-  houseNumber?: string;
-  apartmentId?: number;
+  roomId: number;
+  name: string;
+  city: string;
+  floor: number;
+  district: string;
+  ward: string;
+  numberFloor: number;
+  houseNumber: string;
+  apartmentId: number;
+  waterType: string;
 }
 
 export interface CreateApartmentProps {

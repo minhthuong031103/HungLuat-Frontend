@@ -1,18 +1,18 @@
 'use client';
-import React from 'react';
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownSection,
-  DropdownItem,
-} from '@nextui-org/react';
 import { CommonSvg } from '@/assets/CommonSvg';
 import { ModalType, useModal } from '@/hooks/useModalStore';
 import { ModalData } from '@/lib/interface';
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownSection,
+  DropdownTrigger,
+} from '@nextui-org/react';
+import React from 'react';
 interface RoomDropdownProps {
   className?: string;
-  data?: ModalData;
+  data?: Partial<ModalData>;
   actionType: 'Room' | 'Apartment';
   refecth?: () => void;
 }

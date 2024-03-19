@@ -1,14 +1,14 @@
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { useRoom } from '@/hooks/useRoom';
-import { DatePicker } from '../ui/date-picker';
-import BillTable from './BillTable';
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
-import { Textarea } from '../ui/text-area';
 import {
   convertPriceNotVND,
   insertSpaceEveryThreeCharacters,
 } from '@/lib/utils';
+import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
+import { DatePicker } from '../ui/date-picker';
+import { Textarea } from '../ui/text-area';
+import BillTable from './BillTable';
 
 interface IRoomInfo {
   id: number;
@@ -23,11 +23,14 @@ interface IRoomInfo {
   }[];
 }
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
-  const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } = useRoom();
+  const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } =
+    useRoom();
+  console.log('🚀 ~ RoomInfo ~ state:', state);
+
   const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>
-      {(isLoading) ? (
+      {isLoading ? (
         <div className="w-full h-[400px] flex items-center justify-center">
           <Spinner />
         </div>
@@ -68,91 +71,107 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   }}
                 />
               </div>
-              {state.waterType !== 'Nước khoáng' ? roomInfo1.slice(0, 3).map(item => (
-                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map(content => (
+              {state.waterType !== 'Nước M3'
+                ? roomInfo1.slice(0, 3).map(item => (
                     <div
-                      className="flex w-full items-center gap-3"
-                      key={content.label}
+                      className="w-[70%] flex gap-10 items-center"
+                      key={item.id}
                     >
-                      <CustomInput
-                        key={content.label}
-                        label={content.label}
-                        type={content.type}
-                        placeholder={content.placeholder}
-                        isRequired={content.isRequired}
-                        disabled={content.isDisabled}
-                        value={content.value}
-                        setValue={content.setValue}
-                      />
-                      {content.label === 'Số lượng người ở thực tế' && (
-                        <p className="text-black font-medium mt-6 text-base">
-                          /4
-                        </p>
-                      )}
+                      {item.contents.map(content => (
+                        <div
+                          className="flex w-full items-center gap-3"
+                          key={content.label}
+                        >
+                          <CustomInput
+                            key={content.label}
+                            label={content.label}
+                            type={content.type}
+                            placeholder={content.placeholder}
+                            isRequired={content.isRequired}
+                            disabled={content.isDisabled}
+                            value={content.value}
+                            setValue={content.setValue}
+                          />
+                          {content.label === 'Số lượng người ở thực tế' && (
+                            <p className="text-black font-medium mt-6 text-base">
+                              /4
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ))
+                : roomInfo2.slice(0, 3).map(item => (
+                    <div
+                      className="w-[70%] flex gap-10 items-center"
+                      key={item.id}
+                    >
+                      {item.contents.map(content => (
+                        <div
+                          className="flex w-full items-center gap-3"
+                          key={content.label}
+                        >
+                          <CustomInput
+                            key={content.label}
+                            label={content.label}
+                            type={content.type}
+                            placeholder={content.placeholder}
+                            isRequired={content.isRequired}
+                            disabled={content.isDisabled}
+                            value={content.value}
+                            setValue={content.setValue}
+                          />
+                          {content.label === 'Số lượng người ở thực tế' && (
+                            <p className="text-black font-medium mt-6 text-base">
+                              /4
+                            </p>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   ))}
-                </div>
-              )) : roomInfo2.slice(0, 3).map(item => (
-                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map(content => (
-                    <div
-                      className="flex w-full items-center gap-3"
-                      key={content.label}
-                    >
-                      <CustomInput
-                        key={content.label}
-                        label={content.label}
-                        type={content.type}
-                        placeholder={content.placeholder}
-                        isRequired={content.isRequired}
-                        disabled={content.isDisabled}
-                        value={content.value}
-                        setValue={content.setValue}
-                      />
-                      {content.label === 'Số lượng người ở thực tế' && (
-                        <p className="text-black font-medium mt-6 text-base">
-                          /4
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))}
             </div>
             <div className="w-full space-y-5">
               <p className="text-gray text-base font-medium">Tiền dịch vụ</p>
-              {state.waterType !== 'Nước khoáng' ? roomInfo1.slice(3).map(item => (
-                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map(content => (
-                    <CustomInput
-                      key={content.label}
-                      label={content.label}
-                      type={content.type}
-                      placeholder={content.placeholder}
-                      isRequired={content.isRequired}
-                      disabled={content.isDisabled}
-                      value={content.value}
-                      setValue={content.setValue}
-                    />
+              {state.waterType !== 'Nước M3'
+                ? roomInfo1.slice(3).map(item => (
+                    <div
+                      className="w-[70%] flex gap-10 items-center"
+                      key={item.id}
+                    >
+                      {item.contents.map(content => (
+                        <CustomInput
+                          key={content.label}
+                          label={content.label}
+                          type={content.type}
+                          placeholder={content.placeholder}
+                          isRequired={content.isRequired}
+                          disabled={content.isDisabled}
+                          value={content.value}
+                          setValue={content.setValue}
+                        />
+                      ))}
+                    </div>
+                  ))
+                : roomInfo2.slice(3).map(item => (
+                    <div
+                      className="w-[70%] flex gap-10 items-center"
+                      key={item.id}
+                    >
+                      {item.contents.map(content => (
+                        <CustomInput
+                          key={content.label}
+                          label={content.label}
+                          type={content.type}
+                          placeholder={content.placeholder}
+                          isRequired={content.isRequired}
+                          disabled={content.isDisabled}
+                          value={content.value}
+                          setValue={content.setValue}
+                        />
+                      ))}
+                    </div>
                   ))}
-                </div>
-              )) : roomInfo2.slice(3).map(item => (
-                <div className="w-[70%] flex gap-10 items-center" key={item.id}>
-                  {item.contents.map(content => (
-                    <CustomInput
-                      key={content.label}
-                      label={content.label}
-                      type={content.type}
-                      placeholder={content.placeholder}
-                      isRequired={content.isRequired}
-                      disabled={content.isDisabled}
-                      value={content.value}
-                      setValue={content.setValue}
-                    />
-                  ))}
-                </div>
-              ))}
               <div className="w-[70%]">
                 <p className="text-gray text-base font-medium">Ghi chú</p>
                 <Textarea

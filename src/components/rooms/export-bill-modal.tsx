@@ -3,6 +3,7 @@
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
+import { KEY_CONTEXT } from '@/lib/constant';
 import {
   convertPrice,
   formatDateCustom,
@@ -12,11 +13,10 @@ import {
 import { Modal } from '@mantine/core';
 import { Button, Divider, Spinner } from '@nextui-org/react';
 import { BlobProvider } from '@react-pdf/renderer';
-import Invoice from '../invoice/invoice';
 import { saveAs } from 'file-saver';
 import { useState } from 'react';
+import Invoice from '../invoice/invoice';
 import { Textarea } from '../ui/text-area';
-import { KEY_CONTEXT } from '@/lib/constant';
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId, address, apartmentName } = data;
@@ -72,7 +72,7 @@ const ExportBillModal = () => {
 
     onClose();
   };
-
+  console.log(state);
   const renderInput = (
     label,
     value,
@@ -110,7 +110,7 @@ const ExportBillModal = () => {
     <Modal
       closeOnClickOutside={false}
       radius={15}
-      size='xl'
+      size="xl"
       title="Xuất phiếu thu"
       classNames={{
         header: 'flex justify-center items-center relative',
@@ -166,63 +166,70 @@ const ExportBillModal = () => {
               'Tổng tiền điện',
             ),
           ])}
-          {state.waterType === 'Nước khoáng' ?  renderInputRow([
-            renderNumberInput(
-              'Tổng tiền nước',
-              state.totalWaterPrice,
-              'Tổng tiền nước',
-            ),
-            renderNumberInput(
-              'Tiền dịch vụ',
-              state.servicePrice,
-              'Tiền dịch vụ',
-            ),
-            renderNumberInput(
-              'Chi phí phát sinh khác',
-              state.otherPrice,
-              'Chi phí phát sinh',
-            ),
-            renderNumberInput(
-              'Tổng tiền giữ xe',
-              state.totalParkingPrice,
-              'Tổng tiền giữ xe',
-            ),
-          ]) : (<>
-          {renderInputRow([
-            renderNumberInput('Giá nước', state.waterPrice, 'Nhập giá nước'),
-            renderNumberInput(
-              'Nước tiêu thụ',
-              Number(state.oldWater) >= Number(state.newWater)
-                ? 0
-                : Math.floor(
-                    (Number(state.newWater) - Number(state.oldWater)) *
-                      10,
-                  ) / 10,
+          {state.waterType === 'Nước khoáng' ? (
+            renderInputRow([
+              renderNumberInput(
+                'Tổng tiền nước',
+                state.totalWaterPrice,
+                'Tổng tiền nước',
+              ),
+              renderNumberInput(
+                'Tiền dịch vụ',
+                state.servicePrice,
+                'Tiền dịch vụ',
+              ),
+              renderNumberInput(
+                'Chi phí phát sinh khác',
+                state.otherPrice,
+                'Chi phí phát sinh',
+              ),
+              renderNumberInput(
+                'Tổng tiền giữ xe',
+                state.totalParkingPrice,
+                'Tổng tiền giữ xe',
+              ),
+            ])
+          ) : (
+            <>
+              {renderInputRow([
+                renderNumberInput(
+                  'Giá nước',
+                  state.waterPrice,
+                  'Nhập giá nước',
+                ),
+                renderNumberInput(
+                  'Nước tiêu thụ',
+                  Number(state.oldWater) >= Number(state.newWater)
+                    ? 0
+                    : Math.floor(
+                        (Number(state.newWater) - Number(state.oldWater)) * 10,
+                      ) / 10,
 
-              'Nước tiêu thụ',
-            ),
-            renderNumberInput(
-              'Tổng tiền nước',
-              state.totalWaterPrice,
-              'Tổng tiền nước',
-            )])}
-            { renderInputRow([
-            renderNumberInput(
-              'Tiền dịch vụ',
-              state.servicePrice,
-              'Tiền dịch vụ',
-            ),
-            renderNumberInput(
-              'Chi phí phát sinh khác',
-              state.otherPrice,
-              'Chi phí phát sinh',
-            ),
-            renderNumberInput(
-              'Tổng tiền giữ xe',
-              state.totalParkingPrice,
-              'Tổng tiền giữ xe',
-            )
-          ])}
+                  'Nước tiêu thụ',
+                ),
+                renderNumberInput(
+                  'Tổng tiền nước',
+                  state.totalWaterPrice,
+                  'Tổng tiền nước',
+                ),
+              ])}
+              {renderInputRow([
+                renderNumberInput(
+                  'Tiền dịch vụ',
+                  state.servicePrice,
+                  'Tiền dịch vụ',
+                ),
+                renderNumberInput(
+                  'Chi phí phát sinh khác',
+                  state.otherPrice,
+                  'Chi phí phát sinh',
+                ),
+                renderNumberInput(
+                  'Tổng tiền giữ xe',
+                  state.totalParkingPrice,
+                  'Tổng tiền giữ xe',
+                ),
+              ])}
             </>
           )}
           <p className="text-gray font-semibold text-lg">Ghi chú</p>

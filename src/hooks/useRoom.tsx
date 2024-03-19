@@ -450,7 +450,7 @@ export const RoomProvider = ({ children }) => {
       ],
     },
   ];
-   const roomInfo2 = [
+  const roomInfo2 = [
     {
       id: 1,
       contents: [
@@ -618,7 +618,7 @@ export const RoomProvider = ({ children }) => {
           isRequired: true,
           value: state.peopleAmount,
           setValue: value => handleSetValue('peopleAmount', value),
-        }
+        },
       ],
     },
     {
@@ -826,13 +826,17 @@ export const RoomProvider = ({ children }) => {
       state.servicePrice >= 0 &&
       state.internetPrice >= 0 &&
       state.vehicleAmount >= 0 &&
-      state.parkingPrice >= 0 && 
-      (state.waterType === 'Nước khoáng' || (state.oldWater >= 0 && state.newElectric >= 0) ) 
+      state.parkingPrice >= 0 &&
+      (state.waterType === 'Nước khoáng' ||
+        (state.oldWater >= 0 && state.newElectric >= 0))
     ) {
       if (state.oldElectric > state.newElectric) {
         return false;
       }
-      if(state.waterType !== 'Nước khoáng' && state.oldWater > state.newWater){
+      if (
+        state.waterType !== 'Nước khoáng' &&
+        state.oldWater > state.newWater
+      ) {
         return false;
       }
       return true;
@@ -850,16 +854,18 @@ export const RoomProvider = ({ children }) => {
               10) *
               Number(state.electricPrice),
           );
-    const WP =state.waterType === 'Nước khoáng' ? ( Number(state.waterPrice) * Number(state.peopleAmount)):
-    ( Number(state.oldWater) >= Number(state.newWater)
-        ? 0
-        : Math.floor(
-            (Math.floor(
-              (Number(state.newWater) - Number(state.oldWater)) * 10,
-            ) /
-              10) *
-              Number(state.waterPrice),
-          ))
+    const WP =
+      state.waterType === 'Nước khoáng'
+        ? Number(state.waterPrice) * Number(state.peopleAmount)
+        : Number(state.oldWater) >= Number(state.newWater)
+          ? 0
+          : Math.floor(
+              (Math.floor(
+                (Number(state.newWater) - Number(state.oldWater)) * 10,
+              ) /
+                10) *
+                Number(state.waterPrice),
+            );
     const PP = Number(state.parkingPrice) * Number(state.vehicleAmount);
     const EPV = Number(state.elevatorPrice) * Number(state.peopleAmount);
     const SC =
@@ -910,7 +916,6 @@ export const RoomProvider = ({ children }) => {
         oldDebt: Number(state.oldDebt),
         newDebt: Number(state.newDebt),
         newElectric: Number(state.newElectric),
-        waterType : state.waterType,
         oldWater: Number(state.oldWater),
         newWater: Number(state.newWater),
         otherPrice: Number(state.otherPrice),
@@ -950,7 +955,10 @@ export const RoomProvider = ({ children }) => {
         toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }
-      if (state.waterType !== 'Nước khoáng' && state.newWater < state.oldWater) {
+      if (
+        state.waterType !== 'Nước khoáng' &&
+        state.newWater < state.oldWater
+      ) {
         toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }
@@ -982,7 +990,7 @@ export const RoomProvider = ({ children }) => {
         oldDebt: Number(state.oldDebt),
         newDebt: Number(state.newDebt),
         newElectric: Number(state.newElectric),
-        waterType : state.waterType,
+        waterType: state.waterType,
         oldWater: Number(state.oldWater),
         newWater: Number(state.newWater),
         otherPrice: Number(state.otherPrice),
@@ -1051,7 +1059,10 @@ export const RoomProvider = ({ children }) => {
         toast.error('Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }
-      if (state.waterType !== 'Nước khoáng' && state.newWater < state.oldWater) {
+      if (
+        state.waterType !== 'Nước khoáng' &&
+        state.newWater < state.oldWater
+      ) {
         toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số điện cũ');
         return;
       }

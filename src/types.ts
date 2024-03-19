@@ -21,6 +21,7 @@ export type Room = {
   roomStatus: string;
   billStatus: string;
   suspenseMoney: number;
+  waterType: string;
 };
 export type Customer = {
   id: string;
