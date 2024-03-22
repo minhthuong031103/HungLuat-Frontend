@@ -25,7 +25,6 @@ interface IRoomInfo {
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } =
     useRoom();
-
   const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>
@@ -70,7 +69,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   }}
                 />
               </div>
-              {state.waterType !== 'Nước M3'
+              {state.waterType === 'Nước khoáng'
                 ? roomInfo1.slice(0, 3).map(item => (
                     <div
                       className="w-[70%] flex gap-10 items-center"
@@ -132,7 +131,7 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
             </div>
             <div className="w-full space-y-5">
               <p className="text-gray text-base font-medium">Tiền dịch vụ</p>
-              {state.waterType !== 'Nước M3'
+              {state.waterType === 'Nước khoáng'
                 ? roomInfo1.slice(3).map(item => (
                     <div
                       className="w-[70%] flex gap-10 items-center"
