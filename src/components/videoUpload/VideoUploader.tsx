@@ -34,7 +34,6 @@ export const VideoUploader = ({
       formData: { videoKey },
       isFormData: false,
     });
-    console.log(res);
     setVideoUrl(null);
   };
 

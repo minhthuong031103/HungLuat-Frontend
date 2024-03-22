@@ -26,9 +26,6 @@ function UserProvider({ children }: any) {
   const { getKey } = useKey();
   const token = getKey(KEY_CONTEXT.TOKEN);
   const refreshToken = getKey(KEY_CONTEXT.REFRESH_TOKEN);
-  // console.log("====================================");
-  // console.log(token);
-  // console.log("====================================");
 
   const [state, dispatch] = React.useReducer(userReducer, {
     isAuth: !!token,
