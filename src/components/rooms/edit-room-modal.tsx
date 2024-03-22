@@ -17,7 +17,6 @@ import toast from 'react-hot-toast';
 
 const EditRoomModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
-  console.log('🚀 ~ EditRoomModal ~ data:', data);
   const [floor, setFloor] = useState([]);
   const [floorChosen, setFloorChosen] = useState(new Set<string>([]));
   const [waterTypeChosen, setWaterTypeChosen] = useState(new Set<string>([]));

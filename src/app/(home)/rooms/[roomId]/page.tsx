@@ -112,6 +112,7 @@ const RoomDetailPage = () => {
     isLoading,
   } = useQuery({
     queryKey: [queryKey.ROOMDETAILS, { roomId, userId }],
+    refetchOnMount: true,
     queryFn: async () => {
       const res = await getDetailRoom({
         roomId: roomId,
@@ -143,6 +144,12 @@ const RoomDetailPage = () => {
             },
           });
         }
+      }
+      if(res?.data?.waterType){
+        dispatch({
+          type: 'SET_VALUES',
+          payload: { waterType: res?.data?.waterType },
+        });
       }
       return res?.data;
     },

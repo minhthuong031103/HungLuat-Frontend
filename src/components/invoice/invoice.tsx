@@ -304,8 +304,16 @@ const Invoice = ({ data }) => {
     {
       id: 3,
       name: 'Nước',
-      unit: `${data.peopleAmount} người`,
-      price: `${convertPriceNotVND(data.waterPrice)}đ/người`,
+      unit: data.waterType === 'Nước M3'?`${
+        Number(data.oldWate) >= Number(data.newWater)
+          ? 0
+          : Math.floor(
+              (Number(data.newWater) - Number(data.oldWate)) * 10,
+            ) / 10
+      } (mới ${Math.floor(data.newWater * 10) / 10} - cũ ${
+        data.oldWater
+      })`:`${data.peopleAmount} người`,
+      price: `${convertPriceNotVND(data.waterPrice)}đ/${data.waterType === 'Nước M3'?`M3`:`người`}`,
       total: convertPriceNotVND(data.totalWaterPrice),
     },
     {

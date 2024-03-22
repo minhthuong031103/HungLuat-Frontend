@@ -73,7 +73,6 @@ const useApi = () => {
         return response;
       },
       async error => {
-        console.log('🚀 ~ requestApi ~ error:', error);
         const originalConfig = error.config;
 
         if (
@@ -82,17 +81,14 @@ const useApi = () => {
           error.response.data.message == 'Token expired'
         ) {
           try {
-            console.log('Access token expired');
             // onLogout();
 
-            console.log('call refresh token api');
             if (!getKey(KEY_CONTEXT.REFRESH_TOKEN)) {
               onLogout1();
             }
             const res: any = await axiosClient.post('/auth/refresh-token', {
               refreshToken: getKey(KEY_CONTEXT.REFRESH_TOKEN),
             });
-            console.log('🚀 ~ res:', res);
 
             if (
               res?.message == 'Forbidden resource' ||
@@ -111,7 +107,6 @@ const useApi = () => {
 
             return instance(originalConfig);
           } catch (err) {
-            console.log('🚀 ~ requestApi ~ err:', err);
             onLogout1();
             return Promise.reject(err);
           }
