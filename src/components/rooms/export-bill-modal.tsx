@@ -72,7 +72,6 @@ const ExportBillModal = () => {
 
     onClose();
   };
-  console.log(state);
   const renderInput = (
     label,
     value,
@@ -81,7 +80,6 @@ const ExportBillModal = () => {
     disabled = false,
   ) => {
     if (label !== 'Điện tiêu thụ') {
-      // value = insertSpaceEveryThreeCharacters(value);
       value = insertSpaceEveryThreeCharacters(value);
     }
     return (

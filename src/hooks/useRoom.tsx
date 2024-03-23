@@ -180,7 +180,7 @@ export const RoomProvider = ({ children }) => {
       (key == 'startDate' && value <= state.endDate) ||
       (key == 'endDate' && value >= state.startDate) ||
       key == 'roomStatus' ||
-      key == 'note' ||
+      key == 'note' || 
       (key != 'startDate' &&
         key != 'endDate' &&
         key != 'roomStatus' &&
@@ -193,7 +193,7 @@ export const RoomProvider = ({ children }) => {
       if (value[0] == '0' && value[1] != '.' && value.length > 1) {
         value = value.slice(1);
       }
-      dispatch({ type: 'SET_VALUES', payload: { [key]: value } });
+      dispatch({ type: 'SET_VALUES', payload: { [key]: value === null ? state[key] : value } });
     }
   };
   const handleSetContract = (key, value) => {
@@ -220,7 +220,7 @@ export const RoomProvider = ({ children }) => {
         value = value.slice(1);
       }
 
-      dispatchContract({ type: 'SET_VALUES', payload: { [key]: value } });
+      dispatchContract({ type: 'SET_VALUES', payload: { [key]: value === null ? state[key] : value } });
     }
   };
   useEffect(() => {
@@ -998,7 +998,6 @@ export const RoomProvider = ({ children }) => {
         oldDebt: Number(state.oldDebt),
         newDebt: Number(state.newDebt),
         newElectric: Number(state.newElectric),
-        waterType: state.waterType,
         oldWater: Number(state.oldWater),
         newWater: Number(state.newWater),
         otherPrice: Number(state.otherPrice),
