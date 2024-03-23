@@ -305,10 +305,10 @@ const Invoice = ({ data }) => {
       id: 3,
       name: 'Nước',
       unit: data.waterType === 'Nước M3'?`${
-        Number(data.oldWate) >= Number(data.newWater)
+        Number(data.oldWater) >= Number(data.newWater)
           ? 0
           : Math.floor(
-              (Number(data.newWater) - Number(data.oldWate)) * 10,
+              (Number(data.newWater) - Number(data.oldWater)) * 10,
             ) / 10
       } (mới ${Math.floor(data.newWater * 10) / 10} - cũ ${
         data.oldWater

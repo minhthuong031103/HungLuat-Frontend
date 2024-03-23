@@ -115,7 +115,7 @@ const RoomDetailPage = () => {
     isLoading,
   } = useQuery({
     queryKey: [queryKey.ROOMDETAILS, { roomId, userId }],
-    refetchOnMount: true,
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const res = await getDetailRoom({
         roomId: roomId,

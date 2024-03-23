@@ -21,6 +21,7 @@ const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId, address, apartmentName } = data;
   const { state, exportBill, contractState } = useRoom();
+  console.log(state)
   const [isLoading, setIsLoading] = useState(false);
   const isModalOpen = isOpen && type === 'exportBill';
   const handleExportBill = async blob => {
@@ -72,7 +73,6 @@ const ExportBillModal = () => {
 
     onClose();
   };
-  console.log(state);
   const renderInput = (
     label,
     value,
@@ -81,7 +81,6 @@ const ExportBillModal = () => {
     disabled = false,
   ) => {
     if (label !== 'Điện tiêu thụ') {
-      // value = insertSpaceEveryThreeCharacters(value);
       value = insertSpaceEveryThreeCharacters(value);
     }
     return (
