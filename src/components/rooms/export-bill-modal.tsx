@@ -21,7 +21,6 @@ const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId, address, apartmentName } = data;
   const { state, exportBill, contractState } = useRoom();
-  console.log(state)
   const [isLoading, setIsLoading] = useState(false);
   const isModalOpen = isOpen && type === 'exportBill';
   const handleExportBill = async blob => {
