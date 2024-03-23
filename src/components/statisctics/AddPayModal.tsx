@@ -109,26 +109,6 @@ const AddPayModal = () => {
                 setPayType(value);
               }}
             />
-            {/* <Select
-              label="Loại chi"
-              labelPlacement="outside"
-              isRequired={true}
-              placeholder="Chọn loại chi"
-              className="max-w-[100%] "
-              disallowEmptySelection
-              selectedKeys={payType ? [payType] : []}
-              onChange={e => {
-                setPayType(e.target.value);
-              }}
-            >
-              {payTypes?.map((item: any) => {
-                return (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.value}
-                  </SelectItem>
-                );
-              })}
-            </Select> */}
           </div>
           <div className="w-[33%]">
             <Select
