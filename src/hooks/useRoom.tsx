@@ -273,7 +273,7 @@ export const RoomProvider = ({ children }) => {
         {
           label: 'Nợ mới',
           type: 'text',
-          placeholder: 'Nhập số ngày ở trong tháng',
+          placeholder: 'Nhập tiền nợ mới',
           isRequired: true,
           value: insertSpaceEveryThreeCharacters(state.newDebt),
           setValue: value => {
@@ -500,7 +500,7 @@ export const RoomProvider = ({ children }) => {
         {
           label: 'Nợ mới',
           type: 'text',
-          placeholder: 'Nhập số ngày ở trong tháng',
+          placeholder: 'Nhập tiền nợ mới',
           isRequired: true,
           value: insertSpaceEveryThreeCharacters(state.newDebt),
           setValue: value => {
@@ -966,7 +966,7 @@ export const RoomProvider = ({ children }) => {
         state.waterType !== 'Nước khoáng' &&
         state.newWater < state.oldWater
       ) {
-        toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số điện cũ');
+        toast.error('Chỉ số nước mới không được nhỏ hơn chỉ số nước cũ');
         return;
       }
       toast.error('Vui lòng nhập đầy đủ thông tin');
