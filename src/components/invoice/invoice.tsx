@@ -471,7 +471,7 @@ const Invoice = ({ data }) => {
         </Text>
         . Nội dung chuyển khoản:{' '}
         <Text style={{ fontWeight: 700, color: 'blue' }}>
-          {data.name} T{new Date().getMonth() + 1}/{new Date().getFullYear()}
+        {data?.apartmentName} {data.name} T{new Date().getMonth() + 1}/{new Date().getFullYear()}
         </Text>
       </Text>
     </View>
