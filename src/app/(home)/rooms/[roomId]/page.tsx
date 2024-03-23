@@ -82,6 +82,7 @@ const RoomDetailPage = () => {
   useEffect(() => {
     const handleGetContract = async () => {
       const res = await getContract({ roomId });
+      console.log('🚀 ~ handleGetContract ~ res:', res);
       if (res?.data) {
         handleSetContract('note', res?.data?.note);
         handleSetContract(
@@ -99,6 +100,8 @@ const RoomDetailPage = () => {
         handleSetContract('customerId', res?.data?.customer?.id);
         handleSetContract('clientPNumber', res?.data?.customer?.phone);
         handleSetContract('clientName', res?.data?.customer?.name);
+        handleSetContract('waterType', res?.data?.waterType);
+        handleSetContract('defaultWater', res?.data?.defaultWater?.toString());
       }
     };
     if (roomId) {
@@ -136,19 +139,17 @@ const RoomDetailPage = () => {
         } else {
           dispatch({
             type: 'SET_VALUES',
-            payload: {
-              ...res?.data,
-              startDate: new Date(new Date().setDate(1)),
-              endDate: new Date(),
-              dayStayed: dayStayed,
-            },
+            payload: { ...res?.data, endDate: endDate, startDate: startDate },
           });
         }
-      }
-      if(res?.data?.waterType){
+      } else {
         dispatch({
           type: 'SET_VALUES',
-          payload: { waterType: res?.data?.waterType },
+          payload: {
+            ...res?.data,
+            startDate: new Date(new Date().setDate(1)),
+            endDate: new Date(),
+          },
         });
       }
       return res?.data;
@@ -184,7 +185,10 @@ const RoomDetailPage = () => {
             <div key={item.content}>
               <Button
                 className="rounded-[8px] px-4 py-2 bg-blueButton"
-                isDisabled={(item.content === 'Phòng kế' && !roomDetail?.roomAfter) || (item.content === 'Phòng trước' && !roomDetail?.roomBefore)}
+                isDisabled={
+                  (item.content === 'Phòng kế' && !roomDetail?.roomAfter) ||
+                  (item.content === 'Phòng trước' && !roomDetail?.roomBefore)
+                }
                 onPress={() => {
                   if (
                     item?.content === 'Xuất phiếu' &&
@@ -213,7 +217,7 @@ const RoomDetailPage = () => {
         {flag === 'finance' ? (
           <RoomInfo roomId={roomId} refetch={refetch} isLoading={isLoading} />
         ) : flag === 'customerList' ? (
-          <CustomerList roomId={roomId} apartmentId={roomDetail?.apartmentId}/>
+          <CustomerList roomId={roomId} apartmentId={roomDetail?.apartmentId} />
         ) : (
           <RoomSetting roomId={roomId} />
         )}

@@ -25,6 +25,9 @@ interface IRoomInfo {
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } =
     useRoom();
+  console.log('🚀 ~ RoomInfo ~ state:', state);
+  console.log('🚀 ~ RoomInfo ~ roomInfo2:', roomInfo2);
+  console.log('🚀 ~ RoomInfo ~ roomInfo1:', roomInfo1);
   const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>

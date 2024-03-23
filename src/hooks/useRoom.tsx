@@ -93,6 +93,7 @@ const initContractState: StateContractProps = {
   daySignContract: new Date(),
   dayEndContract: new Date(),
   note: '',
+  defaultWater: 0,
 };
 
 interface IRoomContext {
@@ -136,6 +137,7 @@ interface StateContractProps {
   note: string;
   clientPNumber?: string;
   clientPName?: string;
+  defaultWater: number;
 }
 export interface exportBillProps {
   roomId: string;
@@ -169,6 +171,7 @@ const RoomContext = createContext<any>(null);
 export const RoomProvider = ({ children }) => {
   const { requestApi } = useApiAxios();
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log('🚀 ~ RoomProvider ~ state:', state);
   const [contractState, dispatchContract]: [StateContractProps, any] =
     useReducer(reducerContract, initContractState);
 
@@ -196,11 +199,16 @@ export const RoomProvider = ({ children }) => {
   const handleSetContract = (key, value) => {
     if (
       (key == 'defaultElectric' && checkValueNumberInput(key, value)) ||
+      key == 'defaultWater' ||
       key !== 'defaultElectric' ||
+      key !== 'defaultWater' ||
       (key == 'daySignContract' && value <= contractState.dayEndContract) ||
       (key == 'dayEndContract' && value >= contractState.daySignContract)
     ) {
       if (key == 'defaultElectric' && value === '') {
+        value = 0;
+      }
+      if (key == 'defaultWater' && value === '') {
         value = 0;
       }
       if (
@@ -1072,6 +1080,10 @@ export const RoomProvider = ({ children }) => {
   };
   const createContract = async ({ data, onClose }) => {
     try {
+      if (!data?.customerId) {
+        toast.error('Vui lòng chọn khách hàng');
+        return;
+      }
       const res = await requestApi({
         endPoint: `/contract/create`,
         method: 'POST',

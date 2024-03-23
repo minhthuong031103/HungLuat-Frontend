@@ -5,19 +5,16 @@ import { useCustomerByRoomScroll } from '@/hooks/useCustomerByRoomScroll';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
 import { Customer } from '@/types';
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Button
-} from '@nextui-org/react';
+import { Autocomplete, AutocompleteItem, Button } from '@nextui-org/react';
 import { useParams } from 'next/navigation';
+import { useEffect } from 'react';
 import ModalCus from '../modalCus/ModalCus';
 import { DatePicker } from '../ui/date-picker';
-import { useEffect } from 'react';
 const ContractRoomModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
   const { roomId } = useParams();
   const { contractState, handleSetContract, createContract } = useRoom();
+  console.log('🚀 ~ ContractRoomModal ~ contractState:', contractState);
   const isModalOpen = isOpen && type === 'contractRoom';
   useEffect(() => {
     setCustomerChosen(contractState?.customerId?.toString());
@@ -41,6 +38,7 @@ const ContractRoomModal = () => {
       defaultElectric: Number(contractState.defaultElectric),
       customerId: Number(customerChosen),
       roomId: Number(roomId),
+      defaultWater: Number(contractState.defaultWater),
     };
     await createContract({ data, onClose });
     onAction();
@@ -112,9 +110,7 @@ const ContractRoomModal = () => {
               placeholder="Nhập ghi chú"
               value={contractState.note}
               setValue={value => {
-                {
-                  handleSetContract('note', value);
-                }
+                handleSetContract('note', value);
               }}
             />
           </div>
@@ -124,14 +120,21 @@ const ContractRoomModal = () => {
               placeholder="Nhập chỉ số điện"
               value={contractState.defaultElectric}
               setValue={value => {
-                {
-                  handleSetContract('defaultElectric', value);
-                }
+                handleSetContract('defaultElectric', value);
               }}
             />
           </div>
         </div>
-
+        <div className="w-[50%]">
+          <CustomInput
+            label="Chỉ số nước bàn giao"
+            placeholder="Nhập chỉ số nước"
+            value={contractState.defaultWater}
+            setValue={value => {
+              handleSetContract('defaultWater', value);
+            }}
+          />
+        </div>
         <div className="flex justify-end">
           <Button
             className="rounded-[8px] w-[133px] px-4 py-2 bg-blueButton text-white font-semibold text-sm"
