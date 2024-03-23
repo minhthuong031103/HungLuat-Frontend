@@ -82,7 +82,6 @@ const RoomDetailPage = () => {
   useEffect(() => {
     const handleGetContract = async () => {
       const res = await getContract({ roomId });
-      console.log('🚀 ~ handleGetContract ~ res:', res);
       if (res?.data) {
         handleSetContract('note', res?.data?.note);
         handleSetContract(

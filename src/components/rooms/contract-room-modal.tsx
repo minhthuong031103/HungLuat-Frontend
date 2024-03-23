@@ -14,7 +14,6 @@ const ContractRoomModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
   const { roomId } = useParams();
   const { contractState, handleSetContract, createContract } = useRoom();
-  console.log('🚀 ~ ContractRoomModal ~ contractState:', contractState);
   const isModalOpen = isOpen && type === 'contractRoom';
   useEffect(() => {
     setCustomerChosen(contractState?.customerId?.toString());

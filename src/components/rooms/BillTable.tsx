@@ -58,11 +58,11 @@ const columns = [
     sortable: true,
   },
 
-  {
-    id: columnKeys.action,
-    title: 'Thao tác',
-    sortable: false,
-  },
+  // {
+  //   id: columnKeys.action,
+  //   title: 'Thao tác',
+  //   sortable: false,
+  // },
 ];
 
 const NormalRenderCell = ({ cellValue }) => {

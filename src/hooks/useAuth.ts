@@ -24,7 +24,6 @@ export const useAuth = () => {
   const onLogin = async (data: LoginProps) => {
     try {
       const res = (await axiosClient.post('/auth/login', data)) as any;
-      console.log('🚀 ~ onLogin ~ res:', res);
       if (res?.message == RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.ENG) {
         toast.error(RETURNED_MESSAGES.AUTH.NOT_FOUND_USER.VIE);
         return;
