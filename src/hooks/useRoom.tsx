@@ -171,7 +171,6 @@ const RoomContext = createContext<any>(null);
 export const RoomProvider = ({ children }) => {
   const { requestApi } = useApiAxios();
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log('🚀 ~ RoomProvider ~ state:', state);
   const [contractState, dispatchContract]: [StateContractProps, any] =
     useReducer(reducerContract, initContractState);
 
