@@ -27,6 +27,7 @@ const ExportBillModal = () => {
     setIsLoading(true);
     const data = {
       fileName: state.name,
+      apartmentName: state.apartmentName,
       apartmentId: state.apartmentId,
       roomId: roomId,
       customerId: '1',
@@ -63,9 +64,7 @@ const ExportBillModal = () => {
     await exportBill(data, onAction, () => {
       saveAs(
         blob,
-        `${state.name} T${
-          new Date().getMonth() + 1
-        }/${new Date().getFullYear()}.pdf`,
+        `${state.apartmentName} P${state.name} T${new Date().getMonth() + 1}/${new Date().getFullYear()}.pdf`,
       );
     });
     setIsLoading(false);
