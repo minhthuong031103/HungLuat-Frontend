@@ -96,7 +96,7 @@ const BillTable = ({ roomId }: BillTaleProps) => {
           ...item,
           name: item.room.name,
           numberFloor: item.room.floor,
-          customer: item.room?.customer || 'Chưa có tên',
+          customer: item?.customer?.name || 'Chưa có tên',
         })),
       };
     },
