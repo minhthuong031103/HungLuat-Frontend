@@ -51,6 +51,8 @@ export interface EmployeeProps {
   phone: string;
   bankNumber: string;
   bank: string;
+  bankNumber2: string;
+  bank2: string;
   email?: string;
   password?: string;
   apartmentIds?: number[];
@@ -61,6 +63,8 @@ export interface CreateEmployeeProps {
   phone: string;
   bankNumber: string;
   bank: string;
+  bankNumber2: string;
+  bank2: string;
   email?: string;
   password?: string;
   apartmentIds?: number[];

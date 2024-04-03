@@ -1,25 +1,25 @@
 'use client';
 
+import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
+import { useApartment } from '@/hooks/useApartment';
+import { useEmployee } from '@/hooks/useEmployee';
+import { useModal } from '@/hooks/useModalStore';
+import { KEY_CONTEXT, queryKey } from '@/lib/constant';
+import { checkValueNumberInput } from '@/lib/utils';
+import { Apartment } from '@/types';
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Select,
   SelectItem,
 } from '@nextui-org/react';
-import { useEffect, useState } from 'react';
-import { useModal } from '@/hooks/useModalStore';
-import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { checkValueNumberInput } from '@/lib/utils';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
-import { useApartment } from '@/hooks/useApartment';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { KEY_CONTEXT, queryKey } from '@/lib/constant';
-import { Apartment } from '@/types';
-import { useEmployee } from '@/hooks/useEmployee';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const EditEmployeeModal = () => {
@@ -30,6 +30,8 @@ const EditEmployeeModal = () => {
   const [phone, setPhone] = useState('');
   const [bankNumber, setBankNumber] = useState('');
   const [bank, setBank] = useState('');
+  const [bank2, setBank2] = useState('');
+  const [bankNumber2, setBankNumber2] = useState('');
   const [email, setEmail] = useState('');
   const [apartmentId, setApartmentId] = useState(new Set([]));
 
@@ -39,6 +41,8 @@ const EditEmployeeModal = () => {
     setPhone('');
     setBankNumber('');
     setBank('');
+    setBankNumber2('');
+    setBank2('');
     setEmail('');
 
     setApartmentId(new Set([]));
@@ -53,6 +57,8 @@ const EditEmployeeModal = () => {
           phone,
           bankNumber,
           bank,
+          bank2,
+          bankNumber2,
           email,
           apartmentIds: apartment,
         },
@@ -115,6 +121,8 @@ const EditEmployeeModal = () => {
       setPhone(data.phone || '');
       setBankNumber(data.bankNumber || '');
       setBank(data.bank || '');
+      setBankNumber2(data.bankNumber2 || '');
+      setBank2(data.bank2 || '');
       setEmail(data.email || '');
       setApartmentId(
         new Set(data?.apartmentPermissionIds?.map(item => item.toString())),
@@ -203,6 +211,24 @@ const EditEmployeeModal = () => {
                   isRequired={false}
                   setValue={e =>
                     checkValueNumberInput('payNumber', e) && setBankNumber(e)
+                  }
+                />
+              </div>
+              <div className="flex gap-[20px]">
+                <CustomInput
+                  label="Tên ngân hàng 2"
+                  placeholder="Nhập tên ngân hàng 2"
+                  value={bank2}
+                  isRequired={false}
+                  setValue={setBank2}
+                />
+                <CustomInput
+                  label="Số tài khoản 2"
+                  placeholder="Nhập số tài khoản 2"
+                  value={bankNumber2}
+                  isRequired={false}
+                  setValue={e =>
+                    checkValueNumberInput('payNumber', e) && setBankNumber2(e)
                   }
                 />
               </div>
