@@ -10,7 +10,7 @@ interface ExportExcelProps {
   fileName: string;
 }
 const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
-  const headers = [
+  const header = [
     {
       label: 'Mã phòng',
       key: 'id',
@@ -32,8 +32,11 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
     { label: 'Chỉ số điện cũ (KWh)', key: 'oldElectric' },
     { label: 'Giá điện (VND/KWh)', key: 'electricPrice' },
     { label: 'Chỉ số điện mới (KWh)', key: 'newElectric' },
+    { label: 'Chỉ số nước lúc bàn giao (m3)', key: 'defaultWater' },
+    { label: 'Chỉ số nước cũ (m3)', key: 'oldWater' },
+    { label: 'Tiền nước', key: 'waterPrice' },
+    { label: 'Chỉ số nước mới (m3)', key: 'newWater' },
     { label: 'Số lượng người sử dụng dịch vụ', key: 'peopleAmount' },
-    { label: 'Tiền nước (VND/người)', key: 'waterPrice' },
     { label: 'Tiền thang máy (VND/người)', key: 'elevatorPrice' },
     { label: 'Chi phí phát sinh', key: 'otherPrice' },
     { label: 'Tiền internet (VND/người)', key: 'internetPrice' },
@@ -63,7 +66,10 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
                 electricPrice: room?.electricPrice || 0,
                 newElectric: room?.newElectric || 0,
                 peopleAmount: room?.peopleAmount || 0,
+                defaultWater: room?.defaultWater || 0,
+                oldWater: room?.oldWater || 0,
                 waterPrice: room?.waterPrice || 0,
+                newWater: room?.newWater || 0,
                 elevatorPrice: room?.elevatorPrice || 0,
                 otherPrice: room?.otherPrice || 0,
                 internetPrice: room?.internetPrice || 0,
@@ -85,7 +91,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
     <CSVLink
       data={exportData}
       filename={fileName?.toUpperCase()}
-      headers={headers}
+      headers={header}
     >
       <Button className="rounded-[8px] bg-blueButton ml-4">
         {isLoading ? (

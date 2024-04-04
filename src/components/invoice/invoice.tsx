@@ -434,8 +434,8 @@ const Invoice = ({ data }) => {
       <Text>
         (Bằng chữ:{' '}
         <Text style={{ fontWeight: 700 }}>
-          {getText(data.suspenseMoney, ',').charAt(0).toUpperCase() +
-            getText(data.suspenseMoney, ',').slice(1)}{' '}
+          {getText(data.suspenseMoney, ',')?.charAt(0)?.toUpperCase() +
+            getText(data.suspenseMoney, ',')?.slice(1)}{' '}
           đồng
         </Text>
         )

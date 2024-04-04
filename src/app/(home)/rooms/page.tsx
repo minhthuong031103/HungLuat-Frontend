@@ -6,7 +6,7 @@ import { useApartment } from '@/hooks/useApartment';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
 import { KEY_CONTEXT, queryKey } from '@/lib/constant';
-import { cn, getCurrentMonth } from '@/lib/utils';
+import { cn, formatDateCustom, getCurrentMonth, getDaysAmountInMonth } from '@/lib/utils';
 import { Apartment } from '@/types';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
@@ -18,12 +18,9 @@ import { SearchBar } from '../(components)/home/searchbar';
 import ImportExcel from '@/components/excel/ImportExcel';
 import ExportExcel from '@/components/excel/ExportExcel';
 import { useSearchParams } from 'next/navigation';
-
-interface ResponseProps {
-  items: any;
-  totalItems: number;
-  totalPages: number;
-}
+import { BlobProvider } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
+import Invoice from '@/components/invoice/invoice';
 
 const RoomsPage = () => {
   const [searchAdvanced, setSearchAdvanced] = useState(false);
@@ -106,7 +103,7 @@ const RoomsPage = () => {
     setFloors(res?.data?.rooms);
     setLoading(false);
   };
-  const { getRooms } = useRoom();
+  const { getRooms, exportMultipleBills } = useRoom();
   useEffect(() => {
     if (apartmentChosen) {
       handleGetRooms();
@@ -130,6 +127,57 @@ const RoomsPage = () => {
       fetchNextPage();
     },
   });
+  const [isExport, setIsExport] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const handleExportBill = async (blob, state) => {
+    setIsLoading(true);
+    if (state?.contract?.customer?.name) {
+      const data = {
+        fileName: state.name,
+        apartmentId: apartmentChosen,
+        roomId: state.id,
+        customerId: '1',
+        endDate: state.endDate || new Date(),
+        roomPrice: Math.floor(
+          (Number(state.roomPrice) * Number(state.dayStayed)) /
+            getDaysAmountInMonth(
+              new Date().getMonth() + 1,
+              new Date().getFullYear(),
+            ),
+        ) || 0,
+        totalElectricPrice: state.totalElectricPrice || 0,
+        totalWaterPrice: state.totalWaterPrice || 0,
+        totalElevatorPrice: state.totalElevatorPrice || 0,
+        totalParkingPrice: state.totalParkingPrice || 0,
+        internetPrice: state.internetPrice || 0,
+        servicePrice: state.servicePrice || 0,
+        otherPrice: state.otherPrice || 0,
+        totalSurcharge:
+          Number(state.peopleRealStayed) - 4 > 0
+            ? (Number(state.peopleRealStayed) - 4) * Number(state.surcharge)
+            : 0 || 0,
+        suspenseMoney: state.suspenseMoney || 0,
+        newDebt: state.newDebt || 0,
+        oldDebt: state.oldDebt || 0,
+        newElectric: state.newElectric || 0,
+        oldElectric: state.oldElectric || 0,
+        userName: userInfo?.name || 0,
+        files: [blob],
+        note: state.note || '',
+      };
+    await exportMultipleBills(data, () => {
+      saveAs(
+        blob,
+        `${apartmentName}_${state.name}_T${
+          new Date().getMonth() + 1
+        }/${new Date().getFullYear()}.pdf`,
+      );
+    });
+    }
+    
+    setIsLoading(false);
+  };
+  const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
     <>
       <div className="w-full p-3 border-1 drop-shadow border-borderColor rounded-lg">
@@ -274,6 +322,49 @@ const RoomsPage = () => {
                       </div>
                     </div>
                   </Button>
+                  <Button
+                    className="rounded-[8px] px-4 ml-4 py-2 bg-blueButton"
+                    onPress={() => {setIsExport(true)}}
+                  >
+                    <div className="flex flex-row items-center gap-x-[8px] ">
+                      <div>{CommonSvg.export()}</div>
+                      <div className="text-white mt-[1px] font-medium">
+                        Xuất phiếu
+                      </div>
+                    </div>
+                  </Button>
+                  {floors?.map((floor : any) => floor.rooms.map(room => <BlobProvider
+              key={room.id}
+              document={
+              <Invoice
+                data={{
+                  ...room,
+                  suspenseMoney: room.suspenseMoney || 0,
+                  startDate: formatDateCustom(new Date(room.startDate)),
+                  endDate: formatDateCustom(new Date(room.endDate)),
+                  bank: userInfo?.bank,
+                  bankNumber: userInfo?.bankNumber,
+                  bankName: userInfo?.name,
+                  phoneNumber: userInfo?.phone,
+                  clientName: room?.contract?.customer?.name,
+                  clientPNumber: room?.contract?.customer?.phone,
+                  daySigned: formatDateCustom(new Date(room?.contract?.daySignContract)),
+                  apartmentName: apartmentName,
+                  address: apartment?.address,
+                }}
+              />
+            }
+          >
+            {({ blob }) => {
+              useEffect(() => {
+                if (isExport && blob) {
+                  handleExportBill(blob, room);
+                  setIsExport(false);
+                }
+              }, [blob]);
+              return <></>;
+            }}
+                  </BlobProvider>))}
                   <ExportExcel data={floors as any} fileName={apartmentName} />
                   <ImportExcel refetch={handleGetRooms} />
                 </div>
