@@ -14,6 +14,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { CustomInput } from './custom-input';
 import { SelectAddress } from './select-address';
+import { checkValueNumberInput } from '@/lib/utils';
 
 const AddApartmentModal = () => {
   const { isOpen, onClose, type, onAction } = useModal();
@@ -24,7 +25,7 @@ const AddApartmentModal = () => {
   const [provinceValue, setProvinceValue] = useState('');
   const [districtValue, setDistrictValue] = useState('');
   const [wardValue, setWardValue] = useState('');
-
+  const [hotline, setHotLine] = useState('');
   const isModalOpen = isOpen && type === 'createApartment';
   const resetState = () => {
     setProvinceValue('');
@@ -33,6 +34,7 @@ const AddApartmentModal = () => {
     setApartmentName('');
     setApartmentFloor('');
     setAddress('');
+    setHotLine('');
   };
   const handleAddApartment = async () => {
     if (
@@ -41,7 +43,8 @@ const AddApartmentModal = () => {
       address &&
       provinceValue &&
       districtValue &&
-      wardValue
+      wardValue && 
+      hotline
     ) {
       const data = {
         name: apartmentName,
@@ -51,6 +54,7 @@ const AddApartmentModal = () => {
         district: districtValue,
         city: provinceValue,
         houseNumber: address,
+        hotline: hotline
       };
       await createApartment(data, resetState, onClose);
       onAction();
@@ -72,7 +76,7 @@ const AddApartmentModal = () => {
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="flex gap-[20px]">
-                <div className="w-[60%]">
+                <div className="w-[33%]">
                   <CustomInput
                     label="Tên căn hộ"
                     placeholder="Nhập tên căn hộ"
@@ -80,7 +84,7 @@ const AddApartmentModal = () => {
                     setValue={setApartmentName}
                   />
                 </div>
-                <div className="w-[40%]">
+                <div className="w-[33%]">
                   <CustomInput
                     label="Số tầng"
                     placeholder="Nhập số tầng"
@@ -88,6 +92,17 @@ const AddApartmentModal = () => {
                     value={apartmentFloor}
                     setValue={value => {
                       if (Number(value) >= 0) setApartmentFloor(value);
+                    }}
+                  />
+                </div>
+                <div className="w-[33%]">
+                  <CustomInput
+                    label="Số điện thoại"
+                    placeholder="Nhập số điện thoại"
+                    type="text"
+                    value={hotline}
+                    setValue={value => {
+                      checkValueNumberInput('hotline', value) && setHotLine(value);
                     }}
                   />
                 </div>
