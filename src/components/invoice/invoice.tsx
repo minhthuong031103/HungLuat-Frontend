@@ -132,6 +132,7 @@ const Invoice = ({ data }) => {
       borderLeftWidth: 1,
     },
   });
+  console.log(data);
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
       <View style={styles.spaceBetween}>
@@ -304,16 +305,19 @@ const Invoice = ({ data }) => {
     {
       id: 3,
       name: 'Nước',
-      unit: data.waterType === 'Nước M3'?`${
-        Number(data.oldWater) >= Number(data.newWater)
-          ? 0
-          : Math.floor(
-              (Number(data.newWater) - Number(data.oldWater)) * 10,
-            ) / 10
-      } (mới ${Math.floor(data.newWater * 10) / 10} - cũ ${
-        data.oldWater
-      })`:`${data.peopleAmount} người`,
-      price: `${convertPriceNotVND(data.waterPrice)}đ/${data.waterType === 'Nước M3'?`M3`:`người`}`,
+      unit:
+        data.waterType === 'Nước M3'
+          ? `${
+              Number(data.oldWater) >= Number(data.newWater)
+                ? 0
+                : Math.floor(
+                    (Number(data.newWater) - Number(data.oldWater)) * 10,
+                  ) / 10
+            } (mới ${Math.floor(data.newWater * 10) / 10} - cũ ${
+              data.oldWater
+            })`
+          : `${data.peopleAmount} người`,
+      price: `${convertPriceNotVND(data.waterPrice)}đ/${data.waterType === 'Nước M3' ? `M3` : `người`}`,
       total: convertPriceNotVND(data.totalWaterPrice),
     },
     {
@@ -471,7 +475,8 @@ const Invoice = ({ data }) => {
         </Text>
         . Nội dung chuyển khoản:{' '}
         <Text style={{ fontWeight: 700, color: 'blue' }}>
-        {data?.apartmentName} P{data.name} T{new Date().getMonth() + 1}/{new Date().getFullYear()}
+          {data?.apartmentName} P{data.name} T{new Date().getMonth() + 1}/
+          {new Date().getFullYear()}
         </Text>
       </Text>
     </View>

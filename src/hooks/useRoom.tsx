@@ -180,7 +180,7 @@ export const RoomProvider = ({ children }) => {
       (key == 'startDate' && value <= state.endDate) ||
       (key == 'endDate' && value >= state.startDate) ||
       key == 'roomStatus' ||
-      key == 'note' || 
+      key == 'note' ||
       (key != 'startDate' &&
         key != 'endDate' &&
         key != 'roomStatus' &&
@@ -193,7 +193,10 @@ export const RoomProvider = ({ children }) => {
       if (value[0] == '0' && value[1] != '.' && value.length > 1) {
         value = value.slice(1);
       }
-      dispatch({ type: 'SET_VALUES', payload: { [key]: value === null ? state[key] : value } });
+      dispatch({
+        type: 'SET_VALUES',
+        payload: { [key]: value === null ? state[key] : value },
+      });
     }
   };
   const handleSetContract = (key, value) => {
@@ -220,12 +223,23 @@ export const RoomProvider = ({ children }) => {
         value = value.slice(1);
       }
 
-      dispatchContract({ type: 'SET_VALUES', payload: { [key]: value === null ? state[key] : value } });
+      dispatchContract({
+        type: 'SET_VALUES',
+        payload: { [key]: value === null ? state[key] : value },
+      });
     }
   };
   useEffect(() => {
-    const startDate = new Date(state.startDate);
-    const endDate = new Date(state.endDate);
+    const startDate = new Date(
+      state.startDate.getFullYear(),
+      state.startDate.getMonth(),
+      state.startDate.getDate(),
+    );
+    const endDate = new Date(
+      state.endDate.getFullYear(),
+      state.endDate.getMonth(),
+      state.endDate.getDate(),
+    );
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     handleSetValue('dayStayed', diffDays + 1);
@@ -1205,32 +1219,31 @@ export const RoomProvider = ({ children }) => {
       toast.error('Xác nhận hóa đơn thất bại');
     }
   };
-    const exportMultipleBills = async (
+  const exportMultipleBills = async (
     data: exportBillProps,
     download: () => void,
   ) => {
-          const formData = new FormData();
-          const dataKey = Object.keys(data);
-          for (let i = 0; i < dataKey.length; i++) {
-            formData.append(dataKey[i], data[dataKey[i]]);
-          }
-          const base64 = (await blobToBase64(data.files[0])) as string;
-          formData.append('files', base64);
-          try {
-            const resExport = await requestApi({
-              endPoint: `/bill/export`,
-              method: 'POST',
-              body: formData,
-            });
+    const formData = new FormData();
+    const dataKey = Object.keys(data);
+    for (let i = 0; i < dataKey.length; i++) {
+      formData.append(dataKey[i], data[dataKey[i]]);
+    }
+    const base64 = (await blobToBase64(data.files[0])) as string;
+    formData.append('files', base64);
+    try {
+      const resExport = await requestApi({
+        endPoint: `/bill/export`,
+        method: 'POST',
+        body: formData,
+      });
 
-            if (resExport?.message == RETURNED_MESSAGES.BILL.BILL_CREATED.ENG) {
-              toast.success('Xuất hóa đơn thành công');
-              download();
-            } 
-          } catch (error) {
-            toast.error('Xuất hóa đơn thất bại');
-          }
-    
+      if (resExport?.message == RETURNED_MESSAGES.BILL.BILL_CREATED.ENG) {
+        toast.success('Xuất hóa đơn thành công');
+        download();
+      }
+    } catch (error) {
+      toast.error('Xuất hóa đơn thất bại');
+    }
   };
   return (
     <RoomContext.Provider
@@ -1259,7 +1272,7 @@ export const RoomProvider = ({ children }) => {
         deleteBill,
         updateExcel,
         confirmBill,
-        exportMultipleBills
+        exportMultipleBills,
       }}
     >
       {children}

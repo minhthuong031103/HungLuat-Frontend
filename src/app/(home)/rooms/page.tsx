@@ -6,7 +6,12 @@ import { useApartment } from '@/hooks/useApartment';
 import { useModal } from '@/hooks/useModalStore';
 import { useRoom } from '@/hooks/useRoom';
 import { KEY_CONTEXT, queryKey } from '@/lib/constant';
-import { cn, formatDateCustom, getCurrentMonth, getDaysAmountInMonth } from '@/lib/utils';
+import {
+  cn,
+  formatDateCustom,
+  getCurrentMonth,
+  getDaysAmountInMonth,
+} from '@/lib/utils';
 import { Apartment } from '@/types';
 import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
@@ -138,13 +143,14 @@ const RoomsPage = () => {
         roomId: state.id,
         customerId: '1',
         endDate: state.endDate || new Date(),
-        roomPrice: Math.floor(
-          (Number(state.roomPrice) * Number(state.dayStayed)) /
-            getDaysAmountInMonth(
-              new Date().getMonth() + 1,
-              new Date().getFullYear(),
-            ),
-        ) || 0,
+        roomPrice:
+          Math.floor(
+            (Number(state.roomPrice) * Number(state.dayStayed)) /
+              getDaysAmountInMonth(
+                new Date().getMonth() + 1,
+                new Date().getFullYear(),
+              ),
+          ) || 0,
         totalElectricPrice: state.totalElectricPrice || 0,
         totalWaterPrice: state.totalWaterPrice || 0,
         totalElevatorPrice: state.totalElevatorPrice || 0,
@@ -165,16 +171,16 @@ const RoomsPage = () => {
         files: [blob],
         note: state.note || '',
       };
-    await exportMultipleBills(data, () => {
-      saveAs(
-        blob,
-        `${apartmentName}_${state.name}_T${
-          new Date().getMonth() + 1
-        }/${new Date().getFullYear()}.pdf`,
-      );
-    });
+      await exportMultipleBills(data, () => {
+        saveAs(
+          blob,
+          `${apartmentName}_${state.name}_T${
+            new Date().getMonth() + 1
+          }/${new Date().getFullYear()}.pdf`,
+        );
+      });
     }
-    
+
     setIsLoading(false);
   };
   const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
@@ -324,47 +330,57 @@ const RoomsPage = () => {
                   </Button>
                   <Button
                     className="rounded-[8px] px-4 ml-4 py-2 bg-blueButton"
-                    onPress={() => {setIsExport(true)}}
+                    onPress={() => {
+                      setIsExport(true);
+                    }}
                   >
                     <div className="flex flex-row items-center gap-x-[8px] ">
-                      <div>{CommonSvg.export()}</div>
+                      <div>{CommonSvg.exportWhite()}</div>
                       <div className="text-white mt-[1px] font-medium">
                         Xuất phiếu
                       </div>
                     </div>
                   </Button>
-                  {floors?.map((floor : any) => floor.rooms.map(room => <BlobProvider
-              key={room.id}
-              document={
-              <Invoice
-                data={{
-                  ...room,
-                  suspenseMoney: room.suspenseMoney || 0,
-                  startDate: formatDateCustom(new Date(room.startDate)),
-                  endDate: formatDateCustom(new Date(room.endDate)),
-                  bank: userInfo?.bank,
-                  bankNumber: userInfo?.bankNumber,
-                  bankName: userInfo?.name,
-                  phoneNumber: userInfo?.phone,
-                  clientName: room?.contract?.customer?.name,
-                  clientPNumber: room?.contract?.customer?.phone,
-                  daySigned: formatDateCustom(new Date(room?.contract?.daySignContract)),
-                  apartmentName: apartmentName,
-                  address: apartment?.address,
-                }}
-              />
-            }
-          >
-            {({ blob }) => {
-              useEffect(() => {
-                if (isExport && blob) {
-                  handleExportBill(blob, room);
-                  setIsExport(false);
-                }
-              }, [blob]);
-              return <></>;
-            }}
-                  </BlobProvider>))}
+                  {floors?.map((floor: any) =>
+                    floor.rooms.map(room => (
+                      <BlobProvider
+                        key={room.id}
+                        document={
+                          <Invoice
+                            data={{
+                              ...room,
+                              suspenseMoney: room.suspenseMoney || 0,
+                              startDate: formatDateCustom(
+                                new Date(room.startDate),
+                              ),
+                              endDate: formatDateCustom(new Date(room.endDate)),
+                              bank: userInfo?.bank,
+                              bankNumber: userInfo?.bankNumber,
+                              bankName: userInfo?.name,
+                              phoneNumber: userInfo?.phone,
+                              clientName: room?.contract?.customer?.name,
+                              clientPNumber: room?.contract?.customer?.phone,
+                              daySigned: formatDateCustom(
+                                new Date(room?.contract?.daySignContract),
+                              ),
+                              apartmentName: apartmentName,
+                              address: apartment?.address,
+                            }}
+                          />
+                        }
+                      >
+                        {({ blob }) => {
+                          useEffect(() => {
+                            if (isExport && blob) {
+                              handleExportBill(blob, room);
+                              setIsExport(false);
+                            }
+                          }, [blob]);
+                          return <></>;
+                        }}
+                      </BlobProvider>
+                    )),
+                  )}
                   <ExportExcel data={floors as any} fileName={apartmentName} />
                   <ImportExcel refetch={handleGetRooms} />
                 </div>
