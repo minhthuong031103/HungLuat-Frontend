@@ -132,7 +132,6 @@ const Invoice = ({ data }) => {
       borderLeftWidth: 1,
     },
   });
-  console.log(data);
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
       <View style={styles.spaceBetween}>

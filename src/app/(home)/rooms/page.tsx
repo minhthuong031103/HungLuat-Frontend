@@ -26,6 +26,7 @@ import { useSearchParams } from 'next/navigation';
 import { BlobProvider } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import Invoice from '@/components/invoice/invoice';
+import toast from 'react-hot-toast';
 
 const RoomsPage = () => {
   const [searchAdvanced, setSearchAdvanced] = useState(false);
@@ -133,10 +134,8 @@ const RoomsPage = () => {
     },
   });
   const [isExport, setIsExport] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const handleExportBill = async (blob, state) => {
-    setIsLoading(true);
-    if (state?.contract?.customer?.name) {
+    if (state?.contract?.customer?.name && state?.billStatus !== 'Chờ thu') {
       const data = {
         fileName: state.name,
         apartmentId: apartmentChosen,
@@ -179,9 +178,9 @@ const RoomsPage = () => {
           }/${new Date().getFullYear()}.pdf`,
         );
       });
+    } else {
+      toast.error(`Phòng ${state.name} chưa có hợp đồng!`);
     }
-
-    setIsLoading(false);
   };
   const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
@@ -375,7 +374,7 @@ const RoomsPage = () => {
                               handleExportBill(blob, room);
                               setIsExport(false);
                             }
-                          }, [blob]);
+                          }, [blob, isExport]);
                           return <></>;
                         }}
                       </BlobProvider>
