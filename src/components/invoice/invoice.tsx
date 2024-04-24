@@ -165,7 +165,7 @@ const Invoice = ({ data }) => {
             >
               Điện thoại:{' '}
               <Text style={{ color: 'blue' }}>
-                {data?.phoneNumber} ({data?.bankName})
+                {data?.apartment?.hotline}
               </Text>
             </Text>
           </View>
@@ -195,7 +195,6 @@ const Invoice = ({ data }) => {
       </View>
     </View>
   );
-
   const Information = () => (
     <View
       style={{
@@ -471,6 +470,18 @@ const Invoice = ({ data }) => {
         {`${data?.bank?.charAt(0).toUpperCase()}${data?.bank?.slice(1)}`}:{' '}
         <Text style={{ fontWeight: 700, color: 'blue' }}>
           {data?.bankNumber}
+        </Text>
+        . Nội dung chuyển khoản:{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>
+          {data?.apartmentName} P{data.name} T{new Date().getMonth() + 1}/
+          {new Date().getFullYear()}
+        </Text>
+      </Text>
+      <Text>
+        - Số TK Ngân hàng{' '}
+        {`${data?.bank2?.charAt(0).toUpperCase()}${data?.bank2?.slice(1)}`}:{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>
+          {data?.bankNumber2}
         </Text>
         . Nội dung chuyển khoản:{' '}
         <Text style={{ fontWeight: 700, color: 'blue' }}>

@@ -43,8 +43,7 @@ const AddApartmentModal = () => {
       address &&
       provinceValue &&
       districtValue &&
-      wardValue && 
-      hotline
+      wardValue && hotline
     ) {
       const data = {
         name: apartmentName,
@@ -54,7 +53,7 @@ const AddApartmentModal = () => {
         district: districtValue,
         city: provinceValue,
         houseNumber: address,
-        hotline: hotline
+        hotline: hotline,
       };
       await createApartment(data, resetState, onClose);
       onAction();
@@ -76,15 +75,12 @@ const AddApartmentModal = () => {
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="flex gap-[20px]">
-                <div className="w-[33%]">
                   <CustomInput
                     label="Tên căn hộ"
                     placeholder="Nhập tên căn hộ"
                     value={apartmentName}
                     setValue={setApartmentName}
                   />
-                </div>
-                <div className="w-[33%]">
                   <CustomInput
                     label="Số tầng"
                     placeholder="Nhập số tầng"
@@ -94,18 +90,14 @@ const AddApartmentModal = () => {
                       if (Number(value) >= 0) setApartmentFloor(value);
                     }}
                   />
-                </div>
-                <div className="w-[33%]">
                   <CustomInput
-                    label="Số điện thoại"
-                    placeholder="Nhập số điện thoại"
-                    type="text"
+                    label="Hotline"
+                    placeholder="Hotline"
                     value={hotline}
                     setValue={value => {
-                      checkValueNumberInput('hotline', value) && setHotLine(value);
+                      setHotLine(value);
                     }}
                   />
-                </div>
               </div>
               <div className="flex gap-[20px]">
                 <SelectAddress
@@ -117,16 +109,13 @@ const AddApartmentModal = () => {
                   setWardValue={setWardValue}
                 />
               </div>
-
-              <div className="">
-                <div className="w-full">
-                  <CustomInput
-                    label="Địa chỉ"
-                    placeholder="Nhập địa chỉ"
-                    value={address}
-                    setValue={setAddress}
-                  />
-                </div>
+              <div className="w-full">
+                <CustomInput
+                  label="Địa chỉ"
+                  placeholder="Nhập địa chỉ"
+                  value={address}
+                  setValue={setAddress}
+                />
               </div>
             </ModalBody>
             <ModalFooter>

@@ -32,17 +32,6 @@ export const useApartment = () => {
     }
   };
 
-  // const getApartments = async ({ searchField = '', search = '' }) => {
-  //   try {
-  //     const res = await requestApi({
-  //       endPoint: `/apartment/all?searchField=${searchField}&search=${search}`,
-  //       method: 'GET'
-  //     })
-  //     return res
-  //   } catch (error) {
-  //     console.log('🚀 ~ getApartment ~ error:', error)
-  //   }
-  // }
   const getApartments = async ({
     searchField = null,
     search = null,

@@ -26,6 +26,7 @@ export interface CreateApartmentProps {
   numberFloor: number;
   houseNumber: string;
   address: string;
+  hotline: string;
 }
 
 export interface CreateCustomerProps {

@@ -14,7 +14,6 @@ import { SelectAddress } from './select-address';
 import toast from 'react-hot-toast';
 import { useModal } from '@/hooks/useModalStore';
 import { useApartment } from '@/hooks/useApartment';
-import { checkValueNumberInput } from '@/lib/utils';
 
 const EditApartmentModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
@@ -60,8 +59,7 @@ const EditApartmentModal = () => {
       address &&
       provinceValue &&
       districtValue &&
-      wardValue &&
-      hotline
+      wardValue && hotline
     ) {
       const updateData = {
         name: apartmentName,
@@ -71,8 +69,8 @@ const EditApartmentModal = () => {
         district: districtValue,
         city: provinceValue,
         houseNumber: address,
+        hotline: hotline,
         id: data?.id,
-        hotline: hotline
       };
       await updateApartment(updateData, onAction);
       resetState();
@@ -91,15 +89,12 @@ const EditApartmentModal = () => {
             </ModalHeader>
             <ModalBody className="space-y-4">
               <div className="flex gap-[20px]">
-                <div className="w-[33%]">
                   <CustomInput
                     label="Tên căn hộ"
                     placeholder="Nhập tên căn hộ"
                     value={apartmentName}
                     setValue={setApartmentName}
                   />
-                </div>
-                <div className="w-[33%]">
                   <CustomInput
                     label="Số tầng"
                     placeholder="Nhập số tầng"
@@ -109,18 +104,14 @@ const EditApartmentModal = () => {
                       if (Number(value) >= 0) setApartmentFloor(value);
                     }}
                   />
-                </div>
-                <div className="w-[33%]">
                   <CustomInput
-                    label="Số điện thoại"
-                    placeholder="Nhập số điện thoại"
-                    type="text"
+                    label="Hotline"
+                    placeholder="Hotline"
                     value={hotline}
                     setValue={value => {
-                      checkValueNumberInput('hotline', value) && setHotLine(value);
+                      setHotLine(value);
                     }}
                   />
-                </div>
               </div>
               <div className="flex gap-[20px]">
                 <SelectAddress
