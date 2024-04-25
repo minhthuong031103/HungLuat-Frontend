@@ -3,6 +3,7 @@ WORKDIR /my-space
 
 COPY package.json yarn.lock ./
 COPY . .
+RUN yarn install
 RUN npm run build
 
 FROM node:18-alpine as runner
