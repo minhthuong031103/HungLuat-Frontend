@@ -2,7 +2,6 @@ FROM node:18-alpine as builder
 WORKDIR /my-space
 
 COPY package.json yarn.lock ./
-RUN npm ci
 COPY . .
 RUN npm run build
 
