@@ -1,9 +1,7 @@
 version: '3.8'
 services:
   web:
-    build:
-      context: .
-      target: runner # Specify the target stage to build for running
+    build: .
     ports:
       - '3000:3000' # Map port 3000 on the host to port 3000 in the container
     command: npm start # Start the application
