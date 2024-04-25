@@ -33,6 +33,7 @@ export const SidebarWrapper = () => {
               ]}
               title="Quản lý phòng"
             />
+            {user?.roleName === 'Admin' && (
             <CollapseItems
               icon={CommonSvg.dashboard()}
               items={[
@@ -42,6 +43,7 @@ export const SidebarWrapper = () => {
               ]}
               title="Thống kê"
             />
+            )}
             {user?.roleName === 'Admin' && (
               <CollapseItems
                 icon={CommonSvg.stack()}
