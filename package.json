@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev ",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.js",
     "lint": "next lint",
     "prepare": "husky install",
     "format": "prettier --check --ignore-path .gitignore .",
@@ -87,6 +87,7 @@
     "recharts": "^2.12.2",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
+    "sharp": "^0.33.3",
     "socket.io-client": "^4.7.2",
     "stripe": "^13.9.0",
     "swiper": "^10.2.0",
