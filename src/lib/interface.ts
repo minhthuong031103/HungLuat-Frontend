@@ -27,6 +27,7 @@ export interface CreateApartmentProps {
   houseNumber: string;
   address: string;
   hotline: string;
+  signImageUrl: string;
 }
 
 export interface CreateCustomerProps {

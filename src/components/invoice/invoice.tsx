@@ -10,6 +10,7 @@ import {
   Document,
   StyleSheet,
   Font,
+  Image,
 } from '@react-pdf/renderer';
 import { getDaysInMonth } from 'date-fns';
 import { Fragment } from 'react';
@@ -164,9 +165,7 @@ const Invoice = ({ data }) => {
               }}
             >
               Điện thoại:{' '}
-              <Text style={{ color: 'blue' }}>
-                {data?.apartment?.hotline}
-              </Text>
+              <Text style={{ color: 'blue' }}>{data?.apartment?.hotline}</Text>
             </Text>
           </View>
         </View>
@@ -567,6 +566,10 @@ const Invoice = ({ data }) => {
         >
           Chữ ký, ghi rõ họ tên
         </Text>
+        <Image
+          style={{ width: 100, height: 65, marginTop: 5 }}
+          src={data?.apartment?.signImageUrl}
+        />
       </View>
     </View>
   );
