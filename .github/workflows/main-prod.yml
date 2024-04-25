@@ -1,0 +1,24 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  local-prepare:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to server and deploy source code
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.HOST_PROD}}
+          username: ${{secrets.USER_PROD}}
+          key: ${{secrets.FILE_PEM_PROD}}
+          port: 22
+          script: |
+            cd ~/snap/HungLuat-Frontend
+            git pull
+            docker compose up --build -d
