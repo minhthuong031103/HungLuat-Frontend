@@ -6,6 +6,4 @@ services:
       target: runner # Specify the target stage to build for running
     ports:
       - '3000:3000' # Map port 3000 on the host to port 3000 in the container
-    volumes:
-      - .:/my-space # Optional: Mount the project directory for development
     command: npm start # Start the application
