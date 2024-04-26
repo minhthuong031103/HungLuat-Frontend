@@ -21,4 +21,4 @@ jobs:
           script: |
             cd ~/snap/HungLuat-Frontend
             git pull
-            docker compose up --build -d
+            docker compose up -d --build
