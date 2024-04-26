@@ -135,10 +135,10 @@ const RoomsPage = () => {
   });
   const [isExport, setIsExport] = useState(false);
   const handleExportBill = async (blob, state) => {
-    if (
-      state?.contract?.customer?.name &&
-      (state?.billStatus !== 'Chờ thu' || !state?.billStatus)
-    ) {
+    if (state?.contract?.customer?.name) {
+      if (state?.billStatus === 'Chờ thu') {
+        return;
+      }
       const data = {
         fileName: state.name,
         apartmentId: apartmentChosen,
@@ -369,6 +369,7 @@ const RoomsPage = () => {
                               ),
                               apartmentName: apartmentName,
                               address: apartment?.address,
+                              apartment,
                             }}
                           />
                         }
