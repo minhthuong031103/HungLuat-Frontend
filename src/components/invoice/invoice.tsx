@@ -566,10 +566,12 @@ const Invoice = ({ data }) => {
         >
           Chữ ký, ghi rõ họ tên
         </Text>
-        <Image
-          style={{ width: 100, height: 65, marginTop: 5 }}
-          src={data?.apartment?.signImageUrl}
-        />
+        {data?.apartment?.signImageUrl && (
+          <Image
+            style={{ width: 100, height: 65, marginTop: 5 }}
+            src={data?.apartment?.signImageUrl}
+          />
+        )}
       </View>
     </View>
   );
