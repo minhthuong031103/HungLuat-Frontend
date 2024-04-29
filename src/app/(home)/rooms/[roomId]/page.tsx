@@ -99,8 +99,10 @@ const RoomDetailPage = () => {
         handleSetContract('customerId', res?.data?.customer?.id);
         handleSetContract('clientPNumber', res?.data?.customer?.phone);
         handleSetContract('clientName', res?.data?.customer?.name);
-        handleSetContract('waterType', res?.data?.waterType);
-        handleSetContract('defaultWater', res?.data?.defaultWater?.toString());
+        handleSetContract(
+          'defaultWater',
+          res?.data?.defaultWater?.toString() || '0',
+        );
       }
     };
     if (roomId) {
