@@ -133,7 +133,8 @@ const Login = ({ className }: { className?: string }) => {
 
       <p className="mt-10 px-8 text-center text-sm text-muted-foreground">
         Chưa có tài khoản?{' '}
-        <Link className="font-bold underline text-black" href="/auth/register">
+        {/* <Link className="font-bold underline text-black" href="/auth/register"> */}
+        <Link className="font-bold underline text-black" href="">
           Đăng ký
         </Link>
       </p>
