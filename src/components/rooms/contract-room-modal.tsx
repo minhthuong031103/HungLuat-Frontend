@@ -15,9 +15,6 @@ const ContractRoomModal = () => {
   const { roomId } = useParams();
   const { contractState, handleSetContract, createContract } = useRoom();
   const isModalOpen = isOpen && type === 'contractRoom';
-  useEffect(() => {
-    setCustomerChosen(contractState?.customerId?.toString());
-  }, [contractState?.customerId]);
   const {
     customerChosen,
     setCustomerChosen,
@@ -28,6 +25,10 @@ const ContractRoomModal = () => {
     setIsScrollOpen,
     scrollerRef,
   } = useCustomerByRoomScroll({ roomId, isOpen: isModalOpen });
+
+  useEffect(() => {
+    setCustomerChosen(contractState?.customerId?.toString());
+  }, [contractState?.customerId]);
 
   const handleCreateContract = async () => {
     const data = {
@@ -44,7 +45,28 @@ const ContractRoomModal = () => {
   };
 
   return (
-    <ModalCus isModalOpen={isModalOpen} onClose={onClose} title={'HỢP ĐỒNG'}>
+    <ModalCus
+      isModalOpen={isModalOpen}
+      onClose={onClose}
+      title={
+        <div className="flex justify-center items-center">
+          {contractState?.customerId && (
+            <div
+              className={`absolute left-4 p-2 border-2 rounded-xl border-${new Date(contractState?.dayEndContract) >= new Date() ? 'success' : 'red'}-500`}
+            >
+              <p
+                className={`text-sm font-semibold text-${new Date(contractState?.dayEndContract) >= new Date() ? 'success' : 'red'}-500 normal-case`}
+              >
+                {new Date(contractState?.dayEndContract) >= new Date()
+                  ? 'Có hiệu lực'
+                  : 'Hết hạn'}
+              </p>
+            </div>
+          )}
+          <p>HỢP ĐỒNG</p>
+        </div>
+      }
+    >
       <div className="flex flex-col gap-y-5">
         <div className="flex gap-[20px] w-full items-end">
           <div className="w-[33%]">
@@ -61,13 +83,6 @@ const ContractRoomModal = () => {
               onSelectionChange={e => {
                 setCustomerChosen(e as any);
               }}
-              // onChange={e => {
-              //   setCustomerChosen(e.target.value);
-              //   setCurrentPage(1);
-              // }}
-              // onInputChange={e => {
-              //   setSearchValue(e);
-              // }}
             >
               {customers ? (
                 customers?.pages?.map(page =>

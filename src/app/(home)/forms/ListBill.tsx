@@ -105,7 +105,7 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
           ...item,
           name: item.room.name,
           numberFloor: item.room.floor,
-          customer: item.room?.customer || 'Chưa có tên',
+          customer: item?.customer?.name || 'Chưa có tên',
         })),
       };
     },
@@ -145,15 +145,6 @@ const ListBill = ({ search, searchField, setSearch, apartmentId }) => {
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu>
-                  <DropdownItem>
-                    <Link
-                      href={bills?.pdfUrl || ''}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
-                      Xem chi tiết
-                    </Link>
-                  </DropdownItem>
                   <DropdownItem
                     onClick={() =>
                       onOpen(EModalType.BILL_DELETE, bills, refetch)

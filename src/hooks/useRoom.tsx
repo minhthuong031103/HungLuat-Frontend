@@ -200,13 +200,16 @@ export const RoomProvider = ({ children }) => {
     }
   };
   const handleSetContract = (key, value) => {
+    console.log(key, value);
     if (
       (key == 'defaultElectric' && checkValueNumberInput(key, value)) ||
-      key == 'defaultWater' ||
-      key !== 'defaultElectric' ||
-      key !== 'defaultWater' ||
+      (key == 'defaultWater' && checkValueNumberInput(key, value)) ||
       (key == 'daySignContract' && value <= contractState.dayEndContract) ||
-      (key == 'dayEndContract' && value >= contractState.daySignContract)
+      (key == 'dayEndContract' && value >= contractState.daySignContract) ||
+      (key != 'defaultElectric' &&
+        key != 'defaultWater' &&
+        key != 'daySignContract' &&
+        key != 'dayEndContract')
     ) {
       if (key == 'defaultElectric' && value === '') {
         value = 0;
@@ -222,13 +225,23 @@ export const RoomProvider = ({ children }) => {
       ) {
         value = value.slice(1);
       }
+      if (
+        key == 'defaultWater' &&
+        value &&
+        value[0] == '0' &&
+        value[1] != '.' &&
+        value.length > 1
+      ) {
+        value = value.slice(1);
+      }
 
       dispatchContract({
         type: 'SET_VALUES',
-        payload: { [key]: value === null ? state[key] : value },
+        payload: { [key]: value === null ? contractState[key] : value },
       });
     }
   };
+
   useEffect(() => {
     const startDate = new Date(
       state.startDate.getFullYear(),

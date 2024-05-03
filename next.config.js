@@ -95,20 +95,6 @@ const nextConfig = {
       },
     ],
   },
-  env: {
-    // eslint-disable-next-line no-undef
-    BACKEND_API_URL: process.env.FRONTEND_ENVIRONMENT,
-
-  },
-
-  experimental: {
-    esmExternals: false,
-    instrumentationHook: true
-
-  },
-  future: {
-    strictPostcssConfiguration: true,
-  },
   output: "standalone",
 
   reactStrictMode: false,

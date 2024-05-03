@@ -10,6 +10,7 @@ import {
   Document,
   StyleSheet,
   Font,
+  Image,
 } from '@react-pdf/renderer';
 import { getDaysInMonth } from 'date-fns';
 import { Fragment } from 'react';
@@ -132,7 +133,6 @@ const Invoice = ({ data }) => {
       borderLeftWidth: 1,
     },
   });
-  console.log(data);
   const InvoiceTitle = () => (
     <View style={styles.titleContainer}>
       <View style={styles.spaceBetween}>
@@ -165,9 +165,7 @@ const Invoice = ({ data }) => {
               }}
             >
               Điện thoại:{' '}
-              <Text style={{ color: 'blue' }}>
-                {data?.phoneNumber} ({data?.bankName})
-              </Text>
+              <Text style={{ color: 'blue' }}>{data?.apartment?.hotline}</Text>
             </Text>
           </View>
         </View>
@@ -196,7 +194,6 @@ const Invoice = ({ data }) => {
       </View>
     </View>
   );
-
   const Information = () => (
     <View
       style={{
@@ -479,6 +476,18 @@ const Invoice = ({ data }) => {
           {new Date().getFullYear()}
         </Text>
       </Text>
+      <Text>
+        - Số TK Ngân hàng{' '}
+        {`${data?.bank2?.charAt(0).toUpperCase()}${data?.bank2?.slice(1)}`}:{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>
+          {data?.bankNumber2}
+        </Text>
+        . Nội dung chuyển khoản:{' '}
+        <Text style={{ fontWeight: 700, color: 'blue' }}>
+          {data?.apartmentName} P{data.name} T{new Date().getMonth() + 1}/
+          {new Date().getFullYear()}
+        </Text>
+      </Text>
     </View>
   );
   const Note = () => (
@@ -557,6 +566,12 @@ const Invoice = ({ data }) => {
         >
           Chữ ký, ghi rõ họ tên
         </Text>
+        {data?.apartment?.signImageUrl && (
+          <Image
+            style={{ width: 100, height: 65, marginTop: 5 }}
+            src={data?.apartment?.signImageUrl}
+          />
+        )}
       </View>
     </View>
   );

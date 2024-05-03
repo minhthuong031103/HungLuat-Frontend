@@ -47,7 +47,6 @@ export const parseJSON = (str: string, out = []) => {
 };
 
 export const verifyJwt = (token: string) => {
-  console.log(process.env.NEXT_PUBLIC_JWT_SECRET);
   let email = '';
   let name = '';
   try {
@@ -151,7 +150,10 @@ export const checkValueNumberInput = (key, value) => {
   const countDots = (str: string) => str.split('.').length - 1;
   const temp = (str: string) => str.split('.');
   if (
-    (key === 'newElectric' || key === 'defaultElectric' || key === 'newWater') &&
+    (key === 'newElectric' ||
+      key === 'defaultElectric' ||
+      key === 'newWater' ||
+      key === 'defaultWater') &&
     countDots(value) <= 1 &&
     temp(value)?.[1]?.length <= 1
   ) {
