@@ -39,7 +39,9 @@ const columnKeys = {
   address: 'address',
   identityCard: 'identityCard',
   registeredTemporaryResidence: 'registeredTemporaryResidence',
-  roomId: 'roomId',
+
+  roomName: 'roomName',
+  apartmentName: 'apartmentName',
   action: 'action',
 };
 
@@ -65,8 +67,12 @@ const columns = [
     sortable: true,
   },
   {
-    id: columnKeys.roomId,
+    id: columnKeys.roomName,
     title: 'Phòng',
+  },
+  {
+    id: columnKeys.apartmentName,
+    title: 'Căn hộ',
   },
 
   {

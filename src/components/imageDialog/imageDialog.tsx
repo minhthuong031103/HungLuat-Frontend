@@ -19,12 +19,12 @@ import { toast } from 'react-hot-toast';
 
 import 'cropperjs/dist/cropper.css';
 
+import { Icons } from '@/assets/Icons';
+import { ImageCus } from '@/components/ui/ImageCus';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn, formatBytes } from '@/lib/utils';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
-import { Icons } from '@/assets/Icons';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { ImageCus } from '@/components/ui/ImageCus';
 import { Zoom } from '../ui/zoom-image';
 
 // FIXME Your proposed upload exceeds the maximum allowed size, this should trigger toast.error too
@@ -54,7 +54,7 @@ export function ImageDialog<TFieldValues extends FieldValues>({
   accept = {
     'image/*': [],
   },
-  maxSize = 1024 * 1024 * 2,
+  maxSize = 1024 * 1024 * 20,
   maxFiles = 1,
   files,
   setFiles,

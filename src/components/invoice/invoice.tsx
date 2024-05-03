@@ -41,7 +41,7 @@ const Invoice = ({ data }) => {
   const styles = StyleSheet.create({
     page: {
       fontSize: 11,
-      paddingTop: 20,
+      paddingTop: 5,
       paddingLeft: 40,
       paddingRight: 40,
       lineHeight: 1.5,
@@ -201,7 +201,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 8,
       }}
     >
       <Text style={{ fontSize: 14, fontWeight: 700 }}>
@@ -503,7 +503,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 5,
       }}
     >
       <Text style={{ fontSize: 15, fontWeight: 700, color: 'blue' }}>
