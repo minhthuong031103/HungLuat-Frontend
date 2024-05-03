@@ -16,6 +16,10 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
       key: 'id',
     },
     {
+      label: 'Tên phòng',
+      key: 'name',
+    },
+    {
       label: 'Giá phòng',
       key: 'roomPrice',
     },
@@ -55,6 +59,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
             return item?.rooms?.map(room => {
               return {
                 id: room?.id || '',
+                name: room?.name || '',
                 roomPrice: room?.roomPrice || 0,
                 depositPrice: room?.depositPrice || 0,
                 oldDebt: room?.oldDebt || 0,

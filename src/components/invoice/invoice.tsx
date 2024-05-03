@@ -4,17 +4,17 @@ import {
   getDaysAmountInMonth,
 } from '@/lib/utils';
 import {
-  Text,
-  View,
-  Page,
   Document,
-  StyleSheet,
   Font,
   Image,
+  Page,
+  StyleSheet,
+  Text,
+  View,
 } from '@react-pdf/renderer';
 import { getDaysInMonth } from 'date-fns';
-import { Fragment } from 'react';
 import { getText } from 'number-to-text-vietnamese';
+import { Fragment } from 'react';
 
 const Invoice = ({ data }) => {
   Font.register({
@@ -370,6 +370,13 @@ const Invoice = ({ data }) => {
 
       price: `${convertPriceNotVND(data.newDebt)}đ`,
       total: `- ${convertPriceNotVND(data.newDebt)}`,
+    },
+    {
+      id: 11,
+      name: 'Tiền giảm trừ',
+
+      price: `${convertPriceNotVND(data.reduce)}đ`,
+      total: `- ${convertPriceNotVND(data.reduce)}`,
     },
     {
       id: 11,

@@ -25,7 +25,7 @@ interface IRoomInfo {
 const RoomInfo = ({ roomId, isLoading, refetch }) => {
   const { state, roomInfo1, roomInfo2, handleSetValue, updateRoomStates } =
     useRoom();
- 
+
   const roomStatus = ['Đang trống', 'Đã thuê', 'Đang sửa chữa'];
   return (
     <>
@@ -179,6 +179,21 @@ const RoomInfo = ({ roomId, isLoading, refetch }) => {
                   onChange={e => handleSetValue('note', e.target.value)}
                 />
               </div>
+              <div className="w-[40%]">
+                <p className="text-gray text-base font-medium">
+                  Giảm trừ tiền phòng
+                </p>
+                <CustomInput
+                  type="text"
+                  placeholder="Nhập giảm trừ"
+                  value={insertSpaceEveryThreeCharacters(state.reduce)}
+                  setValue={value => {
+                    const tempValue = value?.split(' ').join('');
+                    handleSetValue('reduce', tempValue);
+                  }}
+                />
+              </div>
+
               <div className="flex gap-8 items-center">
                 <DatePicker
                   label="Chọn ngày bắt đầu"
