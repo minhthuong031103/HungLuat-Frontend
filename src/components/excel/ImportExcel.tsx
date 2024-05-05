@@ -30,6 +30,7 @@ const ImportExcel = ({ refetch }: { refetch: () => void }) => {
     'Tiền dịch vụ (VND/phòng)': 'servicePrice',
     'Số lượng xe': 'vehicleAmount',
     'Tiền giữ xe (VND/xe)': 'parkingPrice',
+    'Tiền giảm trừ': 'reduce',
   };
   const [data, setData] = useState([]);
   const [excelName, setExcelName] = useState('');

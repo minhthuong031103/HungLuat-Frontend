@@ -28,6 +28,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
       label: 'Tiền cọc',
       key: 'depositPrice',
     },
+    { label: 'Tiền giảm trừ', key: 'reduce'},
     { label: 'Nợ cũ', key: 'oldDebt' },
     { label: 'Nợ mới', key: 'newDebt' },
     { label: 'Số lượng người ở thực tế', key: 'peopleRealStayed' },
@@ -81,6 +82,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
                 servicePrice: room?.servicePrice || 0,
                 vehicleAmount: room?.vehicleAmount || 0,
                 parkingPrice: room?.parkingPrice || 0,
+                reduce: room?.reduce || 0,
               };
             });
           }),

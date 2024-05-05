@@ -1,12 +1,10 @@
 import { useApiAxios } from '@/components/providers/ApiProvider';
-import { queryKey } from '@/lib/constant';
 import { CreateCustomerProps, GetCustomersOfRoomProps } from '@/lib/interface';
 import { RETURNED_MESSAGES } from '@/lib/translate';
-import { GetQueryParamsProps, getBase64, getQueryParams } from '@/lib/utils';
-import { useQuery } from '@tanstack/react-query';
+import { GetQueryParamsProps, getBase64, getDateValue, getQueryParams } from '@/lib/utils';
 import { useReducer } from 'react';
 import toast from 'react-hot-toast';
-
+import {DateValue, getLocalTimeZone} from '@internationalized/date'
 interface CustomerProps {
   id: string;
   name: string;
@@ -15,9 +13,9 @@ interface CustomerProps {
   address: string;
   createdAt?: string;
   updatedAt?: string;
-  dayOfBirth: Date;
+  dayOfBirth?: DateValue;
   identityCard: string;
-  issueDate?: Date;
+  issuedDate?: DateValue;
   roomId: string | number;
   apartmentId: string | number;
   provinceValue?: string;
@@ -35,9 +33,9 @@ const initCustomerState: CustomerProps = {
   address: '',
   createdAt: '',
   updatedAt: '',
-  dayOfBirth: new Date(),
+  dayOfBirth: undefined,
   identityCard: '',
-  issueDate: new Date(),
+  issuedDate: undefined,
   roomId: '',
   identityFrontUrl: '',
   identityBackUrl: '',
@@ -74,7 +72,11 @@ export const useCustomer = () => {
       const res = await requestApi({
         endPoint: '/customer/create',
         method: 'POST',
-        body: data,
+        body: {
+          ...data,
+          dayOfBirth: new Date(customerState.dayOfBirth.toDate(getLocalTimeZone())),
+          issuedDate: new Date(customerState.issuedDate.toDate(getLocalTimeZone())),
+        },
       });
       if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.ENG) {
         toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_CREATED.VIE);
@@ -95,7 +97,11 @@ export const useCustomer = () => {
       const res = await requestApi({
         endPoint: '/customer/update',
         method: 'PUT',
-        body: data,
+        body: {
+          ...data,
+          dayOfBirth: new Date(customerState.dayOfBirth.toDate(getLocalTimeZone())),
+          issuedDate: new Date(customerState.issuedDate.toDate(getLocalTimeZone())),
+        },
       });
       if (res?.message == RETURNED_MESSAGES.CUSTOMER.CUSTOMER_UPDATED.ENG) {
         toast.success(RETURNED_MESSAGES.CUSTOMER.CUSTOMER_UPDATED.VIE);

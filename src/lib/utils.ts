@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import numeral from 'numeral';
 import toast from 'react-hot-toast';
 import { twMerge } from 'tailwind-merge';
+import {parseDate} from '@internationalized/date'
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -281,3 +283,10 @@ export const returnValue = value => {
   }
   return null;
 };
+
+export function getDateValue(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return parseDate(`${year}-${month}-${day}`)
+}
