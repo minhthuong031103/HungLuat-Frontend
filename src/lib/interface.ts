@@ -1,3 +1,4 @@
+import { DateValue } from '@internationalized/date';
 import { GetQueryParamsProps } from './utils';
 
 export interface LoginProps {
@@ -35,9 +36,9 @@ export interface CreateCustomerProps {
   phone: string;
   identityCard: string;
   address: string;
-  issuedDate: Date;
+  issuedDate: DateValue;
   roomId: string | number;
-  dayOfBirth: Date;
+  dayOfBirth: DateValue;
   identityFrontUrl: string;
   apartmentId: string | number;
   identityBackUrl: string;

@@ -16,6 +16,10 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
       key: 'id',
     },
     {
+      label: 'Tên phòng',
+      key: 'name',
+    },
+    {
       label: 'Giá phòng',
       key: 'roomPrice',
     },
@@ -24,6 +28,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
       label: 'Tiền cọc',
       key: 'depositPrice',
     },
+    { label: 'Tiền giảm trừ', key: 'reduce'},
     { label: 'Nợ cũ', key: 'oldDebt' },
     { label: 'Nợ mới', key: 'newDebt' },
     { label: 'Số lượng người ở thực tế', key: 'peopleRealStayed' },
@@ -55,6 +60,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
             return item?.rooms?.map(room => {
               return {
                 id: room?.id || '',
+                name: room?.name || '',
                 roomPrice: room?.roomPrice || 0,
                 depositPrice: room?.depositPrice || 0,
                 oldDebt: room?.oldDebt || 0,
@@ -76,6 +82,7 @@ const ExportExcel = ({ data, fileName }: ExportExcelProps) => {
                 servicePrice: room?.servicePrice || 0,
                 vehicleAmount: room?.vehicleAmount || 0,
                 parkingPrice: room?.parkingPrice || 0,
+                reduce: room?.reduce || 0,
               };
             });
           }),

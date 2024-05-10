@@ -71,6 +71,7 @@ const initialState = {
   totalParkingPrice: 0,
   totalElevatorPrice: 0,
   suspenseMoney: 0,
+  reduce: 0,
   note: '',
 
   startDate: new Date(new Date().setDate(1)),
@@ -159,6 +160,7 @@ export interface exportBillProps {
   oldDebt: number;
   newElectric: number;
   oldElectric: number;
+  reduce: number;
   newWater?: number;
   oldWater?: number;
   files: any[];
@@ -924,7 +926,8 @@ export const RoomProvider = ({ children }) => {
       Number(state.servicePrice) +
       Number(state.internetPrice) +
       Number(state.oldDebt) +
-      RC;
+      RC -
+      Number(state.reduce);
     handleSetValue('totalElectricPrice', EP);
     handleSetValue('totalWaterPrice', WP);
     handleSetValue('totalParkingPrice', PP);
@@ -966,6 +969,7 @@ export const RoomProvider = ({ children }) => {
         totalElevatorPrice: Number(state.totalElevatorPrice),
         startDate: state.startDate,
         endDate: state.endDate,
+        reduce: Number(state.reduce),
         note: state.note,
       };
       try {
@@ -1040,6 +1044,8 @@ export const RoomProvider = ({ children }) => {
         totalElevatorPrice: Number(state.totalElevatorPrice),
         startDate: state.startDate,
         endDate: state.endDate,
+        reduce: Number(state.reduce),
+
         note: state.note,
       };
       try {

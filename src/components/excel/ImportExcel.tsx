@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import * as XLSX from 'xlsx';
-import { GoUpload } from 'react-icons/go';
-import { useEffect } from 'react';
-import { Button, Tooltip } from '@nextui-org/react';
-import { CiTrash } from 'react-icons/ci';
 import { useModal } from '@/hooks/useModalStore';
 import { EModalType } from '@/lib/constant';
+import { Button, Tooltip } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import { CiTrash } from 'react-icons/ci';
+import { GoUpload } from 'react-icons/go';
+import * as XLSX from 'xlsx';
 const ImportExcel = ({ refetch }: { refetch: () => void }) => {
   const headerExcel = {
     'Mã phòng': 'id',
+    'Tên phòng': 'name',
     'Giá phòng': 'roomPrice',
     'Tiền cọc': 'depositPrice',
     'Nợ cũ': 'oldDebt',
@@ -30,6 +30,7 @@ const ImportExcel = ({ refetch }: { refetch: () => void }) => {
     'Tiền dịch vụ (VND/phòng)': 'servicePrice',
     'Số lượng xe': 'vehicleAmount',
     'Tiền giữ xe (VND/xe)': 'parkingPrice',
+    'Tiền giảm trừ': 'reduce',
   };
   const [data, setData] = useState([]);
   const [excelName, setExcelName] = useState('');

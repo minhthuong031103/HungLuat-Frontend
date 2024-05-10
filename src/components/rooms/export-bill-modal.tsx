@@ -53,6 +53,7 @@ const ExportBillModal = () => {
       newDebt: state.newDebt,
       oldDebt: state.oldDebt,
       newElectric: state.newElectric,
+      reduce: state.reduce,
       oldElectric: state.oldElectric,
       userName: JSON?.parse(localStorage.getItem(KEY_CONTEXT.USER) as any)
         ?.name,
@@ -230,6 +231,10 @@ const ExportBillModal = () => {
               ])}
             </>
           )}
+          {renderInputRow([
+            renderNumberInput('Tiền giảm trừ', state.reduce, 'Tiền giảm trừ'),
+          ])}
+
           <p className="text-gray font-semibold text-lg">Ghi chú</p>
           <Textarea
             value={state.note}

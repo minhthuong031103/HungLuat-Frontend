@@ -1,18 +1,16 @@
 'use client';
 
 import { CustomInput } from '@/app/(home)/(components)/home/custom-input';
-import { FileDialog } from '@/components/ui/FileDialog';
-import { DatePicker } from '@/components/ui/date-picker';
 import { Label } from '@/components/ui/label';
 import { Zoom } from '@/components/ui/zoom-image';
 import { useApartmentScroll } from '@/hooks/useApartmentScroll';
 import { useCustomer } from '@/hooks/useCustomer';
 import { useModal } from '@/hooks/useModalStore';
 import { EModalType } from '@/lib/constant';
-import { checkValueNumberInput } from '@/lib/utils';
+import { checkValueNumberInput, getDateValue } from '@/lib/utils';
 import { Apartment, Room } from '@/types';
 import { Modal } from '@mantine/core';
-import { Button, Select, SelectItem, Spinner } from '@nextui-org/react';
+import { Button, DateInput, Select, SelectItem, Spinner } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import IndentityModal from './AddIndentityModal';
@@ -29,7 +27,6 @@ const CustomerAddModal = () => {
   const { handleSetCustomerValue, customerState, createCustomer } =
     useCustomer();
   const handleAddCustomer = async () => {
-    // resetCustomerState()
     if (
       customerState?.name &&
       customerState?.phone &&
@@ -46,9 +43,9 @@ const CustomerAddModal = () => {
       const data = {
         name: customerState.name,
         phone: customerState.phone,
-        dayOfBirth: new Date(customerState.dayOfBirth),
+        dayOfBirth: customerState.dayOfBirth,
         identityCard: customerState.identityCard,
-        issuedDate: new Date(customerState.issuedDate),
+        issuedDate: customerState.issuedDate,
         address: customerState.address,
         identityFrontUrl: customerState.identityFrontUrl,
         identityBackUrl: customerState.identityBackUrl,
@@ -117,11 +114,11 @@ const CustomerAddModal = () => {
             />
           </div>
           <div className="w-[33%]">
-            <DatePicker
+            <DateInput
               label="Ngày sinh"
-              date={customerState.dayOfBirth}
-              labelCustom="font-medium text-sm text-black"
-              setDate={value => handleSetCustomerValue('dayOfBirth', value)}
+              value={customerState.dayOfBirth}
+              labelPlacement='outside'
+              onChange={value => handleSetCustomerValue('dayOfBirth', value)}
             />
           </div>
         </div>
@@ -140,11 +137,13 @@ const CustomerAddModal = () => {
             />
           </div>
           <div className="w-[50%]">
-            <DatePicker
+            <DateInput
               label="Ngày cấp"
-              date={customerState.issuedDate}
-              labelCustom="font-medium text-sm text-black"
-              setDate={value => handleSetCustomerValue('issuedDate', value)}
+              value={customerState.issuedDate}
+              labelPlacement='outside'
+              onChange={value => {
+                handleSetCustomerValue('issuedDate', value);
+              }}
             />
           </div>
         </div>

@@ -16,16 +16,16 @@ import { toast } from 'react-hot-toast';
 
 import 'cropperjs/dist/cropper.css';
 
+import { Icons } from '@/assets/Icons';
+import { ImageCus } from '@/components/ui/ImageCus';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useCustomer } from '@/hooks/useCustomer';
 import { cn, formatBytes, getImageKey } from '@/lib/utils';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
-import { Icons } from '@/assets/Icons';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { ImageCus } from '@/components/ui/ImageCus';
 import { Modal } from '@mantine/core';
-import React from 'react';
-import { useCustomer } from '@/hooks/useCustomer';
 import { Spinner } from '@nextui-org/react';
+import React from 'react';
 type FileWithPreview = FileWithPath & {
   preview: string;
 };
@@ -56,7 +56,7 @@ function IndentityModal<TFieldValues extends FieldValues>({
   accept = {
     'image/*': [],
   },
-  maxSize = 1024 * 1024 * 2,
+  maxSize = 1024 * 1024 * 20,
   maxFiles = 1,
   files,
   setFiles,

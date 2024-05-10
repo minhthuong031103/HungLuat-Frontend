@@ -4,17 +4,17 @@ import {
   getDaysAmountInMonth,
 } from '@/lib/utils';
 import {
-  Text,
-  View,
-  Page,
   Document,
-  StyleSheet,
   Font,
   Image,
+  Page,
+  StyleSheet,
+  Text,
+  View,
 } from '@react-pdf/renderer';
 import { getDaysInMonth } from 'date-fns';
-import { Fragment } from 'react';
 import { getText } from 'number-to-text-vietnamese';
+import { Fragment } from 'react';
 
 const Invoice = ({ data }) => {
   Font.register({
@@ -41,7 +41,7 @@ const Invoice = ({ data }) => {
   const styles = StyleSheet.create({
     page: {
       fontSize: 11,
-      paddingTop: 20,
+      paddingTop: 5,
       paddingLeft: 40,
       paddingRight: 40,
       lineHeight: 1.5,
@@ -201,7 +201,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 8,
       }}
     >
       <Text style={{ fontSize: 14, fontWeight: 700 }}>
@@ -373,6 +373,13 @@ const Invoice = ({ data }) => {
     },
     {
       id: 11,
+      name: 'Tiền giảm trừ',
+
+      price: `${convertPriceNotVND(data.reduce)}đ`,
+      total: `- ${convertPriceNotVND(data.reduce)}`,
+    },
+    {
+      id: 11,
       name: 'Chi phí phát sinh khác',
 
       price: `${convertPriceNotVND(data.otherPrice)}đ`,
@@ -496,7 +503,7 @@ const Invoice = ({ data }) => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        marginTop: 5,
       }}
     >
       <Text style={{ fontSize: 15, fontWeight: 700, color: 'blue' }}>
