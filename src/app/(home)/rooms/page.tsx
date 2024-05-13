@@ -23,12 +23,15 @@ import { SearchBar } from '../(components)/home/searchbar';
 import ImportExcel from '@/components/excel/ImportExcel';
 import ExportExcel from '@/components/excel/ExportExcel';
 import { useSearchParams } from 'next/navigation';
-import { BlobProvider } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import Invoice from '@/components/invoice/invoice';
 import toast from 'react-hot-toast';
+import { Modal } from '@mantine/core';
+import InvoiceHtml from '@/components/invoice/invoice-html';
+import { toBlob } from 'html-to-image';
 
 const RoomsPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingExportAll, setIsLoadingExportAll] = useState(false);
   const [searchAdvanced, setSearchAdvanced] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [electricityPrice, setElectricityPrice] = useState('');
@@ -178,13 +181,69 @@ const RoomsPage = () => {
           blob,
           `${apartmentName}_${state.name}_T${
             new Date().getMonth() + 1
-          }/${new Date().getFullYear()}.pdf`,
+          }/${new Date().getFullYear()}`,
         );
       });
     } else {
       toast.error(`Phòng ${state.name} chưa có hợp đồng!`);
     }
   };
+  const [invoiceRefs, setInvoiceRefs] = useState({});
+
+  useEffect(() => {
+    // Generate a ref for each room
+    if (!floors) return;
+    const newRefs = {};
+    floors.forEach(floor => {
+      floor?.rooms.forEach(room => {
+        newRefs[room.id] = React.createRef();
+      });
+    });
+    setInvoiceRefs(newRefs);
+  }, [floors]);
+  // Function to trigger downloads
+  const downloadAllInvoices = async () => {
+    setIsLoadingExportAll(true); // Start loading indication
+
+    await Promise.all(
+      Object.entries(invoiceRefs).map(async ([roomId, ref]) => {
+        if (ref.current) {
+          const blob = await toBlob(ref.current);
+          if (blob) {
+            const room = floors
+              .flatMap(floor => floor.rooms)
+              .find(r => r.id.toString() === roomId);
+            toBlob(ref.current)
+              .then(async blob => {
+                if (blob) {
+                  await handleExportBill(blob, room);
+                }
+              })
+              .catch(err => console.error('Blob conversion failed:', err));
+          }
+        }
+      }),
+    );
+
+    setIsLoadingExportAll(false); // End loading indication
+  };
+  // const downloadAllInvoices = async () => {
+  //   console.log('go');
+  //   console.log('🚀 ~ invoiceRefs.forEach ~ invoiceRefs:', invoiceRefs);
+
+  //   invoiceRefs.forEach((ref, index) => {
+  //     const room = floors.flatMap(floor => floor.rooms)[index];
+  //     if (ref.current) {
+  //       toBlob(ref.current)
+  //         .then(blob => {
+  //           if (blob) {
+  //             handleExportBill(blob, room);
+  //           }
+  //         })
+  //         .catch(err => console.error('Blob conversion failed:', err));
+  //     }
+  //   });
+  // };
   const userInfo = JSON.parse(localStorage.getItem(KEY_CONTEXT.USER) as any);
   return (
     <>
@@ -333,7 +392,7 @@ const RoomsPage = () => {
                   <Button
                     className="rounded-[8px] px-4 ml-4 py-2 bg-blueButton"
                     onPress={() => {
-                      setIsExport(true);
+                      setIsModalOpen(true);
                     }}
                   >
                     <div className="flex flex-row items-center gap-x-[8px] ">
@@ -343,49 +402,113 @@ const RoomsPage = () => {
                       </div>
                     </div>
                   </Button>
-                  {floors?.map((floor: any) =>
-                    floor.rooms.map(room => (
-                      <BlobProvider
-                        key={room.id}
-                        document={
-                          <Invoice
-                            data={{
-                              ...room,
-                              suspenseMoney: room.suspenseMoney || 0,
-                              startDate: formatDateCustom(
-                                new Date(room.startDate),
-                              ),
-                              endDate: formatDateCustom(new Date(room.endDate)),
-                              bank: userInfo?.bank,
-                              bank2: userInfo?.bank2,
-                              bankNumber: userInfo?.bankNumber,
-                              bankNumber2: userInfo?.bankNumber2,
-                              bankName: userInfo?.name,
-                              phoneNumber: userInfo?.phone,
-                              clientName: room?.contract?.customer?.name,
-                              clientPNumber: room?.contract?.customer?.phone,
-                              daySigned: formatDateCustom(
-                                new Date(room?.contract?.daySignContract),
-                              ),
-                              apartmentName: apartmentName,
-                              address: apartment?.address,
-                              apartment,
-                            }}
-                          />
-                        }
-                      >
-                        {({ blob }) => {
-                          useEffect(() => {
-                            if (isExport && blob) {
-                              handleExportBill(blob, room);
-                              setIsExport(false);
-                            }
-                          }, [blob, isExport]);
-                          return <></>;
+                  <Modal
+                    closeOnClickOutside={false}
+                    radius={15}
+                    size="xl"
+                    title="Xuất phiếu thu"
+                    classNames={{
+                      header: 'flex justify-center items-center relative',
+                      title: 'font-bold text-gray uppercase font-bold text-xl',
+                      close: 'm-0 absolute right-3 top-3',
+                    }}
+                    removeScrollProps={{ allowPinchZoom: true }}
+                    opened={isModalOpen}
+                    centered
+                    onClose={() => setIsModalOpen(false)}
+                  >
+                    <>
+                      <Button
+                        className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
+                        onClick={() => {
+                          downloadAllInvoices();
                         }}
-                      </BlobProvider>
-                    )),
-                  )}
+                      >
+                        {isLoadingExportAll ? (
+                          <Spinner color="white" size="sm" />
+                        ) : (
+                          'Xác nhận xuất tất cả'
+                        )}
+                      </Button>
+                      <div>
+                        {floors?.map((floor: any) =>
+                          floor.rooms.map(room => (
+                            <InvoiceHtml
+                              ref={invoiceRefs[room.id]}
+                              key={room.id}
+                              data={{
+                                ...room,
+                                suspenseMoney: room.suspenseMoney || 0,
+                                startDate: formatDateCustom(
+                                  new Date(room.startDate),
+                                ),
+                                endDate: formatDateCustom(
+                                  new Date(room.endDate),
+                                ),
+                                bank: userInfo?.bank,
+                                bank2: userInfo?.bank2,
+                                bankNumber: userInfo?.bankNumber,
+                                bankNumber2: userInfo?.bankNumber2,
+                                bankName: userInfo?.name,
+                                phoneNumber: userInfo?.phone,
+                                clientName: room?.contract?.customer?.name,
+                                clientPNumber: room?.contract?.customer?.phone,
+                                daySigned: formatDateCustom(
+                                  new Date(room?.contract?.daySignContract),
+                                ),
+                                apartmentName: apartmentName,
+                                address: apartment?.address,
+                                apartment,
+                              }}
+                            />
+                          )),
+                        )}
+                      </div>
+                    </>
+                  </Modal>
+                  {/* {floors?.map((floor: any) =>
+                      floor.rooms.map(room => (
+                        <BlobProvider
+                          key={room.id}
+                          document={
+                            <Invoice
+                              data={{
+                                ...room,
+                                suspenseMoney: room.suspenseMoney || 0,
+                                startDate: formatDateCustom(
+                                  new Date(room.startDate),
+                                ),
+                                endDate: formatDateCustom(new Date(room.endDate)),
+                                bank: userInfo?.bank,
+                                bank2: userInfo?.bank2,
+                                bankNumber: userInfo?.bankNumber,
+                                bankNumber2: userInfo?.bankNumber2,
+                                bankName: userInfo?.name,
+                                phoneNumber: userInfo?.phone,
+                                clientName: room?.contract?.customer?.name,
+                                clientPNumber: room?.contract?.customer?.phone,
+                                daySigned: formatDateCustom(
+                                  new Date(room?.contract?.daySignContract),
+                                ),
+                                apartmentName: apartmentName,
+                                address: apartment?.address,
+                                apartment,
+                              }}
+                            />
+                          }
+                        >
+                          {({ blob }) => {
+                            useEffect(() => {
+                              if (isExport && blob) {
+                                handleExportBill(blob, room);
+                                setIsExport(false);
+                              }
+                            }, [blob, isExport]);
+                            return <></>;
+                          }}
+                        </BlobProvider>
+                      )),
+                    )} */}
                   <ExportExcel data={floors as any} fileName={apartmentName} />
                   <ImportExcel refetch={handleGetRooms} />
                 </div>

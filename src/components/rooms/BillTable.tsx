@@ -89,6 +89,8 @@ const BillTable = ({ roomId }: BillTaleProps) => {
         searchField: 'name',
         page: currentPage,
         limit: limit,
+        sortBy: 'createdAt',
+        sortDirection: 'desc',
       });
       return {
         ...res?.data,

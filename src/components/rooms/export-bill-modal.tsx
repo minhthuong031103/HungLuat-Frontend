@@ -14,9 +14,12 @@ import { Modal } from '@mantine/core';
 import { Button, Divider, Spinner } from '@nextui-org/react';
 import { BlobProvider } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Invoice from '../invoice/invoice';
 import { Textarea } from '../ui/text-area';
+import InvoiceHtml from '../invoice/invoice-html';
+import { toBlob, toPng } from 'html-to-image';
+
 const ExportBillModal = () => {
   const { isOpen, onClose, type, data, onAction } = useModal();
   const { roomId, address, apartmentName } = data;
@@ -66,13 +69,42 @@ const ExportBillModal = () => {
         blob,
         `${apartmentName}_${state.name}_T${
           new Date().getMonth() + 1
-        }/${new Date().getFullYear()}.pdf`,
+        }/${new Date().getFullYear()}`,
       );
     });
     setIsLoading(false);
 
     onClose();
   };
+  const ref = useRef<HTMLDivElement>(null);
+  const onButtonClick = useCallback(() => {
+    if (ref.current === null) {
+      return;
+    }
+
+    // toPng(ref.current, { cacheBust: true })
+    //   .then(dataUrl => {
+    //     const link = document.createElement('a');
+    //     link.download = 'my-image-name.png';
+    //     link.href = dataUrl;
+    //     link.click();
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+
+    toBlob(ref.current, { cacheBust: true })
+      .then(blob => {
+        if (blob) {
+          handleExportBill(blob); // Pass the blob directly to handleExportBill
+        } else {
+          console.error('Blob generation failed.');
+        }
+      })
+      .catch(err => {
+        console.error('Error in blob generation:', err);
+      });
+  }, [ref, handleExportBill]);
   const renderInput = (
     label,
     value,
@@ -261,8 +293,39 @@ const ExportBillModal = () => {
             <Divider className="mt-4" />
           </div>
         </div>
+        <div className="w-full mt-2 flex justify-end">
+          <Button
+            className="rounded-[8px] w-[133px] px-4 py-2 bg-room-green text-white font-semibold text-sm"
+            onPress={() => {
+              onButtonClick();
+            }}
+          >
+            {isLoading ? <Spinner color="white" size="sm" /> : 'Xác nhận'}
+          </Button>
+        </div>
+
         <div className="mt-5 flex justify-end py-4">
-          <BlobProvider
+          <InvoiceHtml
+            ref={ref}
+            data={{
+              ...state,
+              startDate: formatDateCustom(state.startDate),
+              endDate: formatDateCustom(state.endDate),
+              bank: userInfo?.bank,
+              bank2: userInfo?.bank2,
+              bankNumber: userInfo?.bankNumber,
+              bankNumber2: userInfo?.bankNumber2,
+              bankName: userInfo?.name,
+              phoneNumber: userInfo?.phone,
+              clientName: contractState?.clientName,
+              clientPNumber: contractState?.clientPNumber,
+              daySigned: formatDateCustom(contractState?.daySignContract),
+              apartmentName: apartmentName,
+              address: address,
+            }}
+          />
+
+          {/* <BlobProvider
             document={
               <Invoice
                 data={{
@@ -292,7 +355,7 @@ const ExportBillModal = () => {
                 {isLoading ? <Spinner color="white" size="sm" /> : 'Xác nhận'}
               </Button>
             )}
-          </BlobProvider>
+          </BlobProvider> */}
         </div>
       </>
     </Modal>
