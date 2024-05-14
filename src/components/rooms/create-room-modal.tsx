@@ -20,13 +20,18 @@ const CreateRoomModal = () => {
   useEffect(() => {
     if (data && data?.numberFloor) {
       setFloor([]);
-      for (let i = 1; i <= data?.numberFloor; i++) {
-        setFloor((prev: any) => [...prev, `Tầng ${i}`] as any);
+      for (let i = 0; i < data?.numberFloor; i++) {
+        if (i === 0) {
+          setFloor((prev: any) => [...prev, `Tầng trệt`] as any);
+        } else {
+          setFloor((prev: any) => [...prev, `Tầng ${i}`] as any);
+        }
       }
     }
   }, [data]);
   const [roomName, setRoomName] = useState('');
   const [floorChosen, setFloorChosen] = useState('');
+  console.log('🚀 ~ CreateRoomModal ~ floorChosen:', floorChosen);
   const [waterTypeChosen, setWaterTypeChosen] = useState('');
   const isModalOpen = isOpen && type === 'createRoom';
   const { createRoom } = useRoom();
@@ -37,7 +42,11 @@ const CreateRoomModal = () => {
   };
 
   const handleCreateRoom = async () => {
-    const numberFloor = Number(Array.from(floorChosen)[0].split(' ')[1]);
+    let numberFloor = Number(Array.from(floorChosen)[0].split(' ')[1]);
+    if (isNaN(numberFloor)) {
+      numberFloor = 0;
+    }
+
     const waterType = Array.from(waterTypeChosen)[0];
     await createRoom({
       data: {
