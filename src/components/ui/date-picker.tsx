@@ -1,7 +1,7 @@
 /** @format */
 
 import { format } from 'date-fns';
-import { vi } from 'date-fns/locale';
+import { vi, enUS } from 'date-fns/locale';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 
@@ -15,9 +15,9 @@ import {
 } from '@components/ui/popover';
 
 interface DatePickerProps {
-  date: Date;
+  date: Date | undefined;
   labelCustom?: string;
-  setDate: (date: Date) => void;
+  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
   label?: string;
 }
 
@@ -41,16 +41,26 @@ export function DatePicker({
               !date && 'text-muted-foreground',
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? (
-              format(date, 'dd MMMM, yyyy', { locale: vi })
-            ) : (
-              <span>Chọn ngày</span>
-            )}
+            <div className="flex flex-row gap-x-1 items-center">
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? (
+                format(date, 'dd MMMM, yyyy', { locale: enUS })
+              ) : (
+                <span>Select Date</span>
+              )}
+            </div>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0">
-          <Calendar mode="single" selected={date} onSelect={setDate} required />
+          <Calendar
+            selected={date}
+            onSelect={setDate}
+            captionLayout="dropdown-buttons"
+            fromYear={1950}
+            toYear={2025}
+            mode="single"
+            required
+          />
         </PopoverContent>
       </Popover>
     </div>
